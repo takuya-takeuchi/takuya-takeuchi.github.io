@@ -7,7 +7,12 @@
 <li><p><strong>default:</strong> と記述されている行の直下に下記のように記述します。InstallDir は 1. と同じですが、<strong>\</strong> を <strong>/</strong> に変更します。また、先頭は半角スペースを2文字挿入します。</p>
 </li>
 </ol>
-<p>[code lang=”yaml”] imagemagick_convert_command: ‘InstallDir/imagemagick/convert.exe’ [/code] つまり、インストール先が <strong>C:\BitNami\Redmine\</strong> なら [code lang=”yaml”] imagemagick_convert_command: ‘C:/BitNami/Redmine/imagemagick/convert.exe’ [/code] になります。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">imagemagick\_convert\_command:</span> <span class="string">&#x27;InstallDir/imagemagick/convert.exe&#x27;</span> </span><br></pre></td></tr></table></figure>
+
+<p>つまり、インストール先が <strong>C:\BitNami\Redmine\</strong> なら </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">imagemagick\_convert\_command:</span> <span class="string">&#x27;C:/BitNami/Redmine/imagemagick/convert.exe&#x27;</span> </span><br></pre></td></tr></table></figure>
+
+<p>になります。</p>
 <ol>
 <li><strong>BitNami Redmine Stack</strong> を再起動します。</li>
 </ol>
