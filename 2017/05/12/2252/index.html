@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><title>開発メモ その63 GitLabを始める&GitHubから引っ越し · A certain engineer "COMPLEX"</title><meta name="description" content="Introduction開発メモ その61 Visual Studio Team Serviceを始める&amp;amp;Githubから引っ越しにて、**Visual Studio Team Service (以下VSTS)**のアカウントの作成を実施しました。 しかしながら、ものの一時間で使いにくい、と"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/hexo-tag-blog-card.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その63 GitLabを始める&amp;GitHubから引っ越し</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p><a target="_blank" rel="noopener" href="http://wp.me/p7138e-zW">開発メモ その61 Visual Studio Team Serviceを始める&amp;Githubから引っ越し</a>にて、**Visual Studio Team Service (以下VSTS)**のアカウントの作成を実施しました。 しかしながら、ものの一時間で使いにくい、という不満が高まってきました。 何が面倒って、</p>
+<ul>
+<li>画面のUIが複雑</li>
+<li>Iterationの概念が複雑</li>
+</ul>
+<p>の2点です。 特に、2つ目。仕事でも使っていましたが、やっぱりダメでした。 Issue作って、アサインしたりするワークフローを回すという作業が非常に面倒です。 個人のプロジェクトで利用するなら、ここまでの複雑なタスク管理は不要なんですよね。</p>
+<h1 id="GitLab"><a href="#GitLab" class="headerlink" title="GitLab"></a>GitLab</h1><p>なので、Githubに似たサービスを利用することにしました。</p>
+<ul>
+<li>GitLab</li>
+<li>Bitbucket</li>
+<li>GitBucket</li>
+<li>Gitblit</li>
+<li>Gogs</li>
+</ul>
+<p>が調べて存在するサービスです。 今回は知名度が高い<strong>GitLab</strong>を採用することにしました。 ただし、知名度の高さは2017年2月に引き起こしたデータ消失事件も少なからず影響しています。 <a target="_blank" rel="noopener" href="https://techcrunch.com/2017/02/01/gitlab-suffers-major-backup-failure-after-data-deletion-incident/">GitLab suffers major backup failure after data deletion incident</a> この件と下記のメリットを考慮して、GitLabの利用を決断しました。</p>
+<ul>
+<li>プライベートリポジトリを無制限に無料で利用できる</li>
+<li>Githubに似たLook and feel</li>
+<li>最悪、GitLabからGithubに戻れる</li>
+</ul>
+<h1 id="Sign-up"><a href="#Sign-up" class="headerlink" title="Sign up"></a>Sign up</h1><p>公式ページは、<a target="_blank" rel="noopener" href="https://about.gitlab.com/">https://about.gitlab.com/</a>です。 まず、右上の<strong>Sign Up</strong>を選択します。<br><a href="../../../../public/2017/05/1-2.png"><img src="../../../../public/2017/05/1-2-1024x668.png"></a><br> 次に、<strong>Register</strong>を選択し必要な情報を入力してきます。</p>
+<ul>
+<li>Full name<ul>
+<li>自分の名前を入力します。この名前はユーザ認証に使われません。</li>
+</ul>
+</li>
+<li>Username<ul>
+<li>ユーザ認証に利用するユーザ名</li>
+</ul>
+</li>
+<li>Email<ul>
+<li>GitLabからの連絡や問い合わせに使うメールアドレス。メールアドレスを使ってログインも可能です。</li>
+</ul>
+</li>
+<li>Email confirmation<ul>
+<li>入力したメールアドレスの確認</li>
+</ul>
+</li>
+<li>Password<ul>
+<li>パスワード</li>
+</ul>
+</li>
+</ul>
+<p>入力が完了したら、CAPTCHAのチェックボックスにチェックを入れ、Registerボタンをクリックします。<br><a href="../../../../public/2017/05/2-2.png"><img src="../../../../public/2017/05/2-2-1024x769.png"></a> 確認メールが入力したメールアドレスに送信されますので、メールを確認して登録を終了させます。 <a href="../../../../public/2017/05/3-2.png"><img src="../../../../public/2017/05/3-2-1024x372.png"></a> 登録の確認が完了するとメインページに遷移します。 <a href="../../../../public/2017/05/4-2.png"><img src="../../../../public/2017/05/4-2-1024x488.png"></a><br> これで登録が完了です。</p>
+<h1 id="Import-from-Github"><a href="#Import-from-Github" class="headerlink" title="Import from Github"></a>Import from Github</h1><p>インポートも簡単でした。 まず、上部のバーの**+<strong>ボタンをクリックします。<br><a href="../../../../public/2017/05/5-2.png"><img src="../../../../public/2017/05/5-2-1024x488.png"></a> 続いて、インポート元のプロジェクトを選択します。 今回は</strong>GitHub<strong>を選択。 <a href="../../../../public/2017/05/6-1.png"><img src="../../../../public/2017/05/6-1-1024x728.png"></a> **List your GitHub repositories</strong>をクリックします。 <a href="../../../../public/2017/05/7-1.png"><img src="../../../../public/2017/05/7-1-1024x728.png"></a> GitHubへのログインを済ませ、GitLabとGitHubとの連携を許可します。 <strong>Authorize application</strong>をクリックします。 <a href="../../../../public/2017/05/8.png"><img src="../../../../public/2017/05/8-1024x728.png"></a> GitHub内のprivateを含むプロジェクトの一覧が表示されます。 インポートしたい必要なプロジェクトの右側にある<strong>Import</strong>ボタンをクリックします。 <a href="../../../../public/2017/05/9.png"><img src="../../../../public/2017/05/9-1024x790.png"></a> 暫くすると、インポートが完了します。 <a href="../../../../public/2017/05/12.png"><img src="../../../../public/2017/05/12-1024x741.png"></a> 適当にプロジェクト名をクリックして、インポート結果を確認します。 ソースコードがインポートされていることが確認できます。 <a href="../../../../public/2017/05/10.png"><img src="../../../../public/2017/05/10-955x1024.png"></a> <strong>Visual Studio Team Service</strong>とは異なりIssueもインポートに成功しています。素晴らしい。 <a href="../../../../public/2017/05/11.png"><img src="../../../../public/2017/05/11-1024x948.png"></a></p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>最近のWebサービスは本当に親切ですね。インポートも簡単でした。 これが本当に無料で利用できるなんて、信じられません。 サービス事業者は厳しい競争にさらされてると思いますが、頑張って欲しいです。</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2017-05-12</span><i class="fa fa-tag"></i><a class="tag" href="/categories/バージョン管理システム/" title="バージョン管理システム">バージョン管理システム </a><a class="tag" href="/categories/バージョン管理システム/git/" title="git">git </a><a class="tag" href="/categories/バージョン管理システム/git/GitLab/" title="GitLab">GitLab </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2017/05/12/2252/,A certain engineer &quot;COMPLEX&quot;,開発メモ その63 GitLabを始める&amp;GitHubから引っ越し,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2017/05/12/2275/" title="開発メモ64 .NET Core SDKの過去バージョンを入手する">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2017/05/07/2244/" title="開発メモ その62 Visual Studio Team Serviceのアカウントを削除する">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>

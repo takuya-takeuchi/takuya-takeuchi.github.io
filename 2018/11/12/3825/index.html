@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><title>開発メモ その151 Visual Studio CodeのMarkdown機能を強化 · A certain engineer "COMPLEX"</title><meta name="description" content="Introduction仕事ではVisual Studio Codeを使ってMarkdownを書いています。拡張機能のmarkdown-pdfにはお世話になっております。 
+
+
+最近、mermaidというガントチャートやフローチャートをテキストで記述できるライブラリが気になっており、これがVisua"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/hexo-tag-blog-card.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その151 Visual Studio CodeのMarkdown機能を強化</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>仕事では<strong>Visual Studio Code</strong>を使ってMarkdownを書いています。拡張機能の<strong>markdown-pdf</strong>にはお世話になっております。 </p>
+
+
+<p>最近、<strong>mermaid</strong>というガントチャートやフローチャートをテキストで記述できるライブラリが気になっており、これがVisual Studio Codeで使えると聞いて興奮しています。 しかし、markdown-pdfがこれに対応していません。 では、これに対応しているpdf変換というと、<strong>Markdown Preview Enhanced</strong>という<strong>Atom</strong>でも有名な拡張になります。 </p>
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://shd101wyy.github.io/markdown-preview-enhanced/#/" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=shd101wyy.github.io"></img><div class="hbc-site-name">shd101wyy.github.io</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">Markdown Preview Enhanced</div><div class="hbc-url">https://shd101wyy.github.io/markdown-preview-enhanced/#/</div><div class="hbc-description">Description</div></div></div></div></a></div></div>
+
+<p>しかし、これはこれで結構癖があります。 PDF出力に5種類の方法がありますが、これがまぁ微妙。</p>
+<ul>
+<li>Chrome (Puppetter)<ul>
+<li>一番まとも。ただし、<strong>Nodejs</strong>のインストールが必要。結果はHTML化してChromeからPDF化したのと変わらない感じ。</li>
+</ul>
+</li>
+<li>phantomjs<ul>
+<li>開発が終了している。出力結果はそこそこ。</li>
+</ul>
+</li>
+<li>prince<ul>
+<li>商用利用不可。また結果は微妙。有償の価値はない。</li>
+</ul>
+</li>
+<li>eBook<ul>
+<li>ためしてない</li>
+</ul>
+</li>
+<li>pandoc<ul>
+<li>cssを指定しても微妙。mermaidの結果は解釈できていない。</li>
+</ul>
+</li>
+</ul>
+<p>あと、</p>
+<ul>
+<li><strong>Alt text</strong>の解釈がおかしい</li>
+<li><strong>h1</strong>タグの直下に水平線が表示されない</li>
+<li>コードハイライトの背景が白くなる<ul>
+<li>これは印刷オプションで背景を印刷しない、にしていることが要因</li>
+</ul>
+</li>
+<li>コードハイライトのブロックに境界線がない</li>
+<li>表の形式が古くさい<ul>
+<li>ただ、Githubも表の4隅の境界線がある。違いは1行おきに背景色が変化するところ。</li>
+</ul>
+</li>
+</ul>
+<p>が気になった問題。 良い点として、</p>
+<ul>
+<li>見出しのフォントが適度に太字</li>
+<li>mermaidが使える</li>
+<li>改行するのに末尾に空白が不要</li>
+</ul>
+<p>があります。 何はともあれ、気になった点を改善していきます。</p>
+<h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><h2 id="Alt-text-の解釈"><a href="#Alt-text-の解釈" class="headerlink" title="Alt text の解釈"></a>Alt text の解釈</h2><p>諦める。使わなければ良い。仕事で使ったことはないからOK。</p>
+<h2 id="h1に水平線が表示されない"><a href="#h1に水平線が表示されない" class="headerlink" title="h1に水平線が表示されない"></a>h1に水平線が表示されない</h2><p>これはMarkdown Preview Enahancedのcssを修正することで対応。 <strong>Ctrl + Shift + P</strong>を押下し、<strong>Markdown Preview Enhanced: Customize Css</strong>を開きます。 そして下記のように修正を行います。 [code lang=”diff”] .markdown-preview.markdown-preview { // modify your style here // eg: background-color: blue;<br>+ h1 { + padding-bottom: 0.3em; + line-height: 1.2; + border-bottom-width: 1px; + border-bottom-style: solid; + } } [/code]</p>
+<h2 id="コードハイライトの背景が白くなる"><a href="#コードハイライトの背景が白くなる" class="headerlink" title="コードハイライトの背景が白くなる"></a>コードハイライトの背景が白くなる</h2><p>前述の通り、印刷設定で背景が描画されないのが問題である。 対処として、PDFに出力するのではなく、htmlに出力し、ChromeでPDFに出力する際、背景を出力するようにすればOK</p>
+<h2 id="コードハイライトのブロックに境界線がない"><a href="#コードハイライトのブロックに境界線がない" class="headerlink" title="コードハイライトのブロックに境界線がない"></a>コードハイライトのブロックに境界線がない</h2><p>これもMarkdown Preview Enahancedのcssを修正することで対応。 <strong>Ctrl + Shift + P</strong>を押下し、<strong>Markdown Preview Enhanced: Customize Css</strong>を開きます。 そして下記のように修正を行います。 [code lang=”diff”] .markdown-preview.markdown-preview { // modify your style here // eg: background-color: blue;<br>h1 { padding-bottom: 0.3em; line-height: 1.2; border-bottom-width: 1px; border-bottom-style: solid; }<br>+ pre[class*=”language-“] { + border: 1px solid #ddd; + } } [/code]</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>片方だけを使うというのは駄目かな。しばらくは両方使っていきます。</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2018-11-12</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Microsoft/" title="Microsoft">Microsoft </a><a class="tag" href="/categories/Microsoft/Visual-Studio-Code/" title="Visual Studio Code">Visual Studio Code </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2018/11/12/3825/,A certain engineer &quot;COMPLEX&quot;,開発メモ その151 Visual Studio CodeのMarkdown機能を強化,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2018/11/13/3836/" title="開発メモ その152 Visual Studio CodeのMarkdown機能を強化 その2">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2018/11/11/3818/" title="開発メモ その150 ローカルNugetServer on Docker">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>

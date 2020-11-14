@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><title>開発メモ その24 Norton Internet SecurityにDebugビルドの自作アプリがウイルス扱いされたので文句を言ってみた · A certain engineer "COMPLEX"</title><meta name="description" content="デバッグできないRedArmoryの開発中ですが、掲題の通り、Debug版をビルドした瞬間に、Norton Internet Security (以下NIS) の自動保護機能が作動してobj\Debug内のバイナリが削除されてしまい、デバッグができなくなりました。
+
+仕事しましたよ(ｷﾘｯ)
+Rel"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/hexo-tag-blog-card.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その24 Norton Internet SecurityにDebugビルドの自作アプリがウイルス扱いされたので文句を言ってみた</a></h3></div><div class="post-content"><h1 id="デバッグできない"><a href="#デバッグできない" class="headerlink" title="デバッグできない"></a>デバッグできない</h1><p>RedArmoryの開発中ですが、掲題の通り、Debug版をビルドした瞬間に、<strong>Norton Internet Security (以下NIS)</strong> の自動保護機能が作動してobj\Debug内のバイナリが削除されてしまい、デバッグができなくなりました。</p>
+<p><a href="../../../../public/2016/11/img_582834f38368b.png"><img src="../../../../public/2016/11/img_582834f38368b.png"></a></p>
+<p>仕事しましたよ(ｷﾘｯ)</p>
+<p>Release版だと無事なので良いのですが、何だか釈然としませんので、Nortonに文句を言ってみました。</p>
+<h1 id="誤検出の申請をしてみる"><a href="#誤検出の申請をしてみる" class="headerlink" title="誤検出の申請をしてみる"></a>誤検出の申請をしてみる</h1><p>ググってみると、日本のコミュニティが見つかりますが、案内されたページは英語の模様。 何のための日本法人なのか… まず<a target="_blank" rel="noopener" href="https://submit.symantec.com/false_positive/">Report a Suspected Erroneous Detection (False Positive)</a>にアクセスします。</p>
+<h2 id="いつ発生"><a href="#いつ発生" class="headerlink" title="いつ発生?"></a>いつ発生?</h2><p>最初のページです。 報告する現象がいつかを選択します。<br><a href="../../../../public/2016/11/screencapture-submit-symantec-false_positive-1479025972298.png"><img src="../../../../public/2016/11/screencapture-submit-symantec-false_positive-1479025972298-1024x531.png"></a><br> 上から、</p>
+<p>A1 - When downloading or uploading a file</p>
+<p>ファイルのダウンロードまたはアップロード中</p>
+<p>A2 - While using an application</p>
+<p>アプリケーションの使用中</p>
+<p>A3 - When installing an application</p>
+<p>アプリケーションのインストール中</p>
+<p>A4 - When browsing the web</p>
+<p>Webの閲覧中</p>
+<p>A5 - During a scheduled scan, or during a scan I requested</p>
+<p>スケジュールされたスキャンの間、または自分で要求したスキャンの間</p>
+<p>A6 - When sending or receiving email</p>
+<p>メールの送信中または受信中</p>
+<p>A7 - While writing or reading files to/from a storage device</p>
+<p>ストレージデバイスへ/からファイルを書き込み/読み込みしたとき</p>
+<p>A8 - Don’t know, am unsure, or the options provided do not apply</p>
+<p>わからない、不確か、または選べる選択肢がない</p>
+<p>今回は、Visual Studio がファイルを書き込んでいるときなので、A7を選択しました。 選択したらNextを押します。</p>
+<h2 id="どの製品で発生"><a href="#どの製品で発生" class="headerlink" title="どの製品で発生?"></a>どの製品で発生?</h2><p>どのNorton製品を使っているかを選択します。 <strong>View screenshot</strong> があるので、それを見て自身の使用製品を判断することもできます。 私はNISでしたので、B5を選択しました。 選択したらNextを押します。<br><a href="../../../../public/2016/11/screencapture-submit-symantec-false_positive-1479026062556.png"><img src="../../../../public/2016/11/screencapture-submit-symantec-false_positive-1479026062556-1024x531.png"></a></p>
+<h2 id="どういう仕組みで発生"><a href="#どういう仕組みで発生" class="headerlink" title="どういう仕組みで発生?"></a>どういう仕組みで発生?</h2><p>どういう方法で検出されたのかを選択します。 上から、</p>
+<p>C1 - Download/File Insight (Reputation Based Detection) e.g. WS.Reputation.1, Suspicious.Insight, WS.Malware.* – View screenshot</p>
+<p>ダウンロード/ファイルインサイト (レピュテーションベースの検出)。例えば、WS. Reputation.1、Suspicious.Insight、WS.Malware.*</p>
+<p>C2 - SONAR (Behavioral Heuristics Detection) e.g. SONAR.Heuristic, Bloodhound.SONAR.* – View screenshot</p>
+<p>SONAR (振る舞いヒューリスティック検出)。例えば、SONAR ヒューリスティック、Bloodhound.SONAR</p>
+<p>C3 - Auto-Protect (File Based Detection) e.g. Trojan.*, Trojan.ADH, Suspicious.Cloud.*, Downloader, Hacktool, Suspicious.* – View screenshot</p>
+<p>自動保護 (ファイルベースの検出)。例えば、Trojan.*、Trojan.ADH,、Suspicious.Cloud.*、ダウンローダー。ハックツール、Suspicious.*</p>
+<p>C5 - IPS (Network Intrusion Detection, Vantage) e.g. “Web Attack”, “Malicious Site: Malicious Web site, Domain or URL” – View screenshot</p>
+<p>侵入防御システム (ネットワーク侵入検知)。例えば、Web Attack、Malicious Site: Malicious Web site, Domain or URL</p>
+<p>C7 - SafeWeb (Phishing URLs, Malicious Web Pages) – View screenshot</p>
+<p>セーフWeb (フィッシングURL、悪意のあるWebページ)</p>
+<p>C11 - Don’t know, am unsure, or the options provided do not apply</p>
+<p>わからない、不確か、または選べる選択肢がない</p>
+<p>Nortonの場合、File Insight、自動保護、SONAR等検出の方法は多岐にわたります。 <strong>View screenshot</strong> があるので、それを見て自身の判断することもできます。 私の場合は、自動保護だったので、C3を選択しました。<br><a href="../../../../public/2016/11/screencapture-submit-symantec-false_positive-1479026074226.png"><img src="../../../../public/2016/11/screencapture-submit-symantec-false_positive-1479026074226-1024x531.png"></a></p>
+<h2 id="詳細な情報は"><a href="#詳細な情報は" class="headerlink" title="詳細な情報は?"></a>詳細な情報は?</h2><p>最後のページです。<br><a href="../../../../public/2016/11/screencapture-submit-symantec-false_positive-standard-1479026885289.png"><img src="../../../../public/2016/11/screencapture-submit-symantec-false_positive-standard-1479026885289-1024x614.png"></a></p>
+<p><strong>Step1</strong>で、検出したファイルを提出します。Submission Typeを <strong>Upload File</strong> を選択。 大抵、自動保護を一時的に無効にしているはずなので、先に記入を済ませてから、ファイルを選択すると良いでしょう。 でないと、記入中にファイルを消されます。 <strong>Step2</strong>では、検出した情報についての記述です。 下記の項目は、Nortonの活動記録の画面を見て入力してください。</p>
+<p>Name of the software being detected:</p>
+<p>検出されたソフトウェアの名前</p>
+<p>Name of detection given by Symantec product:</p>
+<p>Symantec製品によって検出された名前</p>
+<p>しかし、次の項目が少しわかりにくいです。</p>
+<p>Important: File quarantine, product clipboard information or additional details: • If the information is more than 20000 characters, please create a log file and send that along with the file submission.</p>
+<p>重要: ファイル検疫、製品クリップボード情報または追加情報。もし、20000字以上の情報ならば、ログファイルと付随ファイルを提出してください。</p>
+<p>説明の下に <strong>Instructions</strong> リンクがあるでのクリックすると、下記の内容が記されたポップアップが表示されます。</p>
+<p><strong>Symantec Endpoint Protection Users</strong> Simply click on View Quarantine and provide the “Original Location” listed for the quarantined file(s). <strong>Norton Internet Security/AntiVirus/360 Users</strong> From Advanced view, select History and use “Quarantine” filter. Click on the activity, then “More Details” and “Copy to Clipboard”. Now you can simply paste the content here.</p>
+<p>これに従うと、製品クリップボード情報が入手できます。 まず、<strong>セキュリティ履歴</strong>から、状態が<strong>検疫済み</strong>になっている、項目を選択します。<br><a href="../../../../public/2016/11/21799ec8d6b890308231f080ae32fa72.png"><img src="../../../../public/2016/11/21799ec8d6b890308231f080ae32fa72.png"></a></p>
+<p>次に、<strong>その他のオプション</strong>をクリックします。 右下に<strong>クリップボードにコピー</strong>とあるのでクリックします。<br><a href="../../../../public/2016/11/91c21ea074713f91a284fa81e9f78f40.png"><img src="../../../../public/2016/11/91c21ea074713f91a284fa81e9f78f40.png"></a></p>
+<p>コピーされた内容を先ほどのテキスト入力エリアに貼り付けます。 内容は、検出されたウイルス名等ですが、ファイルのフルパスなどがあるのでご注意を。 <strong>Step3</strong>では、報告者である自分の情報を書きます。名前とメールアドレスになります。 3つめの項目の <strong>Are you the creator or distributor of the software in question?</strong> は、<strong>あなたは質問のソフトウェアの作者か配布者ですか?</strong> という意味です。私はファイルの作成者なので Yes を選択しました。 最後の<strong>Step4</strong>では、最終確認です。最近おなじみの<strong>CAPTCHA</strong>です。 CAPTCHAを入力する前に、チェックボックスにチェックをつける必要があります。 <strong>Please provide as much information as possible. Submissions with insufficient detail will be rejected.</strong> は、<strong>可能な限り詳しい情報を提供してください。不十分な情報と一緒に提出されたものは拒絶されます。</strong>とありますです。特に脅し文句ではないのでご安心を。 AnwserにCAPTCHAを入力してSubmitで報告です。お疲れ様です。</p>
+<h2 id="結果"><a href="#結果" class="headerlink" title="結果"></a>結果</h2><p>は、まだです。どうも結果は返ってこないご様子。 何かありましたら、報告いたします。 とりあえずは、Nortonのスキャン対象からパスを除外する方法で対処します。</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2016-11-13</span><i class="fa fa-tag"></i><a class="tag" href="/categories/その他/" title="その他">その他 </a><a class="tag" href="/categories/アンチウイルス誤検出/" title="アンチウイルス誤検出">アンチウイルス誤検出 </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2016/11/13/1690/,A certain engineer &quot;COMPLEX&quot;,開発メモ その24 Norton Internet SecurityにDebugビルドの自作アプリがウイルス扱いされたので文句を言ってみた,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2016/12/28/1712/" title="開発メモ その25 RGBからHSVへの変換パフォーマンス">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2016/11/08/1687/" title="開発メモ その23 GDBでデバッグしてみる">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>

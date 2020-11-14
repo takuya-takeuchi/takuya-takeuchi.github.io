@@ -1,0 +1,67 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><title>Xamarinメモ その13 Xamarin Android Playerをインストールする · A certain engineer "COMPLEX"</title><meta name="description" content="前回はAndroid Emulatorが表示されないことがある問題を解決しました。
+
+Problemが、Emulatorが動かないときがあります。 Emulatorは起動するけど、いつまでたってもデプロイしたアプリが表示されず、ずっとロック画面とか。 前回も最後に話しましたが、Xamarin.And"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/hexo-tag-blog-card.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>Xamarinメモ その13 Xamarin Android Playerをインストールする</a></h3></div><div class="post-content"><p><a target="_blank" rel="noopener" href="http://wp.me/p7138e-jz">前回</a>はAndroid Emulatorが表示されないことがある問題を解決しました。</p>
+<a id="more"></a>
+<h1 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h1><p>が、Emulatorが動かないときがあります。 Emulatorは起動するけど、いつまでたってもデプロイしたアプリが表示されず、ずっとロック画面とか。 前回も最後に話しましたが、Xamarin.AndroidのデバッグはXamarin Android Playerなるものでやるのが良いらしいです。</p>
+<h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><p><a target="_blank" rel="noopener" href="https://www.xamarin.com/android-player">Simulate Android apps with the Xamarin Android Player - Xamarin</a>からWindows用のインストーラをダウンロードして起動します。 画面の中央やや下です。 <a href="../../../../public/2016/05/1-1.png"><img src="../../../../public/2016/05/1-1-547x1024.png" alt="インストーラの取得"></a></p>
+<p>インストーラの入手</p>
+<p><a target="_blank" rel="noopener" href="https://developer.xamarin.com/guides/android/getting_started/installation/android-player/">Xamarin Android Player Installation - Xamarin</a>によれば、Hyper-Vを無効化しないと最大のパフォーマンスを得られない、と記述があります。 まぁWindows7にインストールするので別に私は構いません。 ダウンロードしたインストーラを起動してインストールを始めます。 <a href="../../../../public/2016/05/2-1.png"><img src="../../../../public/2016/05/2-1.png" alt="セットアップ画面"></a></p>
+<p>セットアップ画面</p>
+<p>ライセンス許諾に了解して開始。 <a href="../../../../public/2016/05/3-1.png"><img src="../../../../public/2016/05/3-1.png" alt="セットアップ開始"></a></p>
+<p>セットアップ開始</p>
+<p>すると始まる<strong>VirtualBox</strong>のインストーラ。 <a href="../../../../public/2016/05/4-1.png"><img src="../../../../public/2016/05/4-1.png" alt="VirtualBoxのセットアップ"></a></p>
+<p>VirtualBoxのセットアップ</p>
+<p>インストール先はご自由に。 <a href="../../../../public/2016/05/5.png"><img src="../../../../public/2016/05/5.png" alt="VirtualBoxのインストール先"></a></p>
+<p>VirtualBoxのインストール先</p>
+<p><a href="../../../../public/2016/05/6-1.png"><img src="../../../../public/2016/05/6-1.png" alt="VirtualBoxのインストールオプション"></a></p>
+<p>VirtualBoxのインストールオプション</p>
+<p>赤字の警告。何かファイルをダウンロードしていたりするなら、それが終わるのを待ちましょう。 <a href="../../../../public/2016/05/7-1.png"><img src="../../../../public/2016/05/7-1.png" alt="警告"></a></p>
+<p>インストール中、ネットワーク接続が一時的に切れる、という警告</p>
+<p><a href="../../../../public/2016/05/8-1.png"><img src="../../../../public/2016/05/8-1.png" alt="Are you ready?"></a></p>
+<p>Are you ready?</p>
+<p>インストール開始。 <a href="../../../../public/2016/05/9-1.png"><img src="../../../../public/2016/05/9-1.png" alt="VirtualBoxインストール中"></a></p>
+<p>VirtualBoxインストール中</p>
+<p>デバイスドライバのインストール。 <strong>Oracle</strong>を信用して、許可してあげましょう。常に許可するかどうかは任意です。 <a href="../../../../public/2016/05/10-1.png"><img src="../../../../public/2016/05/10-1.png" alt="デバイスドライバのインストール許可1"></a></p>
+<p>デバイスドライバのインストール許可1</p>
+<p><a href="../../../../public/2016/05/11-1.png"><img src="../../../../public/2016/05/11-1.png" alt="デバイスドライバのインストール許可2"></a></p>
+<p>デバイスドライバのインストール許可2</p>
+<p>終わった。 <a href="../../../../public/2016/05/12-1.png"><img src="../../../../public/2016/05/12-1.png" alt="VirtualBoxインストール完了"></a></p>
+<p>VirtualBoxインストール完了</p>
+<p>と思いきや。 <a href="../../../../public/2016/05/13.png"><img src="../../../../public/2016/05/13.png" alt="デバイスドライバのインストール許可3"></a></p>
+<p>デバイスドライバのインストール許可3</p>
+<p>ここからが本番。 <a href="../../../../public/2016/05/14.png"><img src="../../../../public/2016/05/14.png" alt="Xamarin Android Playerのセットアップ"></a></p>
+<p>Xamarin Android Playerのセットアップ</p>
+<p>はいはい。 <a href="../../../../public/2016/05/15.png"><img src="../../../../public/2016/05/15.png" alt="Xamarin Android Playerのライセンス許諾"></a></p>
+<p>Xamarin Android Playerのライセンス許諾</p>
+<p>ご自由に。 <a href="../../../../public/2016/05/16.png"><img src="../../../../public/2016/05/16.png" alt="Xamarin Android Playerのインストールオプション"></a></p>
+<p>Xamarin Android Playerのインストールオプション</p>
+<p><a href="../../../../public/2016/05/17.png"><img src="../../../../public/2016/05/17.png" alt="インストール準備OK?"></a></p>
+<p>覚悟はいいか？</p>
+<p>開始。 <a href="../../../../public/2016/05/18.png"><img src="../../../../public/2016/05/18.png" alt="Xamarin Android Playerのインストール中"></a></p>
+<p>Xamarin Android Playerのインストール中</p>
+<p>終了。 <a href="../../../../public/2016/05/19.png"><img src="../../../../public/2016/05/19.png" alt="Xamarin Android Playerのインストール終了"></a></p>
+<p>Xamarin Android Playerのインストール終了</p>
+<p>全部完了 <a href="../../../../public/2016/05/20.png"><img src="../../../../public/2016/05/20.png" alt="完全終了"></a></p>
+<p>完全終了</p>
+<p>とありあえず起動する。 <a href="../../../../public/2016/05/21.png"><img src="../../../../public/2016/05/21.png" alt="起動しない"></a></p>
+<p>え？</p>
+<p><strong>(ﾟДﾟ)ﾊｧ?</strong></p>
+<p>本当に意味不明。いやいや、今インストールしたでしょ？ というわけでGoogle先生。 同じ現象の人、いました。 <a target="_blank" rel="noopener" href="https://forums.xamarin.com/discussion/47551/after-fresh-install-on-windows-10-it-says-unable-to-find-virtualbox#latest">After fresh install on Windows 10, it says “Unable to find Virtualbox”</a> 曰く、<strong>環境変数 VBOX_MSI_INSTALL_PATH</strong>の末尾にバックスラッシュがあるとダメだよ、とのこと。 環境変数変更後、再起動。 無事に起動しました。 <a href="../../../../public/2016/05/22.png"><img src="../../../../public/2016/05/22-1024x618.png" alt="対応するエミュレーター一覧"></a></p>
+<p>対応するエミュレーター一覧</p>
+<p>ダウンロードボタンを押下して、ダウンロード開始。 <a href="../../../../public/2016/05/23.png"><img src="../../../../public/2016/05/23.png" alt="デバイス名を指定"></a></p>
+<p>デバイス名を指定</p>
+<p>完了後、デバイス名を指定。デフォルトで問題ないでしょう。 <a href="../../../../public/2016/05/25.png"><img src="../../../../public/2016/05/25.png" alt="デバイスの詳細"></a></p>
+<p>デバイスの詳細</p>
+<p>とりあえず、全部ダウンロードして、Visual Studioを開き、Androidプロジェクトをスタートアップに選択。デバイス一覧を見ると、 <a href="../../../../public/2016/05/26.png"><img src="../../../../public/2016/05/26.png" alt="デバイスが増えた"></a></p>
+<p>増えてる！</p>
+<p>正確には、Xamarin Android Playerがインストールされて、既存のエミュレータと置き換わった、という感じです。 試しに、前回さんざんな目に遭ったAPI23である、**Nexus 7 (Marshmallow) (Android 6.0 - API 23)**を試してみます。 <a href="../../../../public/2016/05/27.png"><img src="../../../../public/2016/05/27.png" alt="エミュレーター起動中"></a></p>
+<p>お？</p>
+<p>特にXamarin Android Playerから予め起動しておく必要は無い模様。 <a href="../../../../public/2016/05/28.png"><img src="../../../../public/2016/05/28.png" alt="待機しますか？"></a></p>
+<p>また待機しますか….</p>
+<p><a href="../../../../public/2016/05/29.png"><img src="../../../../public/2016/05/29.png" alt="きれいな壁紙"></a></p>
+<p>きれいな壁紙</p>
+<p>でも、また反応がない。 って、デバッグが切れてる(#^ω^)ﾋﾞｷﾋﾞｷ でも、再度デバッグしても、うんともすんとも言わない。Visual Studioのステータスバーはオレンジ色なのでデバッグは維持されています。 何気なく、エミュレーターのロック画面を上にスワイプしてみると。 <a href="../../../../public/2016/05/30.png"><img src="../../../../public/2016/05/30.png" alt="デバッグ開始"></a></p>
+<p>デバッグ開始</p>
+<p>きたー。 ちょっと画面の解像度が高すぎて？文字が小さいけど、まぁいいでしょう。 でも、最大化すると画面が真っ暗になります。 ちょっとまだ不安定な感じはします。</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>少なくとも、初期状態よりは大分良くなった気がします。 けれど、まだまだ改善の余地があると思います。 私のWindowsとの相性が悪いのかも入れませんが…</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2016-05-02</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Microsoft/" title="Microsoft">Microsoft </a><a class="tag" href="/categories/Microsoft/NET-Framework/" title=".NET Framework">.NET Framework </a><a class="tag" href="/categories/Microsoft/NET-Framework/C/" title="C#">C# </a><a class="tag" href="/categories/Xamarin/" title="Xamarin">Xamarin </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2016/05/02/1177/,A certain engineer &quot;COMPLEX&quot;,Xamarinメモ その13 Xamarin Android Playerをインストールする,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2016/05/03/1273/" title="Xamarinメモ その14 WCFサービスの実行">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2016/05/01/1213/" title="Xamarinメモ その12 新規作成直後のプロジェクトでAndroidエミュが一覧に表示されない">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><title>.NETでNoSQLを試してみる MongoDB編 第1回 · A certain engineer "COMPLEX"</title><meta name="description" content="冬休みというのは暇ですね。こーいうときに新しい技術に触るのが正しい技術者でしょう。
+
+IntroductionNoSQL の説明は、Wikipediaによると、
+
+NoSQL系データベース管理システムには、データの格納および取得が高度に最適化されているものが多い。その最適化のために機能性を最小限にし"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/hexo-tag-blog-card.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>.NETでNoSQLを試してみる MongoDB編 第1回</a></h3></div><div class="post-content"><p>冬休みというのは暇ですね。こーいうときに新しい技術に触るのが正しい技術者でしょう。</p>
+<a id="more"></a>
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p><strong>NoSQL</strong> の説明は、<a target="_blank" rel="noopener" href="https://ja.wikipedia.org/wiki/NoSQL">Wikipedia</a>によると、</p>
+<blockquote>
+<p>NoSQL系データベース管理システムには、データの格納および取得が高度に最適化されているものが多い。その最適化のために機能性を最小限にしているものもある。「値」およびそれを取得するための「キー」だけを格納できるKey-Value型データベースは、その最たる例である。</p>
+</blockquote>
+<p>とあります。 ぶっちゃけると、高速性、を目的としていると私は理解します。あと柔軟。 <strong>RDBMS</strong> は使いにくいとは言いませんが、テーブル間の制約やデータ整合性に重きを置いているためパフォーマンスが出にくいのでしょう。 そこまで複雑なデータベースを必要としないなら、NoSQL で十分です。 NoSQL は色々ありますが、</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.mongodb.org/">MongoDB</a></li>
+<li><a target="_blank" rel="noopener" href="http://cassandra.apache.org/">Apache Cassandra</a></li>
+<li><a target="_blank" rel="noopener" href="http://hbase.apache.org/">Apache HBase</a></li>
+<li><a target="_blank" rel="noopener" href="http://fallabs.com/kyotocabinet/">Kyoto Cabinet</a></li>
+<li><a target="_blank" rel="noopener" href="http://okuyama-project.com/ja/index.html">okuyama</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/google/leveldb">LevelDB</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/hibari/hibari">Hibari</a></li>
+</ul>
+<p>といったところでしょう。もっとあります。詳しくはWikiで。 今回はMongoDBを使ってみます。</p>
+<h2 id="MongoDBの特徴"><a href="#MongoDBの特徴" class="headerlink" title="MongoDBの特徴"></a>MongoDBの特徴</h2><p>MongoDBはサービスとして動作し、そこに対して各種要求を行うタイプです。 <strong>MySQL</strong> とかと同じです。<strong>SQLite</strong> みたいな、データベースがファイルとして一つあって、それで完結するタイプではありません。 またライセンス形態が独特です。<strong>Affero General Public License (以下AGPL)</strong> です。</p>
+<ul>
+<li>コピーレフト (GPLと同じ)</li>
+<li>サービスとして動作している、AGPL のソフトウェアに接続しているソフトウェアにもソースコードの公開が義務づけられている</li>
+</ul>
+<p>がざっくりとした特徴です。 ですが、開発元がクライアントからの接続のためのドライバ (ソフトウェア) を公開しているので、それを経由すれば問題ない、という感じです。(2次感染はしない、という見解) でも、Free Software Foundation は公式見解を出していません。 これについて、詳しいのは <a target="_blank" rel="noopener" href="http://test.mongodb.jp/mongo/licence">http://test.mongodb.jp/mongo/licence</a> です。</p>
+<h1 id="Explanation"><a href="#Explanation" class="headerlink" title="Explanation"></a>Explanation</h1><h2 id="インストール"><a href="#インストール" class="headerlink" title="インストール"></a>インストール</h2><p>何はともあれ、インストールです。 MongoDB は<a target="_blank" rel="noopener" href="https://www.mongodb.org/downloads">ここ</a>からダウンロードできます。</p>
+<ul>
+<li>Windows 64-bit 2008R2+</li>
+<li>Windows 64-bit 2008R2+ legacy</li>
+<li>Windows 64-bit legacy</li>
+<li>Windows 32-bit</li>
+</ul>
+<p>がありますが、一番上だけ、msi形式のみ。他はzipもあります。 ここは一番上にします。 他を選ぶと但し書きが出ます。 <strong>Windows 64-bit 2008R2+ legacy</strong></p>
+<blockquote>
+<p>This distribution does not include SSL encryption.</p>
+</blockquote>
+<p>訳: このディストリビューション (頒布物) は SSL 暗号化 を含んでいません。 <strong>Windows 64-bit legacy</strong></p>
+<blockquote>
+<p>The 64-bit legacy build does not include SSL encryption and lacks newer features of Windows that enhance performance. Use this build for Windows Server 2003, 2008, or Windows Vista</p>
+</blockquote>
+<p>訳: 64bitのレガシービルドは SSL 暗号化 を含んでいません。そして、パフォーマンスの改善するWindowsのより新しい機能もありません。Windows Server 2003、2008、Windows Vistaでこのビルドを使用します。 <strong>Windows 32-bit</strong></p>
+<blockquote>
+<p>32-bit builds are limited to around 2GB of data. In general you should use the 64 bit builds. See here for more information. 32-bit builds are deprecated as of 3.2, and will no longer be produced for future releases.</p>
+</blockquote>
+<p>訳:32bitのビルドにはデータが2GBまでという制限があります。通常は64bitビルドを使用するべきです。詳しい情報はこちらを。32bitビルドは3.2で廃止予定で、将来のリリースにおいて作成されることはありません。 msiなのでさくっとインストールします。 特に問題なく終わります。 おわらなかったらGoogle先生に助けを求めるか、公式サイトのコミュニティに質問してください。 ちなみに私はWindows10 64bitにインストールしましたが、問題がありませんでした。まる。</p>
+<h2 id="As-a-Service"><a href="#As-a-Service" class="headerlink" title="As a Service"></a>As a Service</h2><p>いちいち、起動するのも面倒なので、サービスとして動かしてみましょう。 各種設定を行います。正直、インストーラで指定できるようにして欲しかった。 <a target="_blank" rel="noopener" href="https://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/">公式ページに説明</a>があります。 全部訳していられないので、一部だけ抜き出して説明します。 <strong>1. 概要</strong> のっけから注意書きです。</p>
+<blockquote>
+<p>IMPORTANT: If you are running any edition of Windows Server 2008 R2 or Windows 7, please install a hotfix to resolve an issue with memory mapped files on Windows.</p>
+</blockquote>
+<p>訳: 重要: もし、Windows Server 2008R2、Windows7 で動かすのだったら、<a target="_blank" rel="noopener" href="https://support.microsoft.com/ja-jp/kb/2731284">Hotfix</a>をインストールしてね。 というわけで、必要なら当ててください。私はWindows10なので当ててません。 <strong>2. インストール</strong></p>
+<blockquote>
+<p>You may specify an installation directory if you choose the “Custom” installation option. NOTE: These instructions assume that you have installed MongoDB to C:\mongodb.</p>
+</blockquote>
+<p>訳: “Custom” インストールオプションを選択して、インストール先を指定したかもしれません。 ノート: ここの説明は、インストール先が”C:\mongodb” だと仮定しています。 こんなところにインストールする人いるんでしょうか。Programs Filesの下でいいじゃんと思いますが、きっとパス文字列に空白を含むのがいやなんでしょう。 <a target="_blank" rel="noopener" href="https://taktak.jp/2012/10/13/bitnami-redmine-statck-%E3%81%8C%E8%B5%B7%E5%8B%95%E3%81%97%E3%81%AA%E3%81%84-%E3%81%A0%E3%81%A8/">う、頭が…</a> <strong>3. 設定ファイル作成</strong> まず、データベースの保存先とログの出力先フォルダを作ります。 インストール先が、<strong>C:\Program Files\MongoDB\</strong>、保存先はそれぞれ、<strong>D:\MongoDB\Storage\</strong>、<strong>D:\MongoDB\Logs\</strong>だとします。 フォルダは作成済みだとします。 次に、設定ファイルを作ります。<strong>mongod.cfg</strong> とします。UTF8で作っておけば安心かと。<strong>D:\MongoDB\mongod.cfg</strong> とします。 内容は、 [code] systemLog: destination: file path: D:\MongoDB\Logs\mongod.log storage: dbPath: D:\MongoDB\Storage [/code] とします。ログファイル名の部分は自由かな。 詳しい設定は<a target="_blank" rel="noopener" href="https://docs.mongodb.org/manual/reference/configuration-options/">Configuration File Options</a>です。 ログのローリングとかできる感じです。 <strong>4. 設定ファイル読み込み</strong></p>
+<blockquote>
+<p>IMPORTANT Run all of the following commands in Command Prompt with “Administrative Privileges”.</p>
+</blockquote>
+<p>訳: 重要: “管理者として実行”を指定してコマンドプロンプトを起動してください なので指示に従ってください。 <strong>補足</strong> 複数のインスタンスでサービスを動かす場合は、この章を飛ばしてください。 MongoDBのインストール先に移動し、次のコマンドをたたきます。 [code lang=”dos”] mongod.exe –config “D:\MongoDB\mongd.cfg” –install [/code] エラーがなければ、すぐに終了します。 <strong>mongod.exe</strong> と <strong>mongo.exe</strong> を間違えないでください。 間違えると、 [code lang=”dos”] Error parsing command line: unrecognised option ‘–config’ try ‘mongo.exe –help’ for more information [/code] って親切に教えてくれます(震え声) これで、MongoDBがサービスとして登録されます。 <strong>5. マルチインスタンスで動かしたいです</strong> という方も安心。</p>
+<blockquote>
+<p>If needed, you can install services for multiple instances of mongod.exe or mongos.exe. Install each service with a unique –serviceName and –serviceDisplayName. Use multiple instances only when sufficient system resources exist and your system design requires it.</p>
+</blockquote>
+<p>訳: 必要なら、mongod.exeまたはmongos.exeの複数インスタンスをサービスとしてインストールできます。各サービスのインストール時に、ユニークな –serviceName と –serviceDisplayName をつけてください。複数のインスタンスは十分な権限とシステムリソースがあるとき、システム設計でそれが必要なときだけ使うことができます。 なので、サービス名を <strong>MongoDB1</strong>、表示名を <strong>MongoDB Main</strong> にしたいなら、 [code lang=”dos”] mongod.exe –config “D:\MongoDB\mongd.cfg” –install –serviceName “MongoDB1” –serviceDisplayName “MongoDB Main” [/code] するとこんなメッセージでます。 [code lang=”dos”] 2015-12-29T17:25:43.489+0900 I CONTROL [main] log file “D:\MongoDB\Logs\mongod.log” exists; moved to “D:\MongoDB\Logs\mongod.log.2015-12-29T08-25-43”. [/code] でこうなります。 <a href="../../../../public/2015/12/service.png"><img src="../../../../public/2015/12/service.png" alt="複数インスタンス"></a></p>
+<p>で、当然ですが、複数のインスタンスを作って、同じ設定ファイルを読み込むとたぶん悲劇でしょう。 特に公式ページに何も書いてありませんでしたが。 以上。</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>長くなりましたが、インストールまでは終了です。 次は実際につないでみます。</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2015-12-30</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Microsoft/" title="Microsoft">Microsoft </a><a class="tag" href="/categories/Microsoft/NET-Framework/" title=".NET Framework">.NET Framework </a><a class="tag" href="/categories/net-framework/" title="net-framework">net-framework </a><a class="tag" href="/categories/Microsoft/NET-Framework/C/" title="C#">C# </a><a class="tag" href="/categories/ソフトウェア紹介/" title="ソフトウェア紹介">ソフトウェア紹介 </a><a class="tag" href="/categories/net-framework/NETで○○○を試してみる/" title=".NETで○○○を試してみる">.NETで○○○を試してみる </a><a class="tag" href="/categories/netで○○○を試してみる/" title="netで○○○を試してみる">netで○○○を試してみる </a><a class="tag" href="/categories/netで○○○を試してみる/NETでNoSQLを試してみる-MongoDB編/" title=".NETでNoSQLを試してみる MongoDB編">.NETでNoSQLを試してみる MongoDB編 </a><a class="tag" href="/categories/nosql/" title="nosql">nosql </a><a class="tag" href="/categories/データベース/" title="データベース">データベース </a><a class="tag" href="/categories/nosql/MongoDB/" title="MongoDB">MongoDB </a><a class="tag" href="/categories/データベース/NoSQL/" title="NoSQL">NoSQL </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2015/12/30/633/,A certain engineer &quot;COMPLEX&quot;,.NETでNoSQLを試してみる MongoDB編 第1回,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2016/01/01/639/" title=".NETでNoSQLを試してみる MongoDB編 第2回">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2015/12/28/617/" title=".NETで画像処理を試してみる OpenCVSharp編 第2回">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
