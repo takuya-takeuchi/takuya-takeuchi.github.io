@@ -8,7 +8,7 @@
 <li>新しいBitNami Redmine Stackをインストール</li>
 <li>バックアップから復元 (ただし、プラグインは復元しない)</li>
 </ol>
-<p>という手順まで終えてください。 つまりクリーンな環境にインストールすることを前提とします。 インストール先は、<a target="_blank" rel="noopener" href="https://taktak.jp/wordpress/?p=302">前回</a>と同じくファイルパスに空白が含まれない場所にします。 では早速。 (1) システムにパスを通します。<strong>システムのプロパティ-&gt;詳細設定-&gt;環境変数</strong>と進み、<strong>ユーザー環境変数</strong>に下記を追加します。 </p>
+<p>という手順まで終えてください。 つまりクリーンな環境にインストールすることを前提とします。 インストール先は、<a target="_blank" rel="noopener" href="https://taktak.jp/2012/10/13/302">前回</a>と同じくファイルパスに空白が含まれない場所にします。 では早速。 (1) システムにパスを通します。<strong>システムのプロパティ-&gt;詳細設定-&gt;環境変数</strong>と進み、<strong>ユーザー環境変数</strong>に下記を追加します。 </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RAILS\_ENV&#x3D;production PATH&#x3D;C:\\BitNami\\Redmine\\ruby\\bin;C:\\BitNami\\Redmine\\imagemagic </span><br></pre></td></tr></table></figure>
 
 <p><strong>PATH</strong>の<strong>C:\BitNami\Redmine\</strong>の部分は<strong>BitNami Redmine Stack</strong>のインストール先になりますので、適宜置き換えてください。 <strong>PATH</strong>は既存の値の後ろに追加することになります。従って、PATHの既存の値が </p>
