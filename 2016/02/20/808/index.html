@@ -1,14 +1,15 @@
-<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><title>ディープラーニング Caffe その1 環境構築 · A certain engineer "COMPLEX"</title><meta name="description" content="codecademy でのPythonの学習が完了し、そのことを会社で伝えたら、ディープラーニングの Caffe を使ったプロジェクトに参加させられることになりました。 どうしてこうなった。
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><title>ディープラーニング Caffe その1 環境構築 · A certain engineer "COMPLEX"</title><meta name="description" content="codecademy でのPythonの学習が完了し、そのことを会社で伝えたら、ディープラーニングの Caffe を使ったプロジェクトに参加させられることになりました。どうしてこうなった。
 
-Caffe更新 (2017/04/23) ディープラーニング Caffe その3 環境構築 with GP"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>ディープラーニング Caffe その1 環境構築</a></h3></div><div class="post-content"><p><strong>codecademy</strong> でのPythonの学習が完了し、そのことを会社で伝えたら、ディープラーニングの <strong>Caffe</strong> を使ったプロジェクトに参加させられることになりました。 どうしてこうなった。</p>
+Caffe更新 (2017/04/23) ディープラーニング Caffe その3 環境構築 with GPU"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>ディープラーニング Caffe その1 環境構築</a></h3></div><div class="post-content"><p><strong>codecademy</strong> でのPythonの学習が完了し、そのことを会社で伝えたら、ディープラーニングの <strong>Caffe</strong> を使ったプロジェクトに参加させられることになりました。<br>どうしてこうなった。</p>
 <a id="more"></a>
-<h1 id="Caffe"><a href="#Caffe" class="headerlink" title="Caffe"></a>Caffe</h1><p>更新 (2017/04/23) <a target="_blank" rel="noopener" href="https://taktak.jp/2017/04/23/2148">ディープラーニング Caffe その3 環境構築 with GPU</a>にて、GeForce GTX 750 Tiを使った環境構築方法をについて説明しています。 オープンソースで開発が進んでいるディープラーニングのフレームワークです。 非常に強力ですが、環境構築が手間だと専らの話。 Windows版なんかあるはずがありません。 (<a target="_blank" rel="noopener" href="https://github.com/niuzhiheng/caffe">非公式のWindows版</a>が公式で紹介されています。)</p>
-<h1 id="環境構築"><a href="#環境構築" class="headerlink" title="環境構築"></a>環境構築</h1><h2 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h2><p>というわけで、会社と同じ環境である <strong>Ubuntu 14.0.4 LTS Desktop 64bit</strong> をHyper-Vに用意しました。 インストールは特に問題ないです。GUIですし、選択肢も少なく優秀です。 <a href="../../../../public/2016/02/1.png"><img src="../../../../public/2016/02/1-300x225.png" alt="デスクトップ画面"></a></p>
-<p>Hyper-Vマシン前で作業するのは面倒なので、VNC経由で使えるようにします。 ここでかなり手間取りました。</p>
+<h1 id="Caffe"><a href="#Caffe" class="headerlink" title="Caffe"></a>Caffe</h1><p>更新 (2017/04/23) <a target="_blank" rel="noopener" href="https://taktak.jp/2017/04/23/2148">ディープラーニング Caffe その3 環境構築 with GPU</a>にて、GeForce GTX 750 Tiを使った環境構築方法をについて説明しています。<br>オープンソースで開発が進んでいるディープラーニングのフレームワークです。<br>非常に強力ですが、環境構築が手間だと専らの話。<br>Windows版なんかあるはずがありません。<br>(<a target="_blank" rel="noopener" href="https://github.com/niuzhiheng/caffe">非公式のWindows版</a>が公式で紹介されています。)</p>
+<h1 id="環境構築"><a href="#環境構築" class="headerlink" title="環境構築"></a>環境構築</h1><h2 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h2><p>というわけで、会社と同じ環境である <strong>Ubuntu 14.0.4 LTS Desktop 64bit</strong> をHyper-Vに用意しました。<br>インストールは特に問題ないです。GUIですし、選択肢も少なく優秀です。<br><a href="../../../../public/2016/02/1.png"><img src="../../../../public/2016/02/1-300x225.png" alt="デスクトップ画面"></a></p>
+<p>Hyper-Vマシン前で作業するのは面倒なので、VNC経由で使えるようにします。<br>ここでかなり手間取りました。</p>
 <h2 id="VNCの許可"><a href="#VNCの許可" class="headerlink" title="VNCの許可"></a>VNCの許可</h2><ol>
 <li>ターミナルから下記のコマンドで <strong>dconf-editor</strong> をインストールします</li>
 </ol>
-<p>[code lang=”sh”] sudo apt-get install dconf-tools [/code]</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install dconf-tools </span><br></pre></td></tr></table></figure>
+
 <ol>
 <li>メニューから dconf-editor を呼び出します。</li>
 </ol>
@@ -23,7 +24,7 @@ Caffe更新 (2017/04/23) ディープラーニング Caffe その3 環境構築 
 <li><p><strong>You must confirm each access to this machine</strong> を外します。オプションで <strong>Show Notification Area Icon</strong> を <strong>Always</strong> に変更します。</p>
 </li>
 </ol>
-<p>以上でVNCを利用できるようになります。 VHDのデータをこの時点で対比しておくと、環境をリセットしたいとき楽です。 Hyper-Vのチェックポイント機能がありますが、VHD一つ保存しておくだけで複製も楽ですので、私はこっちのが好みです。</p>
+<p>以上でVNCを利用できるようになります。<br>VHDのデータをこの時点で対比しておくと、環境をリセットしたいとき楽です。<br>Hyper-Vのチェックポイント機能がありますが、VHD一つ保存しておくだけで複製も楽ですので、私はこっちのが好みです。</p>
 <h2 id="Caffeの導入"><a href="#Caffeの導入" class="headerlink" title="Caffeの導入"></a>Caffeの導入</h2><p><a target="_blank" rel="noopener" href="http://caffe.berkeleyvision.org/installation.html">公式サイトの導入指示</a> では、 <strong>必須の依存ライブラリ</strong></p>
 <ul>
 <li>CUDA (GPUモードで使う場合)<ul>
@@ -59,7 +60,100 @@ Caffe更新 (2017/04/23) ディープラーニング Caffe その3 環境構築 
 </ul>
 </li>
 </ul>
-<p>とのことなので指示に従いますが、実際作業中はオプションのものが必要になったりしました。 GPUは使わないので、CUDAは無視します。 <strong>1. ATLAS</strong> [code lang=”sh”] sudo apt-get install libatlas-base-dev [/code] <strong>2. Boost</strong> [code lang=”sh”] sudo apt-get install libboost-all-dev [/code] <strong>3. protobuf</strong> [code lang=”sh”] sudo apt-get install libprotobuf-dev [/code] <strong>4. glog</strong> [code lang=”sh”] sudo apt-get install libgoogle-glog-dev [/code] <strong>5. gflags</strong> [code lang=”sh”] sudo apt-get install libgflags-dev [/code] <strong>6. hdf5</strong> [code lang=”sh”] sudo apt-get install libhdf5-serial-dev [/code] <strong>7. git</strong> [code lang=”sh”] sudo apt-get install git [/code] <strong>8. g++ 4.6</strong> [code lang=”sh”] sudo apt-get install g++-4.6 [/code] <strong>9. protobuf-compiler</strong> [code lang=”sh”] sudo apt-get install protobuf-compiler [/code] <strong>10. OpenCV</strong> [code lang=”sh”] sudo apt-get install libopencv-dev [/code] <strong>11. leveldb</strong> [code lang=”sh”] sudo apt-get install libleveldb-dev [/code] <strong>12. lmdb</strong> [code lang=”sh”] sudo apt-get install liblmdb-dev [/code] <strong>13. snappy</strong> [code lang=”sh”] sudo apt-get install libsnappy-dev [/code] <strong>14. caffe本体のダウンロード</strong> gitのクローン先はどこでもいいです。 [code lang=”sh”] cd /usr/local/ git clone <a target="_blank" rel="noopener" href="https://github.com/BVLC/caffe.git">https://github.com/BVLC/caffe.git</a> [/code] <strong>15. caffe本体のコンパイル準備</strong> [code lang=”sh”] cd caffe cp Makefile.config.example Makefile.config sudo gedit Makefile.config [/code] 下記のコメント行を有効化 [code lang=”makefile”] # CPU_ONLY := 1 [/code] 下記のコメント行の直下に追加 [code lang=”makefile”] # CUSTOM_CXX := g++ CUSTOM_CXX := g++-4.6 [/code] 下記の行をコメントアウト [code lang=”makefile”] CUDA_DIR := /usr/local/cuda [/code] 下記のコメント行を有効化 [code lang=”makefile”] # CUDA_DIR := /usr [/code] <strong>16. caffe本体のコンパイル</strong> [code lang=”sh”] make make test make runtest [/code] エラーが出ずに終了すれば構築は完了です。</p>
-<h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h2><p>Pythonから使いたい場合は、もうひとがんばりです。 <strong>1. Python</strong> [code lang=”sh”] sudo apt-get install python-dev [/code] <strong>2. pip</strong> [code lang=”sh”] sudo apt-get install python-pip [/code] <strong>3. numpy</strong> [code lang=”sh”] sudo apt-get install python-numpy [/code] <strong>4. skimage</strong> [code lang=”sh”] sudo apt-get install python-skimage [/code] <strong>5. 依存パッケージのダウンロード</strong> [code lang=”sh”] cd /usr/local/caffe/python for req in $(cat requirements.txt); do sudo pip install $req; done [/code] <strong>6. pycaffeのコンパイル</strong> [code lang=”sh”] cd /usr/local/caffe/ make pycaffe [/code] <strong>7. 環境変数の設定</strong> [code lang=”sh”] sudo gedit ~/.bashrc [/code] 最終行に [code lang=”sh”] export PYTHONPATH=/usr/local/caffe/python/:$PYTHONPATH [/code] を追加します [code lang=”sh”] source ~/.bashrc [/code] <strong>7. importのテスト</strong> [code lang=”sh”] python import caffe [/code] ここで、 libdc1394 error: Failed to initialize libdc1394 と表示されますが、これ以外のエラーがなければ問題ないようです。 <a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/12689304/ctypes-error-libdc1394-error-failed-to-initialize-libdc1394">stackoverflow</a> で、この問題の簡単な解決策が提示されていました。 [code lang=”sh”] sudo ln /dev/null /dev/raw1394 [/code] でエラーが消えるようです。</p>
-<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>不慣れなLinuxで時間がかかりましたが、これで環境の構築は完了です。 次回は実際に使えたらな、と思います。</p>
+<p>とのことなので指示に従いますが、実際作業中はオプションのものが必要になったりしました。<br>GPUは使わないので、CUDAは無視します。<br><strong>1. ATLAS</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libatlas-base-dev</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. Boost</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libboost-all-dev</span><br></pre></td></tr></table></figure>
+
+<p><strong>3. protobuf</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libprotobuf-dev</span><br></pre></td></tr></table></figure>
+
+<p><strong>4. glog</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libgoogle-glog-dev</span><br></pre></td></tr></table></figure>
+
+<p><strong>5. gflags</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libgflags-dev</span><br></pre></td></tr></table></figure>
+
+<p><strong>6. hdf5</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libhdf5-serial-dev</span><br></pre></td></tr></table></figure>
+
+<p><strong>7. git</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install git</span><br></pre></td></tr></table></figure>
+
+<p><strong>8. g++ 4.6</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install g++-4.6</span><br></pre></td></tr></table></figure>
+
+<p><strong>9. protobuf-compiler</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install protobuf-compiler</span><br></pre></td></tr></table></figure>
+
+<p><strong>10. OpenCV</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libopencv-dev</span><br></pre></td></tr></table></figure>
+
+<p><strong>11. leveldb</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libleveldb-dev</span><br></pre></td></tr></table></figure>
+
+<p><strong>12. lmdb</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install liblmdb-dev</span><br></pre></td></tr></table></figure>
+
+<p><strong>13. snappy</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libsnappy-dev</span><br></pre></td></tr></table></figure>
+
+<p><strong>14. caffe本体のダウンロード</strong> gitのクローン先はどこでもいいです。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/ git <span class="built_in">clone</span> https://github.com/BVLC/caffe.git</span><br></pre></td></tr></table></figure>
+
+<p><strong>15. caffe本体のコンパイル準備</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> caffe cp Makefile.config.example Makefile.config sudo gedit Makefile.config</span><br></pre></td></tr></table></figure>
+
+<p>下記のコメント行を有効化</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CPU\_ONLY := 1</span></span><br></pre></td></tr></table></figure>
+
+<p>下記のコメント行の直下に追加</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CUSTOM\_CXX := g++ CUSTOM\_CXX := g++-4.6</span></span><br></pre></td></tr></table></figure>
+
+<p>下記の行をコメントアウト</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CUDA\_DIR := /usr/local/cuda</span><br></pre></td></tr></table></figure>
+
+<p>下記のコメント行を有効化</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CUDA\_DIR := /usr</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>16. caffe本体のコンパイル</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make make <span class="built_in">test</span> make runtest</span><br></pre></td></tr></table></figure>
+
+<p>エラーが出ずに終了すれば構築は完了です。</p>
+<h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h2><p>Pythonから使いたい場合は、もうひとがんばりです。<br><strong>1. Python</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-dev</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. pip</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-pip</span><br></pre></td></tr></table></figure>
+
+<p><strong>3. numpy</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-numpy</span><br></pre></td></tr></table></figure>
+
+<p><strong>4. skimage</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-skimage</span><br></pre></td></tr></table></figure>
+
+<p><strong>5. 依存パッケージのダウンロード</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/caffe/python <span class="keyword">for</span> req <span class="keyword">in</span> $(cat requirements.txt); <span class="keyword">do</span> sudo pip install <span class="variable">$req</span>; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>6. pycaffeのコンパイル</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/caffe/ make pycaffe</span><br></pre></td></tr></table></figure>
+
+<p><strong>7. 環境変数の設定</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>最終行に</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PYTHONPATH=/usr/<span class="built_in">local</span>/caffe/python/:<span class="variable">$PYTHONPATH</span></span><br></pre></td></tr></table></figure>
+
+<p>を追加します</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p><strong>7. importのテスト</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python import caffe</span><br></pre></td></tr></table></figure>
+
+<p>ここで、 libdc1394 error: Failed to initialize libdc1394 と表示されますが、これ以外のエラーがなければ問題ないようです。<br><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/12689304/ctypes-error-libdc1394-error-failed-to-initialize-libdc1394">stackoverflow</a> で、この問題の簡単な解決策が提示されていました。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln /dev/null /dev/raw1394</span><br></pre></td></tr></table></figure>
+
+<p>でエラーが消えるようです。</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>不慣れなLinuxで時間がかかりましたが、これで環境の構築は完了です。<br>次回は実際に使えたらな、と思います。</p>
 </div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2016-02-20</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Linux/" title="Linux">Linux </a><a class="tag" href="/categories/linux/" title="linux">linux </a><a class="tag" href="/categories/e3-83-87-e3-82-a3-e3-83-bc-e3-83-97-e3-83-a9-e3-83-bc-e3-83-8b-e3-83-b3-e3-82-b0/" title="%e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0">%e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </a><a class="tag" href="/categories/e3-83-87-e3-82-a3-e3-83-bc-e3-83-97-e3-83-a9-e3-83-bc-e3-83-8b-e3-83-b3-e3-82-b0/Caffe/" title="Caffe">Caffe </a><a class="tag" href="/categories/オープンソース/" title="オープンソース">オープンソース </a><a class="tag" href="/categories/ディープラーニング/" title="ディープラーニング">ディープラーニング </a><a class="tag" href="/categories/linux/Ubuntu/" title="Ubuntu">Ubuntu </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2016/02/20/808/,A certain engineer &quot;COMPLEX&quot;,ディープラーニング Caffe その1 環境構築,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2016/02/21/832/" title="ディープラーニング Caffe その2 テスト">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2016/02/16/735/" title=".NETでGPUPUを試してみる CUDA編 第2回">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>

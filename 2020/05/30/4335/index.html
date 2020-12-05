@@ -6,10 +6,12 @@ Xamarinの場合はMacホストと接続できていないよ、って教えて�
 <a id="more"></a>
 <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>掲題の通りなんですが、情報が少ないんですよ。<br>問題は、iOSのクロスプラットフォームC＋＋ライブラリをVisual Studioからビルドする際のエラー。</p>
 <p><a href="../../../../public/2020/05/44d29d2792be3bad9a9ed98c7bbb20d6.png"><img src="../../../../public/2020/05/44d29d2792be3bad9a9ed98c7bbb20d6.png"></a></p>
-<p>Xamarinの場合はMacホストと接続できていないよ、って教えてくれるのですが、そんな便利機能、流石C++。あるわけない。<br>それで何とか見つけたのが公式。<br>公式が役立つのはかなり久しぶりな気がします。</p>
+<p>Xamarinの場合はMacホストと接続できていないよ、って教えてくれるのですが、そんな便利機能、流石C++。あるわけない。</p>
+<p>それで何とか見つけたのが公式。<br>公式が役立つのはかなり久しぶりな気がします。</p>
 <div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://docs.microsoft.com/en-us/cpp/cross-platform/install-and-configure-tools-to-build-using-ios?view=vs-2019&redirectedfrom=MSDN#ConfigureVS" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=docs.microsoft.com"></img><div class="hbc-site-name">docs.microsoft.com</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">Install and configure tools to build using iOS</div><div class="hbc-url">https://docs.microsoft.com/en-us/cpp/cross-platform/install-and-configure-tools-to-build-using-ios?view=vs-2019&redirectedfrom=MSDN#ConfigureVS</div></div></div></div></a></div></div>
 
-<h1 id="How-to-do"><a href="#How-to-do" class="headerlink" title="How to do?"></a>How to do?</h1><p>要するにビルド環境、つまりMacにつながらないよって、エラーなのですが… プロジェクトの設定ではなく、Visual Studio全体のオプションに答えがあります。<br>上のオプションで設定できるのですが、まずはMac側で設定が必要です。</p>
+<h1 id="How-to-do"><a href="#How-to-do" class="headerlink" title="How to do?"></a>How to do?</h1><p>要するにビルド環境、つまりMacにつながらないよって、エラーなのですが… プロジェクトの設定ではなく、Visual Studio全体のオプションに答えがあります。</p>
+<p>上のオプションで設定できるのですが、まずはMac側で設定が必要です。</p>
 <h2 id="1-vcremoteのインストール"><a href="#1-vcremoteのインストール" class="headerlink" title="1. vcremoteのインストール"></a>1. vcremoteのインストール</h2><div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://docs.microsoft.com/en-us/cpp/cross-platform/install-and-configure-tools-to-build-using-ios?view=vs-2019&redirectedfrom=MSDN#Install" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=docs.microsoft.com"></img><div class="hbc-site-name">docs.microsoft.com</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">Install and configure tools to build using iOS</div><div class="hbc-url">https://docs.microsoft.com/en-us/cpp/cross-platform/install-and-configure-tools-to-build-using-ios?view=vs-2019&redirectedfrom=MSDN#Install</div></div></div></div></a></div></div>
 
 <p>ここに書いてあるのが、なんと<strong>Node.js</strong>が必要。しかもバージョンが指定されている徹底ぶり。<br>ここは素直に従うべきです。ただでさえ意味不明なエラーが多いiOSのクロスプラットフォームライブラリ作成。<br>余計なことはしないほうが無難です。</p>
@@ -21,7 +23,7 @@ Xamarinの場合はMacホストと接続できていないよ、って教えて�
 <li>Node.jsは<strong>12.14.1</strong></li>
 <li>npmは<strong>6.13.4</strong></li>
 <li><strong>nvm</strong>推奨</li>
-<li>sudoは使うな ** Homebrew**は注意</li>
+<li>sudoは使うな ** Homebrew** は注意</li>
 </ul>
 <p>を守って環境を作ります。</p>
 <h3 id="1-1-nvm"><a href="#1-1-nvm" class="headerlink" title="1-1. nvm"></a>1-1. nvm</h3><p>公式のバージョンを調べます。</p>
@@ -30,7 +32,7 @@ Xamarinの場合はMacホストと接続できていないよ、って教えて�
 <p>最新は2020/05/30時点で<strong>v0.35.3</strong>になります。<br>これを利用してMacにビルドに使うユーザでログインし、下記でインストールします。</p>
 <script src="https://gist.github.com/takuya-takeuchi/880709966c7c4ecbbc47e1957cfca6f3.js"></script>
 
-<p>インストールが完了すると**.bash_profile**に追加されます。<br>環境変数を反映させインストール出来ているかをチェックします。</p>
+<p>インストールが完了すると <strong>.bash_profile</strong> に追加されます。<br>環境変数を反映させインストール出来ているかをチェックします。</p>
 <script src="https://gist.github.com/takuya-takeuchi/adabb6efc91568dd882267dd056162cf.js"></script>
 
 <h3 id="1-2-Node-js"><a href="#1-2-Node-js" class="headerlink" title="1-2. Node.js"></a>1-2. Node.js</h3><p><strong>nvm</strong>が入ったので、サクサクインストールします。</p>
@@ -60,4 +62,7 @@ Xamarinの場合はMacホストと接続できていないよ、って教えて�
 <p><a href="../../../../public/2020/05/0d40a5e4a645fc6b96e767d64ac0878e.png"><img src="../../../../public/2020/05/0d40a5e4a645fc6b96e767d64ac0878e.png"></a></p>
 <p><strong>Command Line Tools</strong>が空になっているので最新のXcodeを選択しXcodeを終了します。<br>この状態で念のため、vcremoteを終了し再度起動します。<br>初回起動以降はペアリングが済んでいれば､何も表示されずすぐに起動されます。<br>起動後、Visual Studioからビルドすると無事に成功するはずです。</p>
 <h2 id="4-出力先はどこ？"><a href="#4-出力先はどこ？" class="headerlink" title="4. 出力先はどこ？"></a>4. 出力先はどこ？</h2><p>出力されるはずのバイナリはWindows側ではなくMac側に出力されます。<br>具体的な場所はビルドログを見るとわかります。<br>または出力先に*.recipeファイルがありますので、それをテキストファイルで開きます。</p>
-<script src="https://gist.github.com/takuya-takeuchi/38f76c1814fd97ca88f3c4b2469ab05b.js"></script> **BuiltOutputs** に記載されています。</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2020-05-30</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Microsoft/" title="Microsoft">Microsoft </a><a class="tag" href="/categories/Microsoft/Visual-Studio/" title="Visual Studio">Visual Studio </a><a class="tag" href="/categories/Apple/" title="Apple">Apple </a><a class="tag" href="/categories/Apple/iOS/" title="iOS">iOS </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2020/05/30/4335/,A certain engineer &quot;COMPLEX&quot;,開発メモ その206 &quot;VCRemoteClean&quot; タスクは、必要なパラメーター &quot;RemoteRootDirectory&quot; に対して値を指定されていませんでした。,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2020/05/30/4353/" title="開発メモ その207 OpenCVのiOS 静的ライブラリからUniversal Static Libraryを作成する">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2020/05/23/4326/" title="開発メモ その205 LinuxでCPU脆弱性対策を無効にしてみる">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
+<script src="https://gist.github.com/takuya-takeuchi/38f76c1814fd97ca88f3c4b2469ab05b.js"></script>
+
+<p><strong>BuiltOutputs</strong> に記載されています。</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2020-05-30</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Microsoft/" title="Microsoft">Microsoft </a><a class="tag" href="/categories/Microsoft/Visual-Studio/" title="Visual Studio">Visual Studio </a><a class="tag" href="/categories/Apple/" title="Apple">Apple </a><a class="tag" href="/categories/Apple/iOS/" title="iOS">iOS </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2020/05/30/4335/,A certain engineer &quot;COMPLEX&quot;,開発メモ その206 &quot;VCRemoteClean&quot; タスクは、必要なパラメーター &quot;RemoteRootDirectory&quot; に対して値を指定されていませんでした。,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2020/05/30/4353/" title="開発メモ その207 OpenCVのiOS 静的ライブラリからUniversal Static Libraryを作成する">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2020/05/23/4326/" title="開発メモ その205 LinuxでCPU脆弱性対策を無効にしてみる">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>

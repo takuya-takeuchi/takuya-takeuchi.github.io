@@ -12,13 +12,17 @@ find_packageを使っていない
 <li>リンクするライブラリを個別に全部手書き</li>
 <li>find_packageを使っていない</li>
 </ul>
-<p>というあまり宜しくない作りをしていました。 </p>
-<p>といっても、個人的には、自分が何を使っているのか､明示的にどこのディレクトリにあるライブラリをリンクしているかを意識できるように、パスを外部から指摘できる方式は好んで使います。 CMakeはライブラリが見つからないさい、どこを探しに行ったのかという情報が見えづらかったり、親切な作りになっていないのが不満です。<br>無論、クロスプラットフォームで作ったりする際は絶大なパワーを発揮するのですが… </p>
-<p>Boost程度、自分でビルドして、find_packageでサクッと使ってみようと思いました。<br>が、1点だけ嵌りました。<br>Windows、OSXはすんなりだったのに、Linuxだけはダメでした。</p>
+<p>というあまり宜しくない作りをしていました。</p>
+<p>といっても、個人的には、自分が何を使っているのか､明示的にどこのディレクトリにあるライブラリをリンクしているかを意識できるように、パスを外部から指摘できる方式は好んで使います。<br>CMakeはライブラリが見つからないさい、どこを探しに行ったのかという情報が見えづらかったり、親切な作りになっていないのが不満です。</p>
+<p>無論、クロスプラットフォームで作ったりする際は絶大なパワーを発揮するのですが… </p>
+<p>Boost程度、自分でビルドして、find_packageでサクッと使ってみようと思いました。</p>
+<p>が、1点だけ嵌りました。<br>Windows、OSXはすんなりだったのに、Linuxだけはダメでした。</p>
 <h1 id="What’s-wrong"><a href="#What’s-wrong" class="headerlink" title="What’s wrong?"></a>What’s wrong?</h1><p>結論から言えば、CMakeにおけるConfigモード、つまり、 <strong>&lt;パッケージ名&gt;Config.cmake</strong>の場所を環境変数で指定する方法で問題が起きました。<br>問題は環境変数名。<br>大文字と小文字を明確に区別したため、find_packageに失敗しました。<br>Windows、OSXでは大文字小文字を区別しなかったのですが…</p>
 <p>WindowsとOSXでは <script src="https://gist.github.com/takuya-takeuchi/53139807488c21394ac6f2bae1465c24.js"></script></p>
-<p>Linuxではこう。 <script src="https://gist.github.com/takuya-takeuchi/9a1462f44d67115f4a04a9f2613f9da3.js"></script></p>
-<p><strong>-G</strong>オプションが違いますが、環境変数とCMakeの引数<strong>BOOST_DIR</strong>の<strong>BOOST</strong>が<strong>Boost</strong>かどうかがミソです。 別に分ける必要はないですが、環境引数に合わせて大文字にしていたのが運の尽きでした。</p>
+<p>Linuxではこう。</p>
+<script src="https://gist.github.com/takuya-takeuchi/9a1462f44d67115f4a04a9f2613f9da3.js"></script>
+
+<p><strong>-G</strong>オプションが違いますが、環境変数とCMakeの引数<strong>BOOST_DIR</strong>の<strong>BOOST</strong>が<strong>Boost</strong>かどうかがミソです。<br>別に分ける必要はないですが、環境引数に合わせて大文字にしていたのが運の尽きでした。</p>
 <p>ビルド後に生成されるCMakeの設定ファイルは、<strong>win64\cmake\Boost-1.73.0\BoostConfig.cmake</strong> のような感じですが、CMakeにおけるConfigモードではパッケージ名は <strong>&lt;パッケージ名&gt;Config.cmake</strong> です。<br>つまり<strong>Boost</strong>になります。<br>そして、環境変数による指定も、<strong>Boost_DIR</strong>となります。</p>
 <p>それだけですが…はまりました。</p>
 </div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2020-06-13</span><i class="fa fa-tag"></i><a class="tag" href="/categories/その他/" title="その他">その他 </a><a class="tag" href="/categories/その他/boost/" title="boost">boost </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2020/06/13/4373/,A certain engineer &quot;COMPLEX&quot;,開発メモ その211 boostを使った最小のCMakeプロジェクト その3,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="next pagbuttons"><a class="btn" role="navigation" href="/2020/06/10/4368/" title="開発メモ その210 CentOS7 on Gen2 Hyper-V VM のディスクをリサイズする">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
