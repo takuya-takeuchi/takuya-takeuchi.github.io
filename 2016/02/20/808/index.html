@@ -1,24 +1,26 @@
 <!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><title>ディープラーニング Caffe その1 環境構築 · A certain engineer "COMPLEX"</title><meta name="description" content="codecademy でのPythonの学習が完了し、そのことを会社で伝えたら、ディープラーニングの Caffe を使ったプロジェクトに参加させられることになりました。どうしてこうなった。
 
-Caffe更新 (2017/04/23) ディープラーニング Caffe その3 環境構築 with GPU"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>ディープラーニング Caffe その1 環境構築</a></h3></div><div class="post-content"><p><strong>codecademy</strong> でのPythonの学習が完了し、そのことを会社で伝えたら、ディープラーニングの <strong>Caffe</strong> を使ったプロジェクトに参加させられることになりました。<br>どうしてこうなった。</p>
+Caffe更新 (2017/04/23)ディープラーニング Caffe その3 環境構築 with GPUに"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>ディープラーニング Caffe その1 環境構築</a></h3></div><div class="post-content"><p><strong>codecademy</strong> でのPythonの学習が完了し、そのことを会社で伝えたら、ディープラーニングの <strong>Caffe</strong> を使ったプロジェクトに参加させられることになりました。<br>どうしてこうなった。</p>
 <a id="more"></a>
-<h1 id="Caffe"><a href="#Caffe" class="headerlink" title="Caffe"></a>Caffe</h1><p>更新 (2017/04/23) <a target="_blank" rel="noopener" href="https://taktak.jp/2017/04/23/2148">ディープラーニング Caffe その3 環境構築 with GPU</a>にて、GeForce GTX 750 Tiを使った環境構築方法をについて説明しています。<br>オープンソースで開発が進んでいるディープラーニングのフレームワークです。<br>非常に強力ですが、環境構築が手間だと専らの話。<br>Windows版なんかあるはずがありません。<br>(<a target="_blank" rel="noopener" href="https://github.com/niuzhiheng/caffe">非公式のWindows版</a>が公式で紹介されています。)</p>
-<h1 id="環境構築"><a href="#環境構築" class="headerlink" title="環境構築"></a>環境構築</h1><h2 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h2><p>というわけで、会社と同じ環境である <strong>Ubuntu 14.0.4 LTS Desktop 64bit</strong> をHyper-Vに用意しました。<br>インストールは特に問題ないです。GUIですし、選択肢も少なく優秀です。<br><a href="../../../../public/2016/02/1.png"><img src="../../../../public/2016/02/1-300x225.png" alt="デスクトップ画面"></a></p>
+<h1 id="Caffe"><a href="#Caffe" class="headerlink" title="Caffe"></a>Caffe</h1><p><font color="red">更新 (2017/04/23)<br><a target="_blank" rel="noopener" href="https://taktak.jp/2017/04/23/2148">ディープラーニング Caffe その3 環境構築 with GPU</a>にて、GeForce GTX 750 Tiを使った環境構築方法をについて説明しています。</font></p>
+<p>オープンソースで開発が進んでいるディープラーニングのフレームワークです。<br>非常に強力ですが、環境構築が手間だと専らの話。<br>Windows版なんかあるはずがありません。<br>(<a target="_blank" rel="noopener" href="https://github.com/niuzhiheng/caffe">非公式のWindows版</a>が公式で紹介されています。)</p>
+<h1 id="環境構築"><a href="#環境構築" class="headerlink" title="環境構築"></a>環境構築</h1><h2 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h2><p>というわけで、会社と同じ環境である <strong>Ubuntu 14.0.4 LTS Desktop 64bit</strong> をHyper-Vに用意しました。<br>インストールは特に問題ないです。GUIですし、選択肢も少なく優秀です。</p>
+<p><a href="../../../../public/2016/02/1.png"><img src="../../../../public/2016/02/1-300x225.png" alt="デスクトップ画面"></a></p>
 <p>Hyper-Vマシン前で作業するのは面倒なので、VNC経由で使えるようにします。<br>ここでかなり手間取りました。</p>
 <h2 id="VNCの許可"><a href="#VNCの許可" class="headerlink" title="VNCの許可"></a>VNCの許可</h2><ol>
 <li>ターミナルから下記のコマンドで <strong>dconf-editor</strong> をインストールします</li>
 </ol>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install dconf-tools </span><br></pre></td></tr></table></figure>
 
-<ol>
+<ol start="2">
 <li>メニューから dconf-editor を呼び出します。</li>
 </ol>
 <p><a href="../../../../public/2016/02/1-2.png"><img src="../../../../public/2016/02/1-2-300x225.png" alt="dconf-editor"></a></p>
-<ol>
+<ol start="3">
 <li>左のノードから <strong>org &gt; gnome &gt; desktop &gt; remote-access</strong> と進めます。<strong>enabled</strong> にチェック、<strong>require-encryption</strong> のチェックを外します。。</li>
 </ol>
 <p><a href="../../../../public/2016/02/1-3.png"><img src="../../../../public/2016/02/1-3-300x225.png" alt="dconf-editor2"></a></p>
-<ol>
+<ol start="4">
 <li><p>メニューから <strong>Desktop Sharing</strong> を呼び出します。検索語は <strong>Vino</strong> です。</p>
 </li>
 <li><p><strong>You must confirm each access to this machine</strong> を外します。オプションで <strong>Show Notification Area Icon</strong> を <strong>Always</strong> に変更します。</p>
@@ -60,7 +62,8 @@ Caffe更新 (2017/04/23) ディープラーニング Caffe その3 環境構築 
 </ul>
 </li>
 </ul>
-<p>とのことなので指示に従いますが、実際作業中はオプションのものが必要になったりしました。<br>GPUは使わないので、CUDAは無視します。<br><strong>1. ATLAS</strong></p>
+<p>とのことなので指示に従いますが、実際作業中はオプションのものが必要になったりしました。<br>GPUは使わないので、CUDAは無視します。</p>
+<p><strong>1. ATLAS</strong></p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libatlas-base-dev</span><br></pre></td></tr></table></figure>
 
 <p><strong>2. Boost</strong></p>
@@ -99,7 +102,8 @@ Caffe更新 (2017/04/23) ディープラーニング Caffe その3 環境構築 
 <p><strong>13. snappy</strong></p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libsnappy-dev</span><br></pre></td></tr></table></figure>
 
-<p><strong>14. caffe本体のダウンロード</strong> gitのクローン先はどこでもいいです。</p>
+<p><strong>14. caffe本体のダウンロード</strong></p>
+<p>gitのクローン先はどこでもいいです。</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/ git <span class="built_in">clone</span> https://github.com/BVLC/caffe.git</span><br></pre></td></tr></table></figure>
 
 <p><strong>15. caffe本体のコンパイル準備</strong></p>
@@ -121,7 +125,8 @@ Caffe更新 (2017/04/23) ディープラーニング Caffe その3 環境構築 
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make make <span class="built_in">test</span> make runtest</span><br></pre></td></tr></table></figure>
 
 <p>エラーが出ずに終了すれば構築は完了です。</p>
-<h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h2><p>Pythonから使いたい場合は、もうひとがんばりです。<br><strong>1. Python</strong></p>
+<h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h2><p>Pythonから使いたい場合は、もうひとがんばりです。</p>
+<p><strong>1. Python</strong></p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-dev</span><br></pre></td></tr></table></figure>
 
 <p><strong>2. pip</strong></p>
@@ -151,7 +156,9 @@ Caffe更新 (2017/04/23) ディープラーニング Caffe その3 環境構築 
 <p><strong>7. importのテスト</strong></p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python import caffe</span><br></pre></td></tr></table></figure>
 
-<p>ここで、 libdc1394 error: Failed to initialize libdc1394 と表示されますが、これ以外のエラーがなければ問題ないようです。<br><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/12689304/ctypes-error-libdc1394-error-failed-to-initialize-libdc1394">stackoverflow</a> で、この問題の簡単な解決策が提示されていました。</p>
+<p>ここで、</p>
+<p>libdc1394 error: Failed to initialize libdc1394 </p>
+<p>と表示されますが、これ以外のエラーがなければ問題ないようです。<br><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/12689304/ctypes-error-libdc1394-error-failed-to-initialize-libdc1394">stackoverflow</a> で、この問題の簡単な解決策が提示されていました。</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln /dev/null /dev/raw1394</span><br></pre></td></tr></table></figure>
 
 <p>でエラーが消えるようです。</p>

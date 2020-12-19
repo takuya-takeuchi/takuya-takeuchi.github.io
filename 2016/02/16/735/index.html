@@ -1,25 +1,54 @@
 <!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><title>.NETでGPUPUを試してみる CUDA編 第2回 · A certain engineer "COMPLEX"</title><meta name="description" content="前回はCUDAの性能がとんでもなく悪かったです。
 
-Introduction明らかに悪い、とは思っていたけどここまで悪いとは思っていませんでした。いや本当。今回は、CUDAの仕組みから。
-ExplanationCUDAってどうやって動いている？今さらですが。CUDAはGPUを使って計算します。が、こ"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>.NETでGPUPUを試してみる CUDA編 第2回</a></h3></div><div class="post-content"><p><a target="_blank" rel="noopener" href="https://taktak.jp/2016/02/14/726">前回</a>はCUDAの性能がとんでもなく悪かったです。</p>
+Introduction明らかに悪い、とは思っていたけどここまで悪いとは思っていませんでした。いや本当。
+今回は、CUDAの仕組みから。
+ExplanationCUDAってどうやって動いている？今さらですが。CUDAはGPUを使って計算します。が、"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>.NETでGPUPUを試してみる CUDA編 第2回</a></h3></div><div class="post-content"><p><a target="_blank" rel="noopener" href="https://taktak.jp/2016/02/14/726">前回</a>はCUDAの性能がとんでもなく悪かったです。</p>
 <a id="more"></a>
-<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>明らかに悪い、とは思っていたけどここまで悪いとは思っていませんでした。<br>いや本当。<br>今回は、CUDAの仕組みから。</p>
-<h1 id="Explanation"><a href="#Explanation" class="headerlink" title="Explanation"></a>Explanation</h1><h2 id="CUDAってどうやって動いている？"><a href="#CUDAってどうやって動いている？" class="headerlink" title="CUDAってどうやって動いている？"></a>CUDAってどうやって動いている？</h2><p>今さらですが。<br>CUDAはGPUを使って計算します。<br>が、ここで理解してほしいのは、そういう計算処理は本来、CPUがやることで、GPUに計算させているのはあくまでおまけ。<br>で、当然ながら、現在のPCの仕組み上、GPUとCPUには扱いに大きな差があります。<br>まず、CPUとメモリの間はレジスタとキャッシュ (1次とか2次とか)が備わっています。<br>これによりデータやプログラムが可能な限り再利用され、データの移動が最小限になります。<br>が、GPUとCPU側のメモリの間にそんなものはありません。<br>たしかに、GPUにはメモリが乗っていますけど、そこにプログラムが使っているデータはありません。<br>そもそもメモリ (要するにDRAM) はCPUの側に比べれば格段に遅い。<br>なので、プログラムからGPUに処理を任せるときは、データとプログラムを渡す必要があります。<br>これ大事。<br>で、先に話したように、GPUとプログラムの距離は非常に遠い、つまり遅いです。<br>そもそもDRAMの演算装置間の転送速度は遅いのに、CPU側のメモリとGPUではさらに遅い。<br>以上を踏まえると、<strong>命令やデータをCPU側メモリからGPUに何度も転送するのは最悪</strong>、ということです。<br>で、ここまで書いてあれですが、きちんと用語があって、CPU側のメモリ、とかいう表現はしません。</p>
-<p>Term</p>
-<p>Meaning</p>
-<p>ホスト</p>
-<p>呼び出し側。CPU・プログラムと思ってくれれば。</p>
-<p>デバイス</p>
-<p>GPU側</p>
-<p>カーネル</p>
-<p>デバイス上で実行される処理。ホスト上のソースコードに書かれたデバイス用の処理</p>
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>明らかに悪い、とは思っていたけどここまで悪いとは思っていませんでした。<br>いや本当。</p>
+<p>今回は、CUDAの仕組みから。</p>
+<h1 id="Explanation"><a href="#Explanation" class="headerlink" title="Explanation"></a>Explanation</h1><h2 id="CUDAってどうやって動いている？"><a href="#CUDAってどうやって動いている？" class="headerlink" title="CUDAってどうやって動いている？"></a>CUDAってどうやって動いている？</h2><p>今さらですが。<br>CUDAはGPUを使って計算します。<br>が、ここで理解してほしいのは、そういう計算処理は本来、CPUがやることで、GPUに計算させているのはあくまでおまけ。<br>で、当然ながら、現在のPCの仕組み上、GPUとCPUには扱いに大きな差があります。</p>
+<p>まず、CPUとメモリの間はレジスタとキャッシュ (1次とか2次とか)が備わっています。<br>これによりデータやプログラムが可能な限り再利用され、データの移動が最小限になります。</p>
+<p>が、GPUとCPU側のメモリの間にそんなものはありません。<br>たしかに、GPUにはメモリが乗っていますけど、そこにプログラムが使っているデータはありません。<br>そもそもメモリ (要するにDRAM) はCPUの側に比べれば格段に遅い。</p>
+<p>なので、プログラムからGPUに処理を任せるときは、データとプログラムを渡す必要があります。<br>これ大事。</p>
+<p>で、先に話したように、GPUとプログラムの距離は非常に遠い、つまり遅いです。<br>そもそもDRAMの演算装置間の転送速度は遅いのに、CPU側のメモリとGPUではさらに遅い。<br>以上を踏まえると、<strong>命令やデータをCPU側メモリからGPUに何度も転送するのは最悪</strong>、ということです。</p>
+<p>で、ここまで書いてあれですが、きちんと用語があって、CPU側のメモリ、とかいう表現はしません。</p>
+<table>
+<thead>
+<tr>
+<th align="left">Term</th>
+<th align="left">Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">ホスト</td>
+<td align="left">呼び出し側。CPU・プログラムと思ってくれれば</td>
+</tr>
+<tr>
+<td align="left">デバイス</td>
+<td align="left">GPU側</td>
+</tr>
+<tr>
+<td align="left">カーネル</td>
+<td align="left">デバイス上で実行される処理。ホスト上のソースコードに書かれたデバイス用の処理</td>
+</tr>
+</tbody></table>
 <p>と定義されています。<br>もう一度言いますと、<strong>ホストとデバイス間のカーネルやデータの転送は最小限にする</strong>、ってことです。</p>
 <h2 id="CUDAの真の実力"><a href="#CUDAの真の実力" class="headerlink" title="CUDAの真の実力"></a>CUDAの真の実力</h2><p>前段を踏まえて前回のプログラムの問題点を検証します。<br>まずデバイス側のカーネルは </p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\_\_global\_\<span class="function">_ <span class="keyword">void</span> <span class="title">addKernel</span><span class="params">(<span class="keyword">int</span> \*c, <span class="keyword">const</span> <span class="keyword">int</span> \*a, <span class="keyword">const</span> <span class="keyword">int</span> \*b)</span> </span>&#123; <span class="keyword">int</span> i = threadIdx.x; c\[i\] = a\[i\] + b\[i\]; &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">__global__ <span class="keyword">void</span> <span class="title">addKernel</span><span class="params">(<span class="keyword">int</span> *c, <span class="keyword">const</span> <span class="keyword">int</span> *a, <span class="keyword">const</span> <span class="keyword">int</span> *b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = threadIdx.x;</span><br><span class="line">    c[i] = a[i] + b[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>になります。<br>CUDAプログラミングにおいて、関数がホスト側、デバイス側で実行されるかどうかの識別は下記の3つの関数修飾子で区別します。<br><strong>__global__</strong> デバイス側で実行される、ホスト側から呼び出される関数であることを示します。戻り値は必ずvoidです。<br><strong>__device__</strong> デバイス側で実行され、デバイス側から呼び出される関数であることを示します。要するに、デバイス側のprivateな関数。<br><strong>__host__</strong> ホスト側で実行され、ホスト側から呼び出される関数であることを示します。要するに、ホスト側のprivateな関数。</p>
+<p>になります。<br>CUDAプログラミングにおいて、関数がホスト側、デバイス側で実行されるかどうかの識別は下記の3つの関数修飾子で区別します。</p>
+<h4 id="global"><a href="#global" class="headerlink" title="global"></a><strong>global</strong></h4><p>デバイス側で実行さ<br>れる、ホスト側から呼び出される関数であることを示します。戻り値は必ずvoidです。</p>
+<h4 id="device"><a href="#device" class="headerlink" title="device"></a><strong>device</strong></h4><p>デバイス側で実行され、デバイス側から呼び出される関数であることを示します。要するに、デバイス側のprivateな関数。</p>
+<h4 id="host"><a href="#host" class="headerlink" title="host"></a><strong>host</strong></h4><p>ホスト側で実行され、ホスト側から呼び出される関数であることを示します。要するに、ホスト側のprivateな関数。</p>
 <p>それで、上の <strong>addKernel 関数</strong> は、<strong>global</strong>なので、デバイス側で実行され、ホスト側でコールされます。<br>この関数は、別に定義された <strong>cudaError_t addWithCuda(int *, const int *, const int *, unsigned int) 関数</strong> で呼ばれます。<br>前のコードでは、この addWithCuda 関数を10000回呼び出していました。すなわち10000回、カーネルとデータをデバイス間に転送していたことになります。<br>それは遅いに決まっています。<br>理想的なのは、デバイス側で10000回処理が実行されることです。</p>
-<p>×　デバイス側に処理を10000回依頼する ○　デバイス側で処理を10000回実行する</p>
+<br>
+
+<ul>
+<li>×　デバイス側に処理を10000回依頼する</li>
+<li>○　デバイス側で処理を10000回実行する</li>
+</ul>
+<br>
+
 <p>ということです。<br>以上を踏まえコードを修正します。<br>サンプルコードはページの末尾を参照。<br>変更点は</p>
 <ul>
 <li>ループ回数を10000から100000000回に変更</li>
@@ -28,29 +57,34 @@ ExplanationCUDAってどうやって動いている？今さらですが。CUDA�
 <li>変数a,b,cはconstを外して、可変長に変更</li>
 </ul>
 <p>これだと、ループ回数は配列長*ループ回数なので、5億回になります。<br>これを実行させます。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CUDA is &#123;1,2,3,4,5&#125; + &#123;10,20,30,40,50&#125; = &#123;11,22,33,44,55&#125; time = &#123;5556&#125; No CUDA is &#123;1,2,3,4,5&#125; + &#123;10,20,30,40,50&#125; = &#123;11,22,33,44,55&#125; time = &#123;0&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CUDA is</span><br><span class="line">        &#123;1,2,3,4,5&#125; + &#123;10,20,30,40,50&#125; = &#123;11,22,33,44,55&#125;</span><br><span class="line">        time = &#123;5556&#125;</span><br><span class="line">No CUDA is</span><br><span class="line">        &#123;1,2,3,4,5&#125; + &#123;10,20,30,40,50&#125; = &#123;11,22,33,44,55&#125;</span><br><span class="line">        time = &#123;0&#125;</span><br></pre></td></tr></table></figure>
 
-<p>一気に改善しています。ですが、まだダメです。<br>というか、CPUが速すぎる気がします。<br>そこで、デバイス側をコメントアウトして、ホスト側だけの計測をしました。<br>その結果、ループ回数10億、配列長50で8000-9000msという結果が出ました。<br>少なくとも、計測処理は正しいことがわかりました。常に0になるとか、そういうのはない。<br>なので、ループ回数を1億にして、配列長50なら800-900msになるはず。<br>ループ回数が変化なし、配列長が10倍なら、CUDAはおよそ55000msになるはず。</p>
+<p>一気に改善しています。ですが、まだダメです。<br>というか、CPUが速すぎる気がします。</p>
+<p>そこで、デバイス側をコメントアウトして、ホスト側だけの計測をしました。<br>その結果、ループ回数10億、配列長50で8000-9000msという結果が出ました。<br>少なくとも、計測処理は正しいことがわかりました。常に0になるとか、そういうのはない。<br>なので、ループ回数を1億にして、配列長50なら800-900msになるはず。<br>ループ回数が変化なし、配列長が10倍なら、CUDAはおよそ55000msになるはず。</p>
 <h2 id="GPUの特性"><a href="#GPUの特性" class="headerlink" title="GPUの特性"></a>GPUの特性</h2><p>はい。<br>結果はそうなりませんでした。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CUDA is &#123;1,2,3,4,5&#125; + &#123;10,20,30,40,50&#125; = &#123;11,22,33,44,55&#125; time = &#123;5555&#125; No CUDA is &#123;1,2,3,4,5&#125; + &#123;10,20,30,40,50&#125; = &#123;11,22,33,44,55&#125; time = &#123;856&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CUDA is</span><br><span class="line">        &#123;1,2,3,4,5&#125; + &#123;10,20,30,40,50&#125; = &#123;11,22,33,44,55&#125;</span><br><span class="line">        time = &#123;5555&#125;</span><br><span class="line">No CUDA is</span><br><span class="line">        &#123;1,2,3,4,5&#125; + &#123;10,20,30,40,50&#125; = &#123;11,22,33,44,55&#125;</span><br><span class="line">        time = &#123;856&#125;</span><br></pre></td></tr></table></figure>
 
 <p>CPUの計算量推定は正しかったのですが、GPUはそうなりませんでした。<br>結論を言えば、並列化が関係してます。<br><strong>addKernel 関数</strong> をみると、<strong>threadIdx</strong> なるオブジェクトがいます。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\_\_global\_\<span class="function">_ <span class="keyword">void</span> <span class="title">addKernel</span><span class="params">(<span class="keyword">int</span> \*c, <span class="keyword">const</span> <span class="keyword">int</span> \*a, <span class="keyword">const</span> <span class="keyword">int</span> \*b, <span class="keyword">const</span> <span class="keyword">int</span> loop)</span> </span>&#123; <span class="keyword">int</span> i = threadIdx.x; <span class="keyword">for</span> (<span class="keyword">unsigned</span> <span class="keyword">int</span> t = <span class="number">0</span>; t &lt; loop; ++t) &#123; c\[i\] = a\[i\] + b\[i\]; &#125; &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">__global__ <span class="keyword">void</span> <span class="title">addKernel</span><span class="params">(<span class="keyword">int</span> *c, <span class="keyword">const</span> <span class="keyword">int</span> *a, <span class="keyword">const</span> <span class="keyword">int</span> *b, <span class="keyword">const</span> <span class="keyword">int</span> loop)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = threadIdx.x;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">unsigned</span> <span class="keyword">int</span> t = <span class="number">0</span>; t &lt; loop; ++t)</span><br><span class="line">    &#123;</span><br><span class="line">        c[i] = a[i] + b[i];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>これなんでしょう。<br>これ、<strong>NVIDIA GPU Computing Toolkit\CUDA\v7.5\include\device_launch_parameters.h</strong> に定義されています。<br>字面からみればスレッドIDです。<br><strong>CUDA_C_Programming_Guide.pdf</strong> がありますのでそれを見ます。</p>
+<p>これなんでしょう。<br>これ、<strong>NVIDIA GPU Computing Toolkit\CUDA\v7.5\include\device_launch_parameters.h</strong> に定義されています。<br>字面からみればスレッドIDです。</p>
+<p><strong>CUDA_C_Programming_Guide.pdf</strong> がありますのでそれを見ます。</p>
 <blockquote>
 <p>B.4.4. threadIdx This variable is of type uint3 (see char, short, int, long, longlong, float, double ) and contains the thread index within the block.</p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">訳: B.4.4. threadIdx この変数はuint3 (char, short, int, long, longlong, float, double) 型であり、ブロック内のスレッドインデックスです。</span><br></pre></td></tr></table></figure>
 
-<p>とあります。<br>字面の通りということでしょう。<br>だとするならば、CUDAはスレッド処理を実行しているはずです。ゆえに、CPUのような計算量推測ができなかったのでしょう。<br>では、どこでスレッドの起動を指定しているのか、というと </p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Launch a kernel on the GPU with one thread for each element. addKernel &lt;&lt; &lt;1, size &gt;&gt; &gt;(dev\_c, dev\_a, dev\_b, g\_loop);</span></span><br></pre></td></tr></table></figure>
+<p>とあります。<br>字面の通りということでしょう。</p>
+<p>だとするならば、CUDAはスレッド処理を実行しているはずです。ゆえに、CPUのような計算量推測ができなかったのでしょう。<br>では、どこでスレッドの起動を指定しているのか、というと </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Launch a kernel on the GPU with one thread for each element.</span></span><br><span class="line">addKernel &lt;&lt; &lt;<span class="number">1</span>, size &gt;&gt; &gt;(dev_c, dev_a, dev_b, g_loop);</span><br></pre></td></tr></table></figure>
 
-<p>の <strong>&lt;1, size &gt;</strong> とのこと。<br>これは、1ブロックにつき最大sizeスレッドで関数を実行せよ、という意味らしい。<br><a target="_blank" rel="noopener" href="http://www.gdep.jp/page/view/253">第6回　CUDAプログラミングモデル①</a>によれば、指定できるスレッド数は512が限界とのこと。<br>なので、現在sizeは配列長さと等しい。<br>つまり、配列の 1 要素に対して、1スレッドで動作するため、配列長さを10倍にしても、処理時間が変化しなかったのである。<br>ともすれば、GPUはCPUのスピードにはかなわないが、大量のスレッドでその分作業をこなすことで、高速化を図るしか道がないことになる。<br>なので、CPUは単純に配列長に比例し、GPUは配列長の影響を受けないので、配列帳が7-8倍になれば、ホストとデバイスの処理結果が近似または逆転するはずである。<br>試しに配列長を400にしてみた。<br>(倍数+1しないと一致しないはず)</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CUDA is &#123;1,2,3,4,5&#125; + &#123;10,20,30,40,50&#125; = &#123;11,22,33,44,55&#125; time = &#123;5778&#125; No CUDA is &#123;1,2,3,4,5&#125; + &#123;10,20,30,40,50&#125; = &#123;11,22,33,44,55&#125; time = &#123;5295&#125;</span><br></pre></td></tr></table></figure>
+<p>の <strong>&lt;1, size &gt;</strong> とのこと。<br>これは、1ブロックにつき最大sizeスレッドで関数を実行せよ、という意味らしい。<br><a target="_blank" rel="noopener" href="http://www.gdep.jp/page/view/253">第6回　CUDAプログラミングモデル①</a>によれば、指定できるスレッド数は512が限界とのこと。</p>
+<p>なので、現在sizeは配列長さと等しい。<br>つまり、配列の 1 要素に対して、1スレッドで動作するため、配列長さを10倍にしても、処理時間が変化しなかったのである。<br>ともすれば、GPUはCPUのスピードにはかなわないが、大量のスレッドでその分作業をこなすことで、高速化を図るしか道がないことになる。</p>
+<p>なので、CPUは単純に配列長に比例し、GPUは配列長の影響を受けないので、配列帳が7-8倍になれば、ホストとデバイスの処理結果が近似または逆転するはずである。<br>試しに配列長を400にしてみた。<br>(倍数+1しないと一致しないはず)</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CUDA is</span><br><span class="line">        &#123;1,2,3,4,5&#125; + &#123;10,20,30,40,50&#125; = &#123;11,22,33,44,55&#125;</span><br><span class="line">        time = &#123;5778&#125;</span><br><span class="line">No CUDA is</span><br><span class="line">        &#123;1,2,3,4,5&#125; + &#123;10,20,30,40,50&#125; = &#123;11,22,33,44,55&#125;</span><br><span class="line">        time = &#123;5295&#125;</span><br></pre></td></tr></table></figure>
 
 <p>思い切って512にしてみる。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CUDA is &#123;1,2,3,4,5&#125; + &#123;10,20,30,40,50&#125; = &#123;11,22,33,44,55&#125; time = &#123;7489&#125; No CUDA is &#123;1,2,3,4,5&#125; + &#123;10,20,30,40,50&#125; = &#123;11,22,33,44,55&#125; time = &#123;6686&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CUDA is</span><br><span class="line">        &#123;1,2,3,4,5&#125; + &#123;10,20,30,40,50&#125; = &#123;11,22,33,44,55&#125;</span><br><span class="line">        time = &#123;7489&#125;</span><br><span class="line">No CUDA is</span><br><span class="line">        &#123;1,2,3,4,5&#125; + &#123;10,20,30,40,50&#125; = &#123;11,22,33,44,55&#125;</span><br><span class="line">        time = &#123;6686&#125;</span><br></pre></td></tr></table></figure>
 
 <p>追いつかない…</p>
 <h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>なんで、CUDAがとてつもなく遅かったのかは原因がつかめました。<br>が、期待した速度が出ていないこともまた事実。<br>次回は、もう少し原因を探っていきたいです。</p>

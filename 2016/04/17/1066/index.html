@@ -2,13 +2,15 @@
 
 Problemとりあえず、Storyboardにボタンを追加して、イベントも追加してダイアログでHello, world!!ってやるサンプルを作りました。で、それをiP"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>Xamarinメモ その3 またデバッグできない</a></h3></div><div class="post-content"><p><a target="_blank" rel="noopener" href="https://taktak.jp/2016/04/10/1055">前回</a>、No valid iOS code signing keys found in keychain.なるエラーがでましたが…</p>
 <a id="more"></a>
-<h1 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h1><p>とりあえず、Storyboardにボタンを追加して、イベントも追加してダイアログでHello, world!!ってやるサンプルを作りました。<br>で、それをiPhone Simulatorでデバッグしようと思いましたが。<br>けどまた無慈悲なエラーが。<br><a href="../../../../public/2016/04/1-6.png"><img src="../../../../public/2016/04/1-6-1024x129.png" alt="Error"></a></p>
-<p>This version of Xamarin.iOS requires the iOS 9.3 SDK (shipped with Xcode 7.3) when the managed linker is disabled. Either upgrade Xcode, or enable the managed linker. Xamarin.iOS1</p>
+<h1 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h1><p>とりあえず、Storyboardにボタンを追加して、イベントも追加してダイアログでHello, world!!ってやるサンプルを作りました。<br>で、それをiPhone Simulatorでデバッグしようと思いましたが。<br>けどまた無慈悲なエラーが。</p>
+<p><a href="../../../../public/2016/04/1-6.png"><img src="../../../../public/2016/04/1-6-1024x129.png" alt="Error"></a></p>
+<p><code>This version of Xamarin.iOS requires the iOS 9.3 SDK (shipped with Xcode 7.3) when the managed linker is disabled. Either upgrade Xcode, or enable the managed linker. Xamarin.iOS1</code></p>
 <p>また、不思議なエラーです。<br>字面を見るならMac側にエラーがある感じです。</p>
 <h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><p>Xcodeと言っているので、まずはXcodeが7.3なのかどうかを確認します。<br>Xcodeを起動したところ、</p>
 <p><a href="../../../../public/2016/04/2-5.png"><img src="../../../../public/2016/04/2-5.png" alt="Verifying XCode.app"></a></p>
 <p>“Xcode.app”を検証中</p>
-<p>終わらない検証中。<br>かなり時間がかかりましたが、終わった後ライセンス許諾書の画面。どうも初回起動の模様。<br><a href="../../../../public/2016/04/3-5.png"><img src="../../../../public/2016/04/3-5.png" alt="License"></a></p>
+<p>終わらない検証中。<br>かなり時間がかかりましたが、終わった後ライセンス許諾書の画面。どうも初回起動の模様。</p>
+<p><a href="../../../../public/2016/04/3-5.png"><img src="../../../../public/2016/04/3-5.png" alt="License"></a></p>
 <p>ラインセンス許諾</p>
 <p><a href="../../../../public/2016/04/4-4.png"><img src="../../../../public/2016/04/4-4.png" alt="License"></a></p>
 <p>admin権限の確認</p>
@@ -16,12 +18,19 @@ Problemとりあえず、Storyboardにボタンを追加して、イベントも
 <p>インストール中</p>
 <p><a href="../../../../public/2016/04/6-2.png"><img src="../../../../public/2016/04/6-2.png" alt="Start Screen"></a></p>
 <p>バージョンが7.2….</p>
-<p>7.3ではないようなので、App StoreからXcodeをアップデートしました。<br>アップデートは以前チェックしていたんですが、手動じゃないとダメなのか？ <a href="../../../../public/2016/04/7-2.png"><img src="../../../../public/2016/04/7-2.png" alt="Update"></a></p>
+<p>7.3ではないようなので、App StoreからXcodeをアップデートしました。<br>アップデートは以前チェックしていたんですが、手動じゃないとダメなのか？</p>
+<p><a href="../../../../public/2016/04/7-2.png"><img src="../../../../public/2016/04/7-2.png" alt="Update"></a></p>
 <p>アップデート中</p>
+<br>
+
 <p><strong>4.87GB…(‘A`)</strong></p>
-<p>インストール後、無事にビルドが通り、iPhone Simulatorが起動するようになりました。<br><a href="../../../../public/2016/04/8-2.png"><img src="../../../../public/2016/04/8-2-1024x819.png" alt="iPhone Simulator"></a></p>
+<br>
+
+<p>インストール後、無事にビルドが通り、iPhone Simulatorが起動するようになりました。</p>
+<p><a href="../../../../public/2016/04/8-2.png"><img src="../../../../public/2016/04/8-2-1024x819.png" alt="iPhone Simulator"></a></p>
 <p>無事に起動しました</p>
-<p>でも… <a href="../../../../public/2016/04/9-2.png"><img src="../../../../public/2016/04/9-2-1024x634.png" alt="例外"></a></p>
+<p>でも…</p>
+<p><a href="../../../../public/2016/04/9-2.png"><img src="../../../../public/2016/04/9-2-1024x634.png" alt="例外"></a></p>
 <p>例外だと…</p>
 <p>なんぞこれ…</p>
 <h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>Xcodeのバージョンは常に意識する必要があるようです。<br>Visual Studio側で起動するiPhone SimulatorのiOSのバージョンとMac側のXcodeが対応しているiOSのバージョンを一致させましょう。</p>
