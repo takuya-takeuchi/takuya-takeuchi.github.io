@@ -666,8 +666,6 @@
           
           <category> .NET Framework </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
           <category> .NETで○○○を試してみる </category>
           
           <category> netで○○○を試してみる </category>
@@ -702,8 +700,6 @@
           <category> net-framework </category>
           
           <category> .NET Framework </category>
-          
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
           
           <category> .NETで○○○を試してみる </category>
           
@@ -1058,11 +1054,9 @@
       
       <categories>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
+          <category> ディープラーニング </category>
           
           <category> Chainer </category>
-          
-          <category> ディープラーニング </category>
           
       </categories>
       
@@ -1076,7 +1070,7 @@
       <link href="2019/04/02/4014/"/>
       <url>2019/04/02/4014/</url>
       
-        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p><a href="https://taktak.jp/2019/04/01/4007">前回</a>の続き。<br>今回は学習を行ってみます。</p><h1 id="How-to"><a href="#How-to" class="headerlink" title="How to"></a>How to</h1><p>公式によると下記のコマンドで学習できるとのこと。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python train.py -c=configs/m2det512_vgg.py --ngpu 4 -t True  </span><br></pre></td></tr></table></figure><p>しかしこのコマンドは<strong>TensorBorad</strong>を使った学習になります。<br>つまりTensorFlowが必要になります。<br>必要ない場合は</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python train.py -c=configs/m2det512_vgg.py --ngpu 4  </span><br></pre></td></tr></table></figure><p>でOK。<br>**–npgu**引数は利用するGPUの数。4個をサンプルとして表記しておくあたり、どれだけリソースを使うのか、とビクビクします。</p><h2 id="モデルファイル"><a href="#モデルファイル" class="headerlink" title="モデルファイル"></a>モデルファイル</h2><p>まず、pretrainedモデルをダウンロードします。<br>これは前回ダウンロードしたものとは異なります。<br>公式リンクにも書いておらず、ファイル名から検索をかけた結果、下記のページにリンクが書いてありました。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://s3.amazonaws.com/amdegroot-models/vgg16_reducedfc.pth mkdir weights mv vgg16_reducedfc.pth weights</span><br></pre></td></tr></table></figure><h2 id="データセット"><a href="#データセット" class="headerlink" title="データセット"></a>データセット</h2><p>データセットをダウンロードします。しかし、これも公式には書いていません。<br>上述の<strong>ssd.pytorch</strong>でスクリプトが用意されています。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/amdegroot/ssd.pytorch  </span><br></pre></td></tr></table></figure><p>そして、このリポジトリにある下記のスクリプトからデータセットをダウンロードします。</p><ul><li>COCO<ul><li>./data/scripts/COCO2014.sh</li><li>~/data にダウンロードされる</li></ul></li><li>VOC2007<ul><li>./data/scripts/VOC2007.sh</li><li>~/data にダウンロードされる</li></ul></li><li>VOC2012<ul><li>./data/scripts/VOC2012.sh</li><li>~/data にダウンロードされる</li></ul></li></ul><p>必要に応じてシンボリックリンクで退避するなど工夫する</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /media/hdd/work/data ~/data  </span><br></pre></td></tr></table></figure><p>ダウンロード完了後、</p><ul><li>COCO<ul><li><strong>~/data/coco/annotations/annotations</strong> の中身を <strong>~/data/coco/annotations</strong> に移動 その場所に展開</li><li><strong>~/data/coco/images/train2014</strong>、 <strong>~/data/coco/images/val2014</strong> が存在することを確認</li><li>wget <a href="https://github.com/insikk/coco_dataset_trainval35k/blob/master/instances_valminusminival2014.json.zip?raw=true">https://github.com/insikk/coco_dataset_trainval35k/blob/master/instances_valminusminival2014.json.zip?raw=true</a> -O instances_valminusminival2014.json.zip</li><li>=/data/cocoで実行、展開、annotationsへ移動</li></ul></li></ul><p>し、<strong>data/coco.py</strong>を下記のように変更します。</p><figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    def __init__(self, root, image_sets, preproc=None, target_transform=None,</span><br><span class="line">                 dataset_name=&#x27;COCO&#x27;):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.data_path = os.path.join(os.path.expanduser(&quot;~&quot;),&#x27;data&#x27;)</span><br><span class="line"><span class="deletion">-        self.cache_path = os.path.join(self.data_path, &#x27;coco_cache&#x27;)</span></span><br><span class="line"><span class="addition">+        self.cache_path = os.path.join(self.data_path, &#x27;coco&#x27;)</span></span><br><span class="line">        self.image_set = image_sets </span><br></pre></td></tr></table></figure><p>そして前述の学習コマンドを実行します。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python train.py -c=configs/m2det512_vgg.py --ngpu 1  </span><br></pre></td></tr></table></figure><p>がいろいろエラーが。</p><h4 id="エラー1"><a href="#エラー1" class="headerlink" title="エラー1"></a>エラー1</h4><p><strong>data/coco.py</strong> を直していない時のエラー</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">creating index...</span><br><span class="line">index created!</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;train.py&quot;</span>, line 58, <span class="keyword">in</span> </span><br><span class="line">    dataset = get_dataloader(cfg, args.dataset, <span class="string">&#x27;train_sets&#x27;</span>)</span><br><span class="line">  File <span class="string">&quot;/media/hdd/work/local/M2Det/utils/core.py&quot;</span>, line 93, <span class="keyword">in</span> get_dataloader</span><br><span class="line">    getattr(cfg.dataset, dataset)[setname], _preproc)</span><br><span class="line">  File <span class="string">&quot;/media/hdd/work/local/M2Det/data/coco.py&quot;</span>, line 65, <span class="keyword">in</span> __init__</span><br><span class="line">    self.annotations.extend(self._load_coco_annotations(coco_name, indexes,_COCO))</span><br><span class="line">  File <span class="string">&quot;/media/hdd/work/local/M2Det/data/coco.py&quot;</span>, line 101, <span class="keyword">in</span> _load_coco_annotations</span><br><span class="line">    with open(cache_file, <span class="string">&#x27;wb&#x27;</span>) as fid:</span><br><span class="line">FileNotFoundError: [Errno 2] No such file or directory: <span class="string">&#x27;/home/takuya/data/coco_cache/train2014_gt_roidb.pkl&#x27;</span></span><br></pre></td></tr></table></figure><h4 id="エラー2"><a href="#エラー2" class="headerlink" title="エラー2"></a>エラー2</h4><p>バッチサイズが大きすぎる。<br><strong>configs/m2det512_vgg.py</strong> で <strong>per_batch_size</strong> を小さくする</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">===&gt; Training M2Det on COCO</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;train.py&quot;</span>, line 86, <span class="keyword">in</span> </span><br><span class="line">    out = net(images)</span><br><span class="line">  File <span class="string">&quot;/media/hdd/Ubuntu18.04/python/M2Det/lib/python3.6/site-packages/torch/nn/modules/module.py&quot;</span>, line 477, <span class="keyword">in</span> __call__</span><br><span class="line">    result = self.forward(*input, **kwargs)</span><br><span class="line">  File <span class="string">&quot;/media/hdd/work/local/M2Det/m2det.py&quot;</span>, line 106, <span class="keyword">in</span> forward</span><br><span class="line">    x = self.base[k](x)</span><br><span class="line">  File <span class="string">&quot;/media/hdd/Ubuntu18.04/python/M2Det/lib/python3.6/site-packages/torch/nn/modules/module.py&quot;</span>, line 477, <span class="keyword">in</span> __call__</span><br><span class="line">    result = self.forward(*input, **kwargs)</span><br><span class="line">  File <span class="string">&quot;/media/hdd/Ubuntu18.04/python/M2Det/lib/python3.6/site-packages/torch/nn/modules/conv.py&quot;</span>, line 301, <span class="keyword">in</span> forward</span><br><span class="line">    self.padding, self.dilation, self.groups)</span><br><span class="line">RuntimeError: CUDA error: out of memory</span><br></pre></td></tr></table></figure><p>これらを超えて学習が始まりましたが、まったく終わりません。<br>COCOのデータの画像数が多いのもありますが、<strong>1080</strong>だとバッチサイズ4が限界で、1epoch回すのに6hかかりました。<br>なので学習は断念しました。</p>]]></content>
+        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p><a href="https://taktak.jp/2019/04/01/4007">前回</a>の続き。<br>今回は学習を行ってみます。</p><h1 id="How-to"><a href="#How-to" class="headerlink" title="How to"></a>How to</h1><p>公式によると下記のコマンドで学習できるとのこと。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python train.py -c=configs/m2det512_vgg.py --ngpu 4 -t True  </span><br></pre></td></tr></table></figure><p>しかしこのコマンドは<strong>TensorBorad</strong>を使った学習になります。<br>つまりTensorFlowが必要になります。<br>必要ない場合は</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python train.py -c=configs/m2det512_vgg.py --ngpu 4  </span><br></pre></td></tr></table></figure><p>でOK。<br>**–npgu**引数は利用するGPUの数。4個をサンプルとして表記しておくあたり、どれだけリソースを使うのか、とビクビクします。</p><h2 id="モデルファイル"><a href="#モデルファイル" class="headerlink" title="モデルファイル"></a>モデルファイル</h2><p>まず、pretrainedモデルをダウンロードします。<br>これは前回ダウンロードしたものとは異なります。<br>公式リンクにも書いておらず、ファイル名から検索をかけた結果、下記のページにリンクが書いてありました。</p><div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/amdegroot/ssd.pytorch" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://avatars1.githubusercontent.com/u/16660520?s=400&v=4"></img></div><div class="hbc-text"><div class="hbc-title">amdegroot/ssd.pytorch</div><div class="hbc-url">https://github.com/amdegroot/ssd.pytorch</div><div class="hbc-description">A PyTorch Implementation of Single Shot MultiBox Detector - amdegroot/ssd.pytorch</div></div></div></div></a></div></div><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://s3.amazonaws.com/amdegroot-models/vgg16_reducedfc.pth mkdir weights mv vgg16_reducedfc.pth weights</span><br></pre></td></tr></table></figure><h2 id="データセット"><a href="#データセット" class="headerlink" title="データセット"></a>データセット</h2><p>データセットをダウンロードします。しかし、これも公式には書いていません。<br>上述の<strong>ssd.pytorch</strong>でスクリプトが用意されています。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/amdegroot/ssd.pytorch  </span><br></pre></td></tr></table></figure><p>そして、このリポジトリにある下記のスクリプトからデータセットをダウンロードします。</p><ul><li>COCO<ul><li>./data/scripts/COCO2014.sh</li><li>~/data にダウンロードされる</li></ul></li><li>VOC2007<ul><li>./data/scripts/VOC2007.sh</li><li>~/data にダウンロードされる</li></ul></li><li>VOC2012<ul><li>./data/scripts/VOC2012.sh</li><li>~/data にダウンロードされる</li></ul></li></ul><p>必要に応じてシンボリックリンクで退避するなど工夫する</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /media/hdd/work/data ~/data  </span><br></pre></td></tr></table></figure><p>ダウンロード完了後、</p><ul><li>COCO<ul><li><strong>~/data/coco/annotations/annotations</strong> の中身を <strong>~/data/coco/annotations</strong> に移動 その場所に展開</li><li><strong>~/data/coco/images/train2014</strong>、 <strong>~/data/coco/images/val2014</strong> が存在することを確認</li><li>wget <a href="https://github.com/insikk/coco_dataset_trainval35k/blob/master/instances_valminusminival2014.json.zip?raw=true">https://github.com/insikk/coco_dataset_trainval35k/blob/master/instances_valminusminival2014.json.zip?raw=true</a> -O instances_valminusminival2014.json.zip</li><li>=/data/cocoで実行、展開、annotationsへ移動</li></ul></li></ul><p>し、<strong>data/coco.py</strong>を下記のように変更します。</p><figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    def __init__(self, root, image_sets, preproc=None, target_transform=None,</span><br><span class="line">                 dataset_name=&#x27;COCO&#x27;):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.data_path = os.path.join(os.path.expanduser(&quot;~&quot;),&#x27;data&#x27;)</span><br><span class="line"><span class="deletion">-        self.cache_path = os.path.join(self.data_path, &#x27;coco_cache&#x27;)</span></span><br><span class="line"><span class="addition">+        self.cache_path = os.path.join(self.data_path, &#x27;coco&#x27;)</span></span><br><span class="line">        self.image_set = image_sets </span><br></pre></td></tr></table></figure><p>そして前述の学習コマンドを実行します。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python train.py -c=configs/m2det512_vgg.py --ngpu 1  </span><br></pre></td></tr></table></figure><p>がいろいろエラーが。</p><h4 id="エラー1"><a href="#エラー1" class="headerlink" title="エラー1"></a>エラー1</h4><p><strong>data/coco.py</strong> を直していない時のエラー</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">creating index...</span><br><span class="line">index created!</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;train.py&quot;</span>, line 58, <span class="keyword">in</span> </span><br><span class="line">    dataset = get_dataloader(cfg, args.dataset, <span class="string">&#x27;train_sets&#x27;</span>)</span><br><span class="line">  File <span class="string">&quot;/media/hdd/work/local/M2Det/utils/core.py&quot;</span>, line 93, <span class="keyword">in</span> get_dataloader</span><br><span class="line">    getattr(cfg.dataset, dataset)[setname], _preproc)</span><br><span class="line">  File <span class="string">&quot;/media/hdd/work/local/M2Det/data/coco.py&quot;</span>, line 65, <span class="keyword">in</span> __init__</span><br><span class="line">    self.annotations.extend(self._load_coco_annotations(coco_name, indexes,_COCO))</span><br><span class="line">  File <span class="string">&quot;/media/hdd/work/local/M2Det/data/coco.py&quot;</span>, line 101, <span class="keyword">in</span> _load_coco_annotations</span><br><span class="line">    with open(cache_file, <span class="string">&#x27;wb&#x27;</span>) as fid:</span><br><span class="line">FileNotFoundError: [Errno 2] No such file or directory: <span class="string">&#x27;/home/takuya/data/coco_cache/train2014_gt_roidb.pkl&#x27;</span></span><br></pre></td></tr></table></figure><h4 id="エラー2"><a href="#エラー2" class="headerlink" title="エラー2"></a>エラー2</h4><p>バッチサイズが大きすぎる。<br><strong>configs/m2det512_vgg.py</strong> で <strong>per_batch_size</strong> を小さくする</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">===&gt; Training M2Det on COCO</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;train.py&quot;</span>, line 86, <span class="keyword">in</span> </span><br><span class="line">    out = net(images)</span><br><span class="line">  File <span class="string">&quot;/media/hdd/Ubuntu18.04/python/M2Det/lib/python3.6/site-packages/torch/nn/modules/module.py&quot;</span>, line 477, <span class="keyword">in</span> __call__</span><br><span class="line">    result = self.forward(*input, **kwargs)</span><br><span class="line">  File <span class="string">&quot;/media/hdd/work/local/M2Det/m2det.py&quot;</span>, line 106, <span class="keyword">in</span> forward</span><br><span class="line">    x = self.base[k](x)</span><br><span class="line">  File <span class="string">&quot;/media/hdd/Ubuntu18.04/python/M2Det/lib/python3.6/site-packages/torch/nn/modules/module.py&quot;</span>, line 477, <span class="keyword">in</span> __call__</span><br><span class="line">    result = self.forward(*input, **kwargs)</span><br><span class="line">  File <span class="string">&quot;/media/hdd/Ubuntu18.04/python/M2Det/lib/python3.6/site-packages/torch/nn/modules/conv.py&quot;</span>, line 301, <span class="keyword">in</span> forward</span><br><span class="line">    self.padding, self.dilation, self.groups)</span><br><span class="line">RuntimeError: CUDA error: out of memory</span><br></pre></td></tr></table></figure><p>これらを超えて学習が始まりましたが、まったく終わりません。<br>COCOのデータの画像数が多いのもありますが、<strong>1080</strong>だとバッチサイズ4が限界で、1epoch回すのに6hかかりました。<br>なので学習は断念しました。</p>]]></content>
       
       
       <categories>
@@ -1085,13 +1079,11 @@
           
           <category> linux </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
-          <category> PyTorch </category>
-          
           <category> ディープラーニング </category>
           
           <category> Ubuntu </category>
+          
+          <category> PyTorch </category>
           
       </categories>
       
@@ -1118,13 +1110,11 @@
           
           <category> linux </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
-          <category> PyTorch </category>
-          
           <category> ディープラーニング </category>
           
           <category> Ubuntu </category>
+          
+          <category> PyTorch </category>
           
       </categories>
       
@@ -1272,10 +1262,6 @@
           
           <category> linux </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
-          <category> Caffe </category>
-          
           <category> gpupu </category>
           
           <category> ディープラーニング </category>
@@ -1285,6 +1271,8 @@
           <category> CUDA </category>
           
           <category> GPUPU </category>
+          
+          <category> Caffe </category>
           
       </categories>
       
@@ -1398,15 +1386,13 @@
           
           <category> Python </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
-          <category> Chainer </category>
-          
           <category> ディープラーニング </category>
           
           <category> 機械学習 </category>
           
           <category> ChainerCV </category>
+          
+          <category> Chainer </category>
           
       </categories>
       
@@ -1420,7 +1406,7 @@
       <link href="2018/11/20/3887/"/>
       <url>2018/11/20/3887/</url>
       
-        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p><strong>ChainerCV</strong>で <strong>SSD (Single Shot Multibox Detector)</strong> を遊んでみます。</p><h1 id="How-to"><a href="#How-to" class="headerlink" title="How to?"></a>How to?</h1><p>CUDA、cuDNNのチェック、仮想環境作成、仮想環境のアクティベートまでの手順は下記です。</p><h2 id="パッケージのインストール"><a href="#パッケージのインストール" class="headerlink" title="パッケージのインストール"></a>パッケージのインストール</h2><p><strong>cupy</strong>、<strong>cupy-cuda</strong>、<strong>chainer</strong>のバージョンは一致させます。<br>cupy-cudaの末尾の数値は、先ほど確認したCUDAのバージョンに合わせます。<br>また、Chainerは4.5.0を使うため、ChainerCVは0.10.0になります。<br>(0.11.0はChainer 5.0.0になるため) また、下記の順番を守ってインストールします。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; python -m pip install --upgrade pip</span><br><span class="line">&gt; python -m pip install cupy==<span class="number">4</span>.<span class="number">5</span>.<span class="number">0</span></span><br><span class="line">&gt; python -m pip install cupy-cuda92==<span class="number">4</span>.<span class="number">5</span>.<span class="number">0</span></span><br><span class="line">&gt; python -m pip install chainer==<span class="number">4</span>.<span class="number">5</span>.<span class="number">0</span></span><br><span class="line">&gt; python -m pip install chainercv==<span class="number">0</span>.<span class="number">10</span>.<span class="number">0</span></span><br><span class="line">&gt; python -m pip install opencv-python</span><br></pre></td></tr></table></figure><h2 id="最終確認"><a href="#最終確認" class="headerlink" title="最終確認"></a>最終確認</h2><p>Chainer、ChainerCVがインストールされたこと、ChainerがCUDA、cuDNNを認識していることを確認します。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&gt; python -c &quot;import chainer; chainer.print_runtime_info()&quot;</span><br><span class="line"><span class="function">Platform: <span class="title">Windows</span>-10-10.0.17134-<span class="title">SP0</span></span></span><br><span class="line"><span class="function"><span class="title">Chainer</span>: 4.5.0</span></span><br><span class="line"><span class="function"><span class="title">NumPy</span>: 1.15.4</span></span><br><span class="line"><span class="function"><span class="title">CuPy</span>:</span></span><br><span class="line"><span class="function">  <span class="title">CuPy</span> <span class="title">Version</span>          : 4.5.0</span></span><br><span class="line"><span class="function">  <span class="title">CUDA</span> <span class="title">Root</span>             : <span class="title">C</span>:\<span class="title">Program</span> <span class="title">Files</span>\<span class="title">NVIDIA</span> <span class="title">GPU</span> <span class="title">Computing</span> <span class="title">Toolkit</span>\<span class="title">CUDA</span>\<span class="title">v9</span>.2</span></span><br><span class="line"><span class="function">  <span class="title">CUDA</span> <span class="title">Build</span> <span class="title">Version</span>    : 9020</span></span><br><span class="line"><span class="function">  <span class="title">CUDA</span> <span class="title">Driver</span> <span class="title">Version</span>   : 9020</span></span><br><span class="line"><span class="function">  <span class="title">CUDA</span> <span class="title">Runtime</span> <span class="title">Version</span>  : 9020</span></span><br><span class="line"><span class="function">  <span class="title">cuDNN</span> <span class="title">Build</span> <span class="title">Version</span>   : 7104</span></span><br><span class="line"><span class="function">  <span class="title">cuDNN</span> <span class="title">Version</span>         : 7104</span></span><br><span class="line"><span class="function">  <span class="title">NCCL</span> <span class="title">Build</span> <span class="title">Version</span>    : <span class="title">None</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">&gt; <span class="title">python</span> -<span class="title">m</span> <span class="title">pip</span> <span class="title">freeze</span></span></span><br><span class="line"><span class="function"><span class="title">chainer</span>==4.5.0</span></span><br><span class="line"><span class="function"><span class="title">chainercv</span>==0.10.0</span></span><br><span class="line"><span class="function"><span class="title">cupy</span>==4.5.0</span></span><br><span class="line"><span class="function"><span class="title">cupy</span>-<span class="title">cuda92</span>==4.5.0</span></span><br><span class="line"><span class="function"><span class="title">fastrlock</span>==0.4</span></span><br><span class="line"><span class="function"><span class="title">filelock</span>==3.0.10</span></span><br><span class="line"><span class="function"><span class="title">numpy</span>==1.15.4</span></span><br><span class="line"><span class="function"><span class="title">opencv</span>-<span class="title">python</span>==3.4.3.18</span></span><br><span class="line"><span class="function"><span class="title">Pillow</span>==5.3.0</span></span><br><span class="line"><span class="function"><span class="title">protobuf</span>==3.6.1</span></span><br><span class="line"><span class="function"><span class="title">six</span>==1.11.0</span></span><br></pre></td></tr></table></figure><h2 id="デモ-学習"><a href="#デモ-学習" class="headerlink" title="デモ (学習)"></a>デモ (学習)</h2><p>ChainerCVのリポジトリにサンプルが含まれているのでブランチを指定してクローンします。<br>クローンしたらサンプルを実行します。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; git clone -b v0.<span class="number">10</span>.<span class="number">0</span> https://www.github.com/chainer/chainercv</span><br><span class="line">&gt; <span class="built_in">cd</span> chainercv/examples/ssd</span><br><span class="line">&gt; python train.py --model ssd300 --batchsize <span class="number">32</span> --gpu <span class="number">0</span></span><br></pre></td></tr></table></figure><p>データセットは<strong>VOC2007</strong>のようです。<br><strong>GeForce GTX 1080</strong>を利用した場合、約30時間かかりました。また、バッチサイズを増やそうとしたらメモリが足りなくなりました。</p><p>下記は学習後の損失の推移グラフです。<br>上から、全体の損失、カテゴリの損失、位置の損失です。</p><p><a href="../../../../public/2018/11/chainercv_examles_ssd_demo_20181120221605.png"><img src="../../../../public/2018/11/chainercv_examles_ssd_demo_20181120221605.png"></a></p><h2 id="デモ-推論"><a href="#デモ-推論" class="headerlink" title="デモ (推論)"></a>デモ (推論)</h2><p>前項での学習した結果、モデルが<strong>result\model_iter_120000</strong>として保存されていますのでそれを活用します。<br>学習に使った<strong>VOC2007</strong>のカテゴリは下記のとおりです。</p><ul><li>Aeroplanes</li><li>Bicycles</li><li>Birds</li><li>Boats</li><li>Bottles</li><li>Buses</li><li>Cars</li><li>Cats</li><li>Chairs</li><li>Cows</li><li>Dining tables</li><li>Dogs</li><li>Horses</li><li>Motorbikes</li><li>People</li><li>Potted plants</li><li>Sheep</li><li>Sofas</li><li>Trains</li><li>TV/Monitors</li></ul><p>試しにWikipediaにある羊の画像(<a href="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Lleyn_sheep.jpg/800px-Lleyn_sheep.jpg">Lleyn sheep.jpg</a>)を認識させてみます。<br>なお、推論のデモには追加でモジュールが必要であるためインストールします。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; pip install matplotlib</span><br></pre></td></tr></table></figure><p>実行は下記のように行います。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; python demo.py --gpu <span class="number">0</span> --pretrained-model result\model_iter_120000 <span class="number">800</span>px-Lleyn_sheep.jpg</span><br></pre></td></tr></table></figure><p><a href="../../../../public/2018/11/1-5.png"><img src="../../../../public/2018/11/1-5.png"></a><br> 良い感じです。</p>]]></content>
+        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p><strong>ChainerCV</strong>で <strong>SSD (Single Shot Multibox Detector)</strong> を遊んでみます。</p><h1 id="How-to"><a href="#How-to" class="headerlink" title="How to?"></a>How to?</h1><p>CUDA、cuDNNのチェック、仮想環境作成、仮想環境のアクティベートまでの手順は下記です。</p><div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://taktak.jp/2018/11/17/3865" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=taktak.jp"></img><div class="hbc-site-name">taktak.jp</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">開発メモ その154 Chainer with CUDA for Windowsを使う – A certain engineer &quot;COMPLEX&quot;</div><div class="hbc-url">https://taktak.jp/2018/11/17/3865</div></div></div></div></a></div></div><h2 id="パッケージのインストール"><a href="#パッケージのインストール" class="headerlink" title="パッケージのインストール"></a>パッケージのインストール</h2><p><strong>cupy</strong>、<strong>cupy-cuda</strong>、<strong>chainer</strong>のバージョンは一致させます。<br>cupy-cudaの末尾の数値は、先ほど確認したCUDAのバージョンに合わせます。<br>また、Chainerは4.5.0を使うため、ChainerCVは0.10.0になります。<br>(0.11.0はChainer 5.0.0になるため) また、下記の順番を守ってインストールします。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; python -m pip install --upgrade pip</span><br><span class="line">&gt; python -m pip install cupy==<span class="number">4</span>.<span class="number">5</span>.<span class="number">0</span></span><br><span class="line">&gt; python -m pip install cupy-cuda92==<span class="number">4</span>.<span class="number">5</span>.<span class="number">0</span></span><br><span class="line">&gt; python -m pip install chainer==<span class="number">4</span>.<span class="number">5</span>.<span class="number">0</span></span><br><span class="line">&gt; python -m pip install chainercv==<span class="number">0</span>.<span class="number">10</span>.<span class="number">0</span></span><br><span class="line">&gt; python -m pip install opencv-python</span><br></pre></td></tr></table></figure><h2 id="最終確認"><a href="#最終確認" class="headerlink" title="最終確認"></a>最終確認</h2><p>Chainer、ChainerCVがインストールされたこと、ChainerがCUDA、cuDNNを認識していることを確認します。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&gt; python -c &quot;import chainer; chainer.print_runtime_info()&quot;</span><br><span class="line"><span class="function">Platform: <span class="title">Windows</span>-10-10.0.17134-<span class="title">SP0</span></span></span><br><span class="line"><span class="function"><span class="title">Chainer</span>: 4.5.0</span></span><br><span class="line"><span class="function"><span class="title">NumPy</span>: 1.15.4</span></span><br><span class="line"><span class="function"><span class="title">CuPy</span>:</span></span><br><span class="line"><span class="function">  <span class="title">CuPy</span> <span class="title">Version</span>          : 4.5.0</span></span><br><span class="line"><span class="function">  <span class="title">CUDA</span> <span class="title">Root</span>             : <span class="title">C</span>:\<span class="title">Program</span> <span class="title">Files</span>\<span class="title">NVIDIA</span> <span class="title">GPU</span> <span class="title">Computing</span> <span class="title">Toolkit</span>\<span class="title">CUDA</span>\<span class="title">v9</span>.2</span></span><br><span class="line"><span class="function">  <span class="title">CUDA</span> <span class="title">Build</span> <span class="title">Version</span>    : 9020</span></span><br><span class="line"><span class="function">  <span class="title">CUDA</span> <span class="title">Driver</span> <span class="title">Version</span>   : 9020</span></span><br><span class="line"><span class="function">  <span class="title">CUDA</span> <span class="title">Runtime</span> <span class="title">Version</span>  : 9020</span></span><br><span class="line"><span class="function">  <span class="title">cuDNN</span> <span class="title">Build</span> <span class="title">Version</span>   : 7104</span></span><br><span class="line"><span class="function">  <span class="title">cuDNN</span> <span class="title">Version</span>         : 7104</span></span><br><span class="line"><span class="function">  <span class="title">NCCL</span> <span class="title">Build</span> <span class="title">Version</span>    : <span class="title">None</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">&gt; <span class="title">python</span> -<span class="title">m</span> <span class="title">pip</span> <span class="title">freeze</span></span></span><br><span class="line"><span class="function"><span class="title">chainer</span>==4.5.0</span></span><br><span class="line"><span class="function"><span class="title">chainercv</span>==0.10.0</span></span><br><span class="line"><span class="function"><span class="title">cupy</span>==4.5.0</span></span><br><span class="line"><span class="function"><span class="title">cupy</span>-<span class="title">cuda92</span>==4.5.0</span></span><br><span class="line"><span class="function"><span class="title">fastrlock</span>==0.4</span></span><br><span class="line"><span class="function"><span class="title">filelock</span>==3.0.10</span></span><br><span class="line"><span class="function"><span class="title">numpy</span>==1.15.4</span></span><br><span class="line"><span class="function"><span class="title">opencv</span>-<span class="title">python</span>==3.4.3.18</span></span><br><span class="line"><span class="function"><span class="title">Pillow</span>==5.3.0</span></span><br><span class="line"><span class="function"><span class="title">protobuf</span>==3.6.1</span></span><br><span class="line"><span class="function"><span class="title">six</span>==1.11.0</span></span><br></pre></td></tr></table></figure><h2 id="デモ-学習"><a href="#デモ-学習" class="headerlink" title="デモ (学習)"></a>デモ (学習)</h2><p>ChainerCVのリポジトリにサンプルが含まれているのでブランチを指定してクローンします。<br>クローンしたらサンプルを実行します。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; git clone -b v0.<span class="number">10</span>.<span class="number">0</span> https://www.github.com/chainer/chainercv</span><br><span class="line">&gt; <span class="built_in">cd</span> chainercv/examples/ssd</span><br><span class="line">&gt; python train.py --model ssd300 --batchsize <span class="number">32</span> --gpu <span class="number">0</span></span><br></pre></td></tr></table></figure><p>データセットは<strong>VOC2007</strong>のようです。<br><strong>GeForce GTX 1080</strong>を利用した場合、約30時間かかりました。また、バッチサイズを増やそうとしたらメモリが足りなくなりました。</p><p>下記は学習後の損失の推移グラフです。<br>上から、全体の損失、カテゴリの損失、位置の損失です。</p><p><a href="../../../../public/2018/11/chainercv_examles_ssd_demo_20181120221605.png"><img src="../../../../public/2018/11/chainercv_examles_ssd_demo_20181120221605.png"></a></p><h2 id="デモ-推論"><a href="#デモ-推論" class="headerlink" title="デモ (推論)"></a>デモ (推論)</h2><p>前項での学習した結果、モデルが<strong>result\model_iter_120000</strong>として保存されていますのでそれを活用します。<br>学習に使った<strong>VOC2007</strong>のカテゴリは下記のとおりです。</p><ul><li>Aeroplanes</li><li>Bicycles</li><li>Birds</li><li>Boats</li><li>Bottles</li><li>Buses</li><li>Cars</li><li>Cats</li><li>Chairs</li><li>Cows</li><li>Dining tables</li><li>Dogs</li><li>Horses</li><li>Motorbikes</li><li>People</li><li>Potted plants</li><li>Sheep</li><li>Sofas</li><li>Trains</li><li>TV/Monitors</li></ul><p>試しにWikipediaにある羊の画像(<a href="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Lleyn_sheep.jpg/800px-Lleyn_sheep.jpg">Lleyn sheep.jpg</a>)を認識させてみます。<br>なお、推論のデモには追加でモジュールが必要であるためインストールします。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; pip install matplotlib</span><br></pre></td></tr></table></figure><p>実行は下記のように行います。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; python demo.py --gpu <span class="number">0</span> --pretrained-model result\model_iter_120000 <span class="number">800</span>px-Lleyn_sheep.jpg</span><br></pre></td></tr></table></figure><p><a href="../../../../public/2018/11/1-5.png"><img src="../../../../public/2018/11/1-5.png"></a><br> 良い感じです。</p>]]></content>
       
       
       <categories>
@@ -1429,15 +1415,13 @@
           
           <category> Python </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
-          <category> Chainer </category>
-          
           <category> ディープラーニング </category>
           
           <category> 機械学習 </category>
           
           <category> ChainerCV </category>
+          
+          <category> Chainer </category>
           
       </categories>
       
@@ -1522,7 +1506,7 @@
       <link href="2018/11/17/3865/"/>
       <url>2018/11/17/3865/</url>
       
-        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>以前、CUDAを含むChainerのインストール手法を書きましたが、もう少しわかりやすく整理しました。</p><h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><h2 id="CUDA-PATHの確認"><a href="#CUDA-PATHの確認" class="headerlink" title="CUDA_PATHの確認"></a>CUDA_PATHの確認</h2><p>Chainerで利用するCUDAを確認します。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="built_in">set</span> CUDA_PATH</span><br><span class="line">CUDA_PATH=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.<span class="number">2</span></span><br><span class="line">CUDA_PATH_V9_0=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.<span class="number">0</span></span><br><span class="line">CUDA_PATH_V9_1=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.<span class="number">1</span></span><br><span class="line">CUDA_PATH_V9_2=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.<span class="number">2</span></span><br></pre></td></tr></table></figure><h2 id="cuDNNの確認"><a href="#cuDNNの確認" class="headerlink" title="cuDNNの確認"></a>cuDNNの確認</h2><p>cuDNNが適切に展開されていることを確認します。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="built_in">dir</span> /B /D &quot;<span class="variable">%CUDA_PATH%</span>\bin\cudnn64_7.dll&quot;</span><br><span class="line">cudnn64_7.dll</span><br><span class="line"></span><br><span class="line">&gt; <span class="built_in">dir</span> /B &quot;<span class="variable">%CUDA_PATH%</span>\include\cudnn.h&quot;</span><br><span class="line">cudnn.h</span><br><span class="line"></span><br><span class="line">&gt; <span class="built_in">dir</span> /B &quot;<span class="variable">%CUDA_PATH%</span>\include\cudnn.h&quot;</span><br><span class="line">cudnn.h</span><br></pre></td></tr></table></figure><h2 id="仮想環境の作成"><a href="#仮想環境の作成" class="headerlink" title="仮想環境の作成"></a>仮想環境の作成</h2><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="built_in">cd</span> &lt;仮想環境の管理ディレクトリ&gt;</span><br><span class="line">&gt; python -m venv &lt;仮想環境名&gt;</span><br><span class="line">&gt; <span class="built_in">cd</span> &lt;仮想環境名&gt;</span><br></pre></td></tr></table></figure><h2 id="仮想環境のアクティベート"><a href="#仮想環境のアクティベート" class="headerlink" title="仮想環境のアクティベート"></a>仮想環境のアクティベート</h2><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="built_in">cd</span> &lt;仮想環境名&gt;</span><br><span class="line">&gt; Scripts\activate.bat</span><br></pre></td></tr></table></figure><h2 id="パッケージのインストール"><a href="#パッケージのインストール" class="headerlink" title="パッケージのインストール"></a>パッケージのインストール</h2><p><strong>cupy</strong>、<strong>cupy-cuda</strong>、<strong>chainer</strong>のバージョンは一致させます。<br>cupy-cudaの末尾の数値は、先ほど確認したCUDAのバージョンに合わせます。</p><p>また、下記の順番を守ってインストールします。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; python -m pip install --upgrade pip</span><br><span class="line">&gt; python -m pip install cupy==<span class="number">4</span>.<span class="number">5</span>.<span class="number">0</span></span><br><span class="line">&gt; python -m pip install cupy-cuda92==<span class="number">4</span>.<span class="number">5</span>.<span class="number">0</span></span><br><span class="line">&gt; python -m pip install chainer==<span class="number">4</span>.<span class="number">5</span>.<span class="number">0</span></span><br></pre></td></tr></table></figure><h2 id="最終確認"><a href="#最終確認" class="headerlink" title="最終確認"></a>最終確認</h2><p>Chainerがインストールされたこと、ChainerがCUDA、cuDNNを認識していることを確認します。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt; python -c &quot;import chainer; chainer.print_runtime_info()&quot;</span><br><span class="line"><span class="function">Platform: <span class="title">Windows</span>-10-10.0.17134-<span class="title">SP0</span></span></span><br><span class="line"><span class="function"><span class="title">Chainer</span>: 4.5.0</span></span><br><span class="line"><span class="function"><span class="title">NumPy</span>: 1.15.4</span></span><br><span class="line"><span class="function"><span class="title">CuPy</span>:</span></span><br><span class="line"><span class="function">  <span class="title">CuPy</span> <span class="title">Version</span>          : 4.5.0</span></span><br><span class="line"><span class="function">  <span class="title">CUDA</span> <span class="title">Root</span>             : <span class="title">C</span>:\<span class="title">Program</span> <span class="title">Files</span>\<span class="title">NVIDIA</span> <span class="title">GPU</span> <span class="title">Computing</span> <span class="title">Toolkit</span>\<span class="title">CUDA</span>\<span class="title">v9</span>.2</span></span><br><span class="line"><span class="function">  <span class="title">CUDA</span> <span class="title">Build</span> <span class="title">Version</span>    : 9020</span></span><br><span class="line"><span class="function">  <span class="title">CUDA</span> <span class="title">Driver</span> <span class="title">Version</span>   : 9020</span></span><br><span class="line"><span class="function">  <span class="title">CUDA</span> <span class="title">Runtime</span> <span class="title">Version</span>  : 9020</span></span><br><span class="line"><span class="function">  <span class="title">cuDNN</span> <span class="title">Build</span> <span class="title">Version</span>   : 7104</span></span><br><span class="line"><span class="function">  <span class="title">cuDNN</span> <span class="title">Version</span>         : 7104</span></span><br><span class="line"><span class="function">  <span class="title">NCCL</span> <span class="title">Build</span> <span class="title">Version</span>    : <span class="title">None</span> </span></span><br></pre></td></tr></table></figure>]]></content>
+        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>以前、CUDAを含むChainerのインストール手法を書きましたが、もう少しわかりやすく整理しました。</p><div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://taktak.jp/2018/10/20/3218" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=taktak.jp"></img><div class="hbc-site-name">taktak.jp</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">開発メモ その137 Chainer with CUDA on Anaconda3 for Windowsを使う – A certain engineer &quot;COMPLEX&quot;</div><div class="hbc-url">https://taktak.jp/2018/10/20/3218</div></div></div></div></a></div></div><h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><h2 id="CUDA-PATHの確認"><a href="#CUDA-PATHの確認" class="headerlink" title="CUDA_PATHの確認"></a>CUDA_PATHの確認</h2><p>Chainerで利用するCUDAを確認します。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="built_in">set</span> CUDA_PATH</span><br><span class="line">CUDA_PATH=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.<span class="number">2</span></span><br><span class="line">CUDA_PATH_V9_0=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.<span class="number">0</span></span><br><span class="line">CUDA_PATH_V9_1=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.<span class="number">1</span></span><br><span class="line">CUDA_PATH_V9_2=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.<span class="number">2</span></span><br></pre></td></tr></table></figure><h2 id="cuDNNの確認"><a href="#cuDNNの確認" class="headerlink" title="cuDNNの確認"></a>cuDNNの確認</h2><p>cuDNNが適切に展開されていることを確認します。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="built_in">dir</span> /B /D &quot;<span class="variable">%CUDA_PATH%</span>\bin\cudnn64_7.dll&quot;</span><br><span class="line">cudnn64_7.dll</span><br><span class="line"></span><br><span class="line">&gt; <span class="built_in">dir</span> /B &quot;<span class="variable">%CUDA_PATH%</span>\include\cudnn.h&quot;</span><br><span class="line">cudnn.h</span><br><span class="line"></span><br><span class="line">&gt; <span class="built_in">dir</span> /B &quot;<span class="variable">%CUDA_PATH%</span>\include\cudnn.h&quot;</span><br><span class="line">cudnn.h</span><br></pre></td></tr></table></figure><h2 id="仮想環境の作成"><a href="#仮想環境の作成" class="headerlink" title="仮想環境の作成"></a>仮想環境の作成</h2><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="built_in">cd</span> &lt;仮想環境の管理ディレクトリ&gt;</span><br><span class="line">&gt; python -m venv &lt;仮想環境名&gt;</span><br><span class="line">&gt; <span class="built_in">cd</span> &lt;仮想環境名&gt;</span><br></pre></td></tr></table></figure><h2 id="仮想環境のアクティベート"><a href="#仮想環境のアクティベート" class="headerlink" title="仮想環境のアクティベート"></a>仮想環境のアクティベート</h2><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="built_in">cd</span> &lt;仮想環境名&gt;</span><br><span class="line">&gt; Scripts\activate.bat</span><br></pre></td></tr></table></figure><h2 id="パッケージのインストール"><a href="#パッケージのインストール" class="headerlink" title="パッケージのインストール"></a>パッケージのインストール</h2><p><strong>cupy</strong>、<strong>cupy-cuda</strong>、<strong>chainer</strong>のバージョンは一致させます。<br>cupy-cudaの末尾の数値は、先ほど確認したCUDAのバージョンに合わせます。</p><p>また、下記の順番を守ってインストールします。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; python -m pip install --upgrade pip</span><br><span class="line">&gt; python -m pip install cupy==<span class="number">4</span>.<span class="number">5</span>.<span class="number">0</span></span><br><span class="line">&gt; python -m pip install cupy-cuda92==<span class="number">4</span>.<span class="number">5</span>.<span class="number">0</span></span><br><span class="line">&gt; python -m pip install chainer==<span class="number">4</span>.<span class="number">5</span>.<span class="number">0</span></span><br></pre></td></tr></table></figure><h2 id="最終確認"><a href="#最終確認" class="headerlink" title="最終確認"></a>最終確認</h2><p>Chainerがインストールされたこと、ChainerがCUDA、cuDNNを認識していることを確認します。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt; python -c &quot;import chainer; chainer.print_runtime_info()&quot;</span><br><span class="line"><span class="function">Platform: <span class="title">Windows</span>-10-10.0.17134-<span class="title">SP0</span></span></span><br><span class="line"><span class="function"><span class="title">Chainer</span>: 4.5.0</span></span><br><span class="line"><span class="function"><span class="title">NumPy</span>: 1.15.4</span></span><br><span class="line"><span class="function"><span class="title">CuPy</span>:</span></span><br><span class="line"><span class="function">  <span class="title">CuPy</span> <span class="title">Version</span>          : 4.5.0</span></span><br><span class="line"><span class="function">  <span class="title">CUDA</span> <span class="title">Root</span>             : <span class="title">C</span>:\<span class="title">Program</span> <span class="title">Files</span>\<span class="title">NVIDIA</span> <span class="title">GPU</span> <span class="title">Computing</span> <span class="title">Toolkit</span>\<span class="title">CUDA</span>\<span class="title">v9</span>.2</span></span><br><span class="line"><span class="function">  <span class="title">CUDA</span> <span class="title">Build</span> <span class="title">Version</span>    : 9020</span></span><br><span class="line"><span class="function">  <span class="title">CUDA</span> <span class="title">Driver</span> <span class="title">Version</span>   : 9020</span></span><br><span class="line"><span class="function">  <span class="title">CUDA</span> <span class="title">Runtime</span> <span class="title">Version</span>  : 9020</span></span><br><span class="line"><span class="function">  <span class="title">cuDNN</span> <span class="title">Build</span> <span class="title">Version</span>   : 7104</span></span><br><span class="line"><span class="function">  <span class="title">cuDNN</span> <span class="title">Version</span>         : 7104</span></span><br><span class="line"><span class="function">  <span class="title">NCCL</span> <span class="title">Build</span> <span class="title">Version</span>    : <span class="title">None</span> </span></span><br></pre></td></tr></table></figure>]]></content>
       
       
       <categories>
@@ -1531,17 +1515,15 @@
           
           <category> Python </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
           <category> gpupu </category>
-          
-          <category> Chainer </category>
           
           <category> ディープラーニング </category>
           
           <category> CUDA </category>
           
           <category> GPUPU </category>
+          
+          <category> Chainer </category>
           
       </categories>
       
@@ -1768,16 +1750,14 @@
       <link href="2018/11/03/3621/"/>
       <url>2018/11/03/3621/</url>
       
-        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p><strong>Chainer</strong>の<strong>DCGAN</strong>サンプルを実行してみた。<br>何も指定しないと自動で<strong>CIFAR-10</strong>のデータセットをダウンロードして学習と評価を行ってくれます。便利。</p><h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><p>ついでに<strong>Chainer UI</strong>で可視化もしてみました。<br>gitソースからサンプルを実行する際は、インストールしたchainerとgitソースのブランチを合わせておきましょう。</p><p>実行のコマンドは下記。規定では1000Epochで100iter/Epochになります。<br>ちなみにとてつもないサイズのファイルが大量に出力されるので空き容量には注意。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python -i train_dcgan.py -g <span class="number">0</span></span><br></pre></td></tr></table></figure><p>可視化した結果。</p><p><a href="../../../../public/2018/11/screencapture-localhost-5000-projects-1-2018-11-03-00_40_36.png"><img src="../../../../public/2018/11/screencapture-localhost-5000-projects-1-2018-11-03-00_40_36-1024x763.png"></a></p><ul><li>明るい赤 (Generator/Loss)</li><li>暗い赤 (Discriminator/Loss)</li></ul><p>になります。<br><strong>Generator/Loss</strong>が<strong>Discriminator/Loss</strong>より一貫して高いの良い、という認識でOK? </p><div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="http://cedro3.com/ai/dcgan-vector-control/" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=cedro3.com"></img><div class="hbc-site-name">cedro-blog</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="http://cedro3.com/wp-content/uploads/2018/05/キャプチャ-1.jpg"></img></div><div class="hbc-text"><div class="hbc-title">NNabla DCGAN 生成される顔画像を入力ベクトルでコントロールする（前編） | cedro-blog</div><div class="hbc-url">http://cedro3.com/ai/dcgan-vector-control/</div><div class="hbc-description">今回は、DCGANの推論実行時に、入力ベクトルを操作することによって、生成画像のカテゴリーをコントロールしてみます。「前編」は顔画像生成器の作成までやってみます。</div></div></div></div></a></div></div><p>下記は出力画像を連続したビデオにしてみたものです。</p><p><video src="../../../../public/2018/11/dcgan.mp4" width="480" height="360" controls></video></p>]]></content>
+        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p><strong>Chainer</strong>の<strong>DCGAN</strong>サンプルを実行してみた。<br>何も指定しないと自動で<strong>CIFAR-10</strong>のデータセットをダウンロードして学習と評価を行ってくれます。便利。</p><h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><p>ついでに<strong>Chainer UI</strong>で可視化もしてみました。<br>gitソースからサンプルを実行する際は、インストールしたchainerとgitソースのブランチを合わせておきましょう。</p><div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://taktak.jp/2018/10/22/3221" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=taktak.jp"></img><div class="hbc-site-name">taktak.jp</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">開発メモ その138 ChainerでDCGANのサンプル実行中に遭遇したエラー – A certain engineer &quot;COMPLEX&quot;</div><div class="hbc-url">https://taktak.jp/2018/10/22/3221</div></div></div></div></a></div></div><p>実行のコマンドは下記。規定では1000Epochで100iter/Epochになります。<br>ちなみにとてつもないサイズのファイルが大量に出力されるので空き容量には注意。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python -i train_dcgan.py -g <span class="number">0</span></span><br></pre></td></tr></table></figure><p>可視化した結果。</p><p><a href="../../../../public/2018/11/screencapture-localhost-5000-projects-1-2018-11-03-00_40_36.png"><img src="../../../../public/2018/11/screencapture-localhost-5000-projects-1-2018-11-03-00_40_36-1024x763.png"></a></p><ul><li>明るい赤 (Generator/Loss)</li><li>暗い赤 (Discriminator/Loss)</li></ul><p>になります。<br><strong>Generator/Loss</strong>が<strong>Discriminator/Loss</strong>より一貫して高いの良い、という認識でOK? </p><div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="http://cedro3.com/ai/dcgan-vector-control/" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=cedro3.com"></img><div class="hbc-site-name">cedro-blog</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="http://cedro3.com/wp-content/uploads/2018/05/キャプチャ-1.jpg"></img></div><div class="hbc-text"><div class="hbc-title">NNabla DCGAN 生成される顔画像を入力ベクトルでコントロールする（前編） | cedro-blog</div><div class="hbc-url">http://cedro3.com/ai/dcgan-vector-control/</div><div class="hbc-description">今回は、DCGANの推論実行時に、入力ベクトルを操作することによって、生成画像のカテゴリーをコントロールしてみます。「前編」は顔画像生成器の作成までやってみます。</div></div></div></div></a></div></div><p>下記は出力画像を連続したビデオにしてみたものです。</p><p><video src="../../../../public/2018/11/dcgan.mp4" width="480" height="360" controls></video></p>]]></content>
       
       
       <categories>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
+          <category> ディープラーニング </category>
           
           <category> Chainer </category>
-          
-          <category> ディープラーニング </category>
           
       </categories>
       
@@ -1939,16 +1919,14 @@
       <link href="2018/10/22/3221/"/>
       <url>2018/10/22/3221/</url>
       
-        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p><strong>chainer</strong>に付属している <strong>DCGAN(Deep Convolution Generative Adversarial Networks)</strong> のサンプルを動かした際のエラーについての対応メモ。</p><h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><h3 id="backend-がない"><a href="#backend-がない" class="headerlink" title="backend がない"></a>backend がない</h3><p>下記のエラーが出る。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; python -i train_dcgan.py</span><br><span class="line">Traceback (most recent <span class="keyword">call</span> last):</span><br><span class="line">  File &quot;train_dcgan.py&quot;, line <span class="number">9</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    from <span class="built_in">net</span> import Discriminator</span><br><span class="line">  File &quot;D:\Works\Python\Envs\chainer\chainer\examples\dcgan\<span class="built_in">net</span>.py&quot;, line <span class="number">5</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    from chainer import backend</span><br><span class="line"><span class="function">ImportError: <span class="title">cannot</span> <span class="title">import</span> <span class="title">name</span> &#x27;<span class="title">backend</span>&#x27;</span></span><br></pre></td></tr></table></figure><p>理由としては、現時点(2018/10/21)でのgithubのリポジトリがChainerの<strong>v5.0</strong>へ移行し始めている。<br>その過程でI/Fに下記の変更がはいった模様。</p><p>要するに、 </p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> chainer <span class="keyword">import</span> backends </span><br></pre></td></tr></table></figure><p>が </p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> chainer <span class="keyword">import</span> backend </span><br></pre></td></tr></table></figure><p>こうなったと。<br>で、<strong>pip</strong>からインストールしたchainerは </p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&gt; python -m pip freeze chainer</span><br><span class="line">certifi==<span class="number">2018</span>.<span class="number">10</span>.<span class="number">15</span></span><br><span class="line">chainer==<span class="number">4</span>.<span class="number">5</span>.<span class="number">0</span></span><br><span class="line">colorama==<span class="number">0</span>.<span class="number">3</span>.<span class="number">9</span></span><br><span class="line">cupy==<span class="number">4</span>.<span class="number">5</span>.<span class="number">0</span></span><br><span class="line">fastrlock==<span class="number">0</span>.<span class="number">4</span></span><br><span class="line">filelock==<span class="number">3</span>.<span class="number">0</span>.<span class="number">9</span></span><br><span class="line">isort==<span class="number">4</span>.<span class="number">3</span>.<span class="number">4</span></span><br><span class="line">lazy-object-proxy==<span class="number">1</span>.<span class="number">3</span>.<span class="number">1</span></span><br><span class="line">mccabe==<span class="number">0</span>.<span class="number">6</span>.<span class="number">1</span></span><br><span class="line">numpy==<span class="number">1</span>.<span class="number">15</span>.<span class="number">2</span></span><br><span class="line">protobuf==<span class="number">3</span>.<span class="number">6</span>.<span class="number">1</span></span><br><span class="line">six==<span class="number">1</span>.<span class="number">11</span>.<span class="number">0</span></span><br><span class="line">typed-ast==<span class="number">1</span>.<span class="number">1</span>.<span class="number">0</span></span><br><span class="line">wincertstore==<span class="number">0</span>.<span class="number">2</span></span><br></pre></td></tr></table></figure><p>となっており、ずれている、というわけです。<br>なので、githubのブランチを<strong>v4</strong>に変更して実行するのが正解。</p><h3 id="PIL-がない"><a href="#PIL-がない" class="headerlink" title="PIL がない"></a>PIL がない</h3><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; python -i train_dcgan.py</span><br><span class="line">Traceback (most recent <span class="keyword">call</span> last):</span><br><span class="line">  File &quot;train_dcgan.py&quot;, line <span class="number">14</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    from visualize import out_generated_image</span><br><span class="line">  File &quot;D:\Works\Python\Envs\chainer\chainer\examples\dcgan\visualize.py&quot;, line <span class="number">6</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    from PIL import Image</span><br><span class="line"><span class="function">ModuleNotFoundError: <span class="title">No</span> <span class="title">module</span> <span class="title">named</span> &#x27;<span class="title">PIL</span></span></span><br></pre></td></tr></table></figure><p>なので、<strong>Pillow</strong>をインストール。<br>いつも、<strong>PIL</strong>をインストールしようとするけど、そういう名前のパッケージはないのね。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; python -m pip install Pillow</span><br><span class="line">Collecting Pillow</span><br><span class="line">  Downloading https://files.pythonhosted.org/packages/bd/<span class="number">39</span>/c76eaf781343162bdb1cf4854cb3bd5947a87ee44363e5acd6c48d69c4a1/Pillow-<span class="number">5</span>.<span class="number">3</span>.<span class="number">0</span>-cp36-cp36m-win_amd64.whl (<span class="number">1</span>.<span class="number">6</span>MB)</span><br><span class="line">    <span class="number">100</span>% |████████████████████████████████| <span class="number">1</span>.<span class="number">6</span>MB <span class="number">975</span>kB/s</span><br><span class="line">Installing collected packages: Pillow</span><br><span class="line">Successfully installed Pillow-<span class="number">5</span>.<span class="number">3</span>.<span class="number">0</span></span><br></pre></td></tr></table></figure><h3 id="CUDAが使えない"><a href="#CUDAが使えない" class="headerlink" title="CUDAが使えない"></a>CUDAが使えない</h3><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt; python -i train_dcgan.py -g <span class="number">0</span></span><br><span class="line"><span class="function">GPU: 0</span></span><br><span class="line"><span class="function"># <span class="title">Minibatch</span>-<span class="title">size</span>: 50</span></span><br><span class="line"><span class="function"># <span class="title">n_hidden</span>: 100</span></span><br><span class="line"><span class="function"># <span class="title">epoch</span>: 1000</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">D</span>:\<span class="title">Works</span>\<span class="title">Python</span>\<span class="title">Envs</span>\<span class="title">chainer</span>\<span class="title">lib</span>\<span class="title">site</span>-<span class="title">packages</span>\<span class="title">chainer</span>\<span class="title">backends</span>\<span class="title">cuda.py</span>:95: <span class="title">UserWarning</span>: <span class="title">cuDNN</span> <span class="title">is</span> <span class="title">not</span> <span class="title">enabled</span>.</span></span><br><span class="line"><span class="function"><span class="title">Please</span> <span class="title">reinstall</span> <span class="title">CuPy</span> <span class="title">after</span> <span class="title">you</span> <span class="title">install</span> <span class="title">cudnn</span></span></span><br><span class="line"><span class="function">(<span class="title">see</span> <span class="title">https</span>://<span class="title">docs</span>-<span class="title">cupy.chainer.org</span>/<span class="title">en</span>/<span class="title">stable</span>/<span class="title">install.html</span>#<span class="title">install</span>-<span class="title">cupy</span>-<span class="title">with</span>-<span class="title">cudnn</span>-<span class="title">and</span>-<span class="title">nccl</span>).</span></span><br><span class="line"><span class="function">  &#x27;<span class="title">cuDNN</span> <span class="title">is</span> <span class="title">not</span> <span class="title">enabled</span>.\<span class="title">n</span>&#x27;</span></span><br></pre></td></tr></table></figure><p><strong>cuDNN</strong>をインストールして、<strong>CuPy</strong>を再インストールしろ、ってエラーです。<br>自分の環境にインストールされているcuDNNを調べて適切なCuPyをインストールします。<br>普通の<strong>CuPy</strong>は削除しなくてもOKでした。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; python -m pip install cupy-cuda92</span><br><span class="line">Collecting cupy-cuda92</span><br><span class="line">  Downloading https://files.pythonhosted.org/packages/<span class="number">1</span>a/<span class="number">23</span>/<span class="number">0</span>a8f34c97486ff7e18c5db9bcd76f62605adcf9b63f6fc247229e5df24b4/cupy_cuda92-<span class="number">4</span>.<span class="number">5</span>.<span class="number">0</span>-cp36-cp36m-win_amd64.whl (<span class="number">231</span>.<span class="number">7</span>MB)</span><br><span class="line">    <span class="number">100</span>% |████████████████████████████████| <span class="number">231</span>.<span class="number">7</span>MB <span class="number">92</span>kB/s</span><br><span class="line">Requirement already satisfied: numpy&gt;=<span class="number">1</span>.<span class="number">9</span>.<span class="number">0</span> <span class="keyword">in</span> d:\works\python\envs\chainer\lib\site-packages (from cupy-cuda92) (<span class="number">1</span>.<span class="number">15</span>.<span class="number">2</span>)</span><br><span class="line">Requirement already satisfied: six&gt;=<span class="number">1</span>.<span class="number">9</span>.<span class="number">0</span> <span class="keyword">in</span> c:\users\takuya\appdata\roaming\python\python36\site-packages (from cupy-cuda92) (<span class="number">1</span>.<span class="number">11</span>.<span class="number">0</span>)</span><br><span class="line">Requirement already satisfied: fastrlock&gt;=<span class="number">0</span>.<span class="number">3</span> <span class="keyword">in</span> d:\works\python\envs\chainer\lib\site-packages (from cupy-cuda92) (<span class="number">0</span>.<span class="number">4</span>)</span><br><span class="line">Installing collected packages: cupy-cuda92</span><br><span class="line">Successfully installed cupy-cuda92-<span class="number">4</span>.<span class="number">5</span>.<span class="number">0</span></span><br></pre></td></tr></table></figure><p>cuDNNは<strong>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\vX.X</strong>に適切に展開されている必要があります。</p>]]></content>
+        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p><strong>chainer</strong>に付属している <strong>DCGAN(Deep Convolution Generative Adversarial Networks)</strong> のサンプルを動かした際のエラーについての対応メモ。</p><h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><h3 id="backend-がない"><a href="#backend-がない" class="headerlink" title="backend がない"></a>backend がない</h3><p>下記のエラーが出る。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; python -i train_dcgan.py</span><br><span class="line">Traceback (most recent <span class="keyword">call</span> last):</span><br><span class="line">  File &quot;train_dcgan.py&quot;, line <span class="number">9</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    from <span class="built_in">net</span> import Discriminator</span><br><span class="line">  File &quot;D:\Works\Python\Envs\chainer\chainer\examples\dcgan\<span class="built_in">net</span>.py&quot;, line <span class="number">5</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    from chainer import backend</span><br><span class="line"><span class="function">ImportError: <span class="title">cannot</span> <span class="title">import</span> <span class="title">name</span> &#x27;<span class="title">backend</span>&#x27;</span></span><br></pre></td></tr></table></figure><p>理由としては、現時点(2018/10/21)でのgithubのリポジトリがChainerの<strong>v5.0</strong>へ移行し始めている。<br>その過程でI/Fに下記の変更がはいった模様。</p><div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/chainer/chainer/commit/1319c5af4cd4f0c7b5aa237cce9921f45b932dcb#diff-dffbb672bda7ce2836592cd9aae6636c" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://avatars1.githubusercontent.com/u/23183003?s=400&v=4"></img></div><div class="hbc-text"><div class="hbc-title">Replace backends with backend · chainer/chainer@1319c5a</div><div class="hbc-url">https://github.com/chainer/chainer/commit/1319c5af4cd4f0c7b5aa237cce9921f45b932dcb#diff-dffbb672bda7ce2836592cd9aae6636c</div><div class="hbc-description">A flexible framework of neural networks for deep learning - chainer/chainer</div></div></div></div></a></div></div><p>要するに、 </p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> chainer <span class="keyword">import</span> backends </span><br></pre></td></tr></table></figure><p>が </p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> chainer <span class="keyword">import</span> backend </span><br></pre></td></tr></table></figure><p>こうなったと。<br>で、<strong>pip</strong>からインストールしたchainerは </p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&gt; python -m pip freeze chainer</span><br><span class="line">certifi==<span class="number">2018</span>.<span class="number">10</span>.<span class="number">15</span></span><br><span class="line">chainer==<span class="number">4</span>.<span class="number">5</span>.<span class="number">0</span></span><br><span class="line">colorama==<span class="number">0</span>.<span class="number">3</span>.<span class="number">9</span></span><br><span class="line">cupy==<span class="number">4</span>.<span class="number">5</span>.<span class="number">0</span></span><br><span class="line">fastrlock==<span class="number">0</span>.<span class="number">4</span></span><br><span class="line">filelock==<span class="number">3</span>.<span class="number">0</span>.<span class="number">9</span></span><br><span class="line">isort==<span class="number">4</span>.<span class="number">3</span>.<span class="number">4</span></span><br><span class="line">lazy-object-proxy==<span class="number">1</span>.<span class="number">3</span>.<span class="number">1</span></span><br><span class="line">mccabe==<span class="number">0</span>.<span class="number">6</span>.<span class="number">1</span></span><br><span class="line">numpy==<span class="number">1</span>.<span class="number">15</span>.<span class="number">2</span></span><br><span class="line">protobuf==<span class="number">3</span>.<span class="number">6</span>.<span class="number">1</span></span><br><span class="line">six==<span class="number">1</span>.<span class="number">11</span>.<span class="number">0</span></span><br><span class="line">typed-ast==<span class="number">1</span>.<span class="number">1</span>.<span class="number">0</span></span><br><span class="line">wincertstore==<span class="number">0</span>.<span class="number">2</span></span><br></pre></td></tr></table></figure><p>となっており、ずれている、というわけです。<br>なので、githubのブランチを<strong>v4</strong>に変更して実行するのが正解。</p><h3 id="PIL-がない"><a href="#PIL-がない" class="headerlink" title="PIL がない"></a>PIL がない</h3><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; python -i train_dcgan.py</span><br><span class="line">Traceback (most recent <span class="keyword">call</span> last):</span><br><span class="line">  File &quot;train_dcgan.py&quot;, line <span class="number">14</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    from visualize import out_generated_image</span><br><span class="line">  File &quot;D:\Works\Python\Envs\chainer\chainer\examples\dcgan\visualize.py&quot;, line <span class="number">6</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    from PIL import Image</span><br><span class="line"><span class="function">ModuleNotFoundError: <span class="title">No</span> <span class="title">module</span> <span class="title">named</span> &#x27;<span class="title">PIL</span></span></span><br></pre></td></tr></table></figure><p>なので、<strong>Pillow</strong>をインストール。<br>いつも、<strong>PIL</strong>をインストールしようとするけど、そういう名前のパッケージはないのね。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; python -m pip install Pillow</span><br><span class="line">Collecting Pillow</span><br><span class="line">  Downloading https://files.pythonhosted.org/packages/bd/<span class="number">39</span>/c76eaf781343162bdb1cf4854cb3bd5947a87ee44363e5acd6c48d69c4a1/Pillow-<span class="number">5</span>.<span class="number">3</span>.<span class="number">0</span>-cp36-cp36m-win_amd64.whl (<span class="number">1</span>.<span class="number">6</span>MB)</span><br><span class="line">    <span class="number">100</span>% |████████████████████████████████| <span class="number">1</span>.<span class="number">6</span>MB <span class="number">975</span>kB/s</span><br><span class="line">Installing collected packages: Pillow</span><br><span class="line">Successfully installed Pillow-<span class="number">5</span>.<span class="number">3</span>.<span class="number">0</span></span><br></pre></td></tr></table></figure><h3 id="CUDAが使えない"><a href="#CUDAが使えない" class="headerlink" title="CUDAが使えない"></a>CUDAが使えない</h3><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt; python -i train_dcgan.py -g <span class="number">0</span></span><br><span class="line"><span class="function">GPU: 0</span></span><br><span class="line"><span class="function"># <span class="title">Minibatch</span>-<span class="title">size</span>: 50</span></span><br><span class="line"><span class="function"># <span class="title">n_hidden</span>: 100</span></span><br><span class="line"><span class="function"># <span class="title">epoch</span>: 1000</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">D</span>:\<span class="title">Works</span>\<span class="title">Python</span>\<span class="title">Envs</span>\<span class="title">chainer</span>\<span class="title">lib</span>\<span class="title">site</span>-<span class="title">packages</span>\<span class="title">chainer</span>\<span class="title">backends</span>\<span class="title">cuda.py</span>:95: <span class="title">UserWarning</span>: <span class="title">cuDNN</span> <span class="title">is</span> <span class="title">not</span> <span class="title">enabled</span>.</span></span><br><span class="line"><span class="function"><span class="title">Please</span> <span class="title">reinstall</span> <span class="title">CuPy</span> <span class="title">after</span> <span class="title">you</span> <span class="title">install</span> <span class="title">cudnn</span></span></span><br><span class="line"><span class="function">(<span class="title">see</span> <span class="title">https</span>://<span class="title">docs</span>-<span class="title">cupy.chainer.org</span>/<span class="title">en</span>/<span class="title">stable</span>/<span class="title">install.html</span>#<span class="title">install</span>-<span class="title">cupy</span>-<span class="title">with</span>-<span class="title">cudnn</span>-<span class="title">and</span>-<span class="title">nccl</span>).</span></span><br><span class="line"><span class="function">  &#x27;<span class="title">cuDNN</span> <span class="title">is</span> <span class="title">not</span> <span class="title">enabled</span>.\<span class="title">n</span>&#x27;</span></span><br></pre></td></tr></table></figure><p><strong>cuDNN</strong>をインストールして、<strong>CuPy</strong>を再インストールしろ、ってエラーです。<br>自分の環境にインストールされているcuDNNを調べて適切なCuPyをインストールします。<br>普通の<strong>CuPy</strong>は削除しなくてもOKでした。</p><figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; python -m pip install cupy-cuda92</span><br><span class="line">Collecting cupy-cuda92</span><br><span class="line">  Downloading https://files.pythonhosted.org/packages/<span class="number">1</span>a/<span class="number">23</span>/<span class="number">0</span>a8f34c97486ff7e18c5db9bcd76f62605adcf9b63f6fc247229e5df24b4/cupy_cuda92-<span class="number">4</span>.<span class="number">5</span>.<span class="number">0</span>-cp36-cp36m-win_amd64.whl (<span class="number">231</span>.<span class="number">7</span>MB)</span><br><span class="line">    <span class="number">100</span>% |████████████████████████████████| <span class="number">231</span>.<span class="number">7</span>MB <span class="number">92</span>kB/s</span><br><span class="line">Requirement already satisfied: numpy&gt;=<span class="number">1</span>.<span class="number">9</span>.<span class="number">0</span> <span class="keyword">in</span> d:\works\python\envs\chainer\lib\site-packages (from cupy-cuda92) (<span class="number">1</span>.<span class="number">15</span>.<span class="number">2</span>)</span><br><span class="line">Requirement already satisfied: six&gt;=<span class="number">1</span>.<span class="number">9</span>.<span class="number">0</span> <span class="keyword">in</span> c:\users\takuya\appdata\roaming\python\python36\site-packages (from cupy-cuda92) (<span class="number">1</span>.<span class="number">11</span>.<span class="number">0</span>)</span><br><span class="line">Requirement already satisfied: fastrlock&gt;=<span class="number">0</span>.<span class="number">3</span> <span class="keyword">in</span> d:\works\python\envs\chainer\lib\site-packages (from cupy-cuda92) (<span class="number">0</span>.<span class="number">4</span>)</span><br><span class="line">Installing collected packages: cupy-cuda92</span><br><span class="line">Successfully installed cupy-cuda92-<span class="number">4</span>.<span class="number">5</span>.<span class="number">0</span></span><br></pre></td></tr></table></figure><p>cuDNNは<strong>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\vX.X</strong>に適切に展開されている必要があります。</p>]]></content>
       
       
       <categories>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
+          <category> ディープラーニング </category>
           
           <category> Chainer </category>
-          
-          <category> ディープラーニング </category>
           
       </categories>
       
@@ -1971,13 +1949,9 @@
           
           <category> Python </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
           <category> gpupu </category>
           
           <category> python-2 </category>
-          
-          <category> Chainer </category>
           
           <category> ディープラーニング </category>
           
@@ -1986,6 +1960,8 @@
           <category> Anaconda </category>
           
           <category> GPUPU </category>
+          
+          <category> Chainer </category>
           
       </categories>
       
@@ -2428,8 +2404,6 @@
       
       <categories>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
           <category> gpupu </category>
           
           <category> ディープラーニング </category>
@@ -2488,8 +2462,6 @@
           
           <category> linux </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
           <category> gpupu </category>
           
           <category> ディープラーニング </category>
@@ -2526,8 +2498,6 @@
           <category> Linux </category>
           
           <category> linux </category>
-          
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
           
           <category> gpupu </category>
           
@@ -2742,8 +2712,6 @@
       
       
       <categories>
-          
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
           
           <category> gpupu </category>
           
@@ -3111,8 +3079,6 @@
       
       
       <categories>
-          
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
           
           <category> ディープラーニング </category>
           
@@ -5166,13 +5132,11 @@
           
           <category> linux </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
-          <category> Caffe </category>
-          
           <category> ディープラーニング </category>
           
           <category> Ubuntu </category>
+          
+          <category> Caffe </category>
           
       </categories>
       
@@ -7661,10 +7625,6 @@
       
       <categories>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
-          <category> Caffe </category>
-          
           <category> gpupu </category>
           
           <category> ディープラーニング </category>
@@ -7672,6 +7632,8 @@
           <category> CUDA </category>
           
           <category> GPUPU </category>
+          
+          <category> Caffe </category>
           
       </categories>
       
@@ -7784,15 +7746,13 @@
           
           <category> Microsoft </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
-          <category> Caffe </category>
-          
           <category> Windows </category>
           
           <category> オープンソース </category>
           
           <category> ディープラーニング </category>
+          
+          <category> Caffe </category>
           
           <category> DIGITS </category>
           
@@ -7815,15 +7775,13 @@
           
           <category> Microsoft </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
-          <category> Caffe </category>
-          
           <category> Windows </category>
           
           <category> オープンソース </category>
           
           <category> ディープラーニング </category>
+          
+          <category> Caffe </category>
           
       </categories>
       
@@ -7934,10 +7892,6 @@
           
           <category> Microsoft </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
-          <category> Caffe </category>
-          
           <category> Windows </category>
           
           <category> オープンソース </category>
@@ -7945,6 +7899,8 @@
           <category> ディープラーニング </category>
           
           <category> 指掌紋 </category>
+          
+          <category> Caffe </category>
           
       </categories>
       
@@ -8009,15 +7965,13 @@
           
           <category> Microsoft </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
-          <category> Caffe </category>
-          
           <category> Windows </category>
           
           <category> オープンソース </category>
           
           <category> ディープラーニング </category>
+          
+          <category> Caffe </category>
           
       </categories>
       
@@ -8872,10 +8826,6 @@
           
           <category> ソフトウェア紹介 </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
-          <category> CNTK </category>
-          
           <category> netで○○○を試してみる </category>
           
           <category> オープンソース </category>
@@ -8889,6 +8839,8 @@
           <category> CUDA </category>
           
           <category> GPUPU </category>
+          
+          <category> CNTK </category>
           
       </categories>
       
@@ -8911,10 +8863,6 @@
           
           <category> ソフトウェア紹介 </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
-          <category> CNTK </category>
-          
           <category> オープンソース </category>
           
           <category> gpupu </category>
@@ -8924,6 +8872,8 @@
           <category> CUDA </category>
           
           <category> GPUPU </category>
+          
+          <category> CNTK </category>
           
       </categories>
       
@@ -8979,10 +8929,6 @@
           
           <category> ソフトウェア紹介 </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
-          <category> CNTK </category>
-          
           <category> オープンソース </category>
           
           <category> gpupu </category>
@@ -8992,6 +8938,8 @@
           <category> CUDA </category>
           
           <category> GPUPU </category>
+          
+          <category> CNTK </category>
           
       </categories>
       
@@ -9014,10 +8962,6 @@
           
           <category> ソフトウェア紹介 </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
-          <category> CNTK </category>
-          
           <category> オープンソース </category>
           
           <category> gpupu </category>
@@ -9027,6 +8971,8 @@
           <category> CUDA </category>
           
           <category> GPUPU </category>
+          
+          <category> CNTK </category>
           
       </categories>
       
@@ -9049,10 +8995,6 @@
           
           <category> ソフトウェア紹介 </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
-          <category> CNTK </category>
-          
           <category> オープンソース </category>
           
           <category> gpupu </category>
@@ -9062,6 +9004,8 @@
           <category> CUDA </category>
           
           <category> GPUPU </category>
+          
+          <category> CNTK </category>
           
       </categories>
       
@@ -9084,10 +9028,6 @@
           
           <category> ソフトウェア紹介 </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
-          <category> CNTK </category>
-          
           <category> オープンソース </category>
           
           <category> gpupu </category>
@@ -9097,6 +9037,8 @@
           <category> CUDA </category>
           
           <category> GPUPU </category>
+          
+          <category> CNTK </category>
           
       </categories>
       
@@ -9119,10 +9061,6 @@
           
           <category> ソフトウェア紹介 </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
-          <category> CNTK </category>
-          
           <category> オープンソース </category>
           
           <category> gpupu </category>
@@ -9132,6 +9070,8 @@
           <category> CUDA </category>
           
           <category> GPUPU </category>
+          
+          <category> CNTK </category>
           
       </categories>
       
@@ -9154,15 +9094,13 @@
           
           <category> linux </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
-          <category> Caffe </category>
-          
           <category> オープンソース </category>
           
           <category> ディープラーニング </category>
           
           <category> Ubuntu </category>
+          
+          <category> Caffe </category>
           
       </categories>
       
@@ -9185,15 +9123,13 @@
           
           <category> linux </category>
           
-          <category> %e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </category>
-          
-          <category> Caffe </category>
-          
           <category> オープンソース </category>
           
           <category> ディープラーニング </category>
           
           <category> Ubuntu </category>
+          
+          <category> Caffe </category>
           
       </categories>
       
