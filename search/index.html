@@ -29,10 +29,17 @@
   function analyzeData(document, query) {
     const entries = document.getElementsByTagName('entry')
     const matchEntries = []
+    query = decodeURI(query).toLowerCase()
     for (var entry of entries) {
-      const regExp = new RegExp(query, 'i')
-      if (regExp.test(entry.children[0].textContent) ||
-          regExp.test(entry.children[3].textContent)) {
+      var content1 = entry.children[0].textContent.toLowerCase()
+      var ret = content1.indexOf(query)
+      if (ret == -1)
+      {
+        var content2 = entry.children[3].textContent.toLowerCase()
+        ret = content2.indexOf(query)
+      }
+      if (ret != -1)
+      {
         matchEntries.push(entry)
       }
     }
@@ -47,10 +54,10 @@
       const url = entry.children[2].textContent
       const content = entry.children[3].textContent
       innerHTML += '<h2><a href="../' + url + '">' + title + '</a></h2>'
-      const thumbnail = /<img[^>]*>/.exec(content)
-      if (thumbnail && thumbnail.length >= 1) {
-        innerHTML += '<div class="search-result-thumbnail">' + thumbnail[0] + '</div>'
-      }
+      // const thumbnail = /<img[^>]*>/.exec(content)
+      // if (thumbnail && thumbnail.length >= 1) {
+      //   innerHTML += '<div class="search-result-thumbnail">' + thumbnail[0] + '</div>'
+      // }
       innerHTML += content.replace(/<[^>]*>/g, '').substring(0, 300)
       innerHTML += '</div>'
     }

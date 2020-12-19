@@ -20,7 +20,7 @@ IntroductionNVIDIA Caffeを改造したライブラリを作っているので�
 
 <p>正攻法はNVIDIA CaffeのMakefileやCMakeLists.txtを書き換えて、正しい名前で出力するようにするべきです。<br>が、単純に変更してもうまくビルドできませんでした。<br>なので別の方法を。</p>
 <h2 id="PatchELF"><a href="#PatchELF" class="headerlink" title="PatchELF"></a>PatchELF</h2><p><strong>PatchELF</strong>というLinuxの <strong>ELF (Executable and Linkable Format)ファイル</strong> を操作するツールを使います。</p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/NixOS/patchelf" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://avatars2.githubusercontent.com/u/487568?s=400&v=4"></img></div><div class="hbc-text"><div class="hbc-title">NixOS/patchelf</div><div class="hbc-url">https://github.com/NixOS/patchelf</div><div class="hbc-description">A small utility to modify the dynamic linker and RPATH of ELF executables - NixOS/patchelf</div></div></div></div></a></div></div>
+
 
 <p>バイナリで配布はされていないのでソースからビルドします。<br>最新版を使ってください。少し古い版の0.8はうまく動きませんでした。</p>
 <script src="https://gist.github.com/takuya-takeuchi/fa796dc541bceff59a6f9548b786130e.js"></script>
