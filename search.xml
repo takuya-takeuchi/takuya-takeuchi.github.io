@@ -728,15 +728,15 @@
       
       <categories>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
           <category> Linux </category>
-          
-          <category> Python </category>
           
           <category> linux </category>
           
+          <category> プログラミング言語 </category>
+          
           <category> Ubuntu </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -1102,19 +1102,19 @@
       
       <categories>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
           <category> Linux </category>
           
-          <category> Python </category>
-          
           <category> linux </category>
+          
+          <category> プログラミング言語 </category>
           
           <category> ディープラーニング </category>
           
           <category> Ubuntu </category>
           
           <category> PyTorch </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -1295,13 +1295,11 @@
           
           <category> linux </category>
           
-          <category> %e3%83%aa%e3%83%a2%e3%83%bc%e3%83%88%e3%83%87%e3%82%b9%e3%82%af%e3%83%88%e3%83%83%e3%83%97 </category>
-          
           <category> Ubuntu </category>
           
-          <category> VNC </category>
-          
           <category> リモートデスクトップ </category>
+          
+          <category> VNC </category>
           
       </categories>
       
@@ -1382,9 +1380,7 @@
       
       <categories>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
-          <category> Python </category>
+          <category> プログラミング言語 </category>
           
           <category> ディープラーニング </category>
           
@@ -1393,6 +1389,8 @@
           <category> ChainerCV </category>
           
           <category> Chainer </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -1411,9 +1409,7 @@
       
       <categories>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
-          <category> Python </category>
+          <category> プログラミング言語 </category>
           
           <category> ディープラーニング </category>
           
@@ -1422,6 +1418,8 @@
           <category> ChainerCV </category>
           
           <category> Chainer </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -1456,18 +1454,18 @@
       <link href="2018/11/18/3891/"/>
       <url>2018/11/18/3891/</url>
       
-        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>以前、Visual Studio CodeでPython仮想環境を指定しました。</p><p>その続きで、デバッグを行います。</p><h1 id="How-to"><a href="#How-to" class="headerlink" title="How to?"></a>How to?</h1><p>まずデバッグしたいPythonのソースを開きます。<br>次に、画面左のデバッグアイコンをクリックし、歯車アイコンの左にあるコンボボックスを展開します。<br>そして<strong>構成の追加</strong>をクリックします。</p><p><a href="../../../../public/2018/11/1-4.png"><img src="../../../../public/2018/11/1-4.png"></a></p><p>続いて、仮想環境を選択します。<br>すると、画面右下で<strong>pylint</strong>のインストールを促されますので、<strong>Install</strong>を選択します。<br>拡張機能とありますが、これは仮想環境にインストールされるパッケージになります。</p><p><a href="../../../../public/2018/11/2-3.png"><img src="../../../../public/2018/11/2-3.png"></a></p><p>準備ができましたので、ブレークポイントを設定し、デバッグ開始アイコンをクリックすることで任意の個所で停止できるようになります。</p><p><a href="../../../../public/2018/11/3-3.png"><img src="../../../../public/2018/11/3-3-1024x286.png"></a></p>]]></content>
+        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>以前、Visual Studio CodeでPython仮想環境を指定しました。</p><div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://taktak.jp/2018/11/17/3872" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=taktak.jp"></img><div class="hbc-site-name">taktak.jp</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">開発メモ その155 Visual Studio CodeでPython仮想環境を指定する – A certain engineer &quot;COMPLEX&quot;</div><div class="hbc-url">https://taktak.jp/2018/11/17/3872</div></div></div></div></a></div></div><p>その続きで、デバッグを行います。</p><h1 id="How-to"><a href="#How-to" class="headerlink" title="How to?"></a>How to?</h1><p>まずデバッグしたいPythonのソースを開きます。<br>次に、画面左のデバッグアイコンをクリックし、歯車アイコンの左にあるコンボボックスを展開します。<br>そして<strong>構成の追加</strong>をクリックします。</p><p><a href="../../../../public/2018/11/1-4.png"><img src="../../../../public/2018/11/1-4.png"></a></p><p>続いて、仮想環境を選択します。<br>すると、画面右下で<strong>pylint</strong>のインストールを促されますので、<strong>Install</strong>を選択します。<br>拡張機能とありますが、これは仮想環境にインストールされるパッケージになります。</p><p><a href="../../../../public/2018/11/2-3.png"><img src="../../../../public/2018/11/2-3.png"></a></p><p>準備ができましたので、ブレークポイントを設定し、デバッグ開始アイコンをクリックすることで任意の個所で停止できるようになります。</p><p><a href="../../../../public/2018/11/3-3.png"><img src="../../../../public/2018/11/3-3-1024x286.png"></a></p>]]></content>
       
       
       <categories>
           
           <category> Microsoft </category>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
-          <category> Python </category>
+          <category> プログラミング言語 </category>
           
           <category> Visual Studio Code </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -1481,18 +1479,18 @@
       <link href="2018/11/17/3872/"/>
       <url>2018/11/17/3872/</url>
       
-        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>備忘録。</p><h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><h2 id="拡張機能のインストール"><a href="#拡張機能のインストール" class="headerlink" title="拡張機能のインストール"></a>拡張機能のインストール</h2><p><strong>Microsoft</strong>の<strong>Python</strong>をインストールします。<br>インストール後はVisual Studio Codeを再起動します。</p><div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://marketplace.visualstudio.com/items?itemName=ms-python.python" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=marketplace.visualstudio.com"></img><div class="hbc-site-name">marketplace.visualstudio.com</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://ms-python.gallerycdn.vsassets.io/extensions/ms-python/python/2020.11.371526539/1605818180684/Microsoft.VisualStudio.Services.Icons.Default"></img></div><div class="hbc-text"><div class="hbc-title">Python - Visual Studio Marketplace</div><div class="hbc-url">https://marketplace.visualstudio.com/items?itemName=ms-python.python</div><div class="hbc-description">Extension for Visual Studio Code - Linting, Debugging (multi-threaded, remote), Intellisense, Jupyter Notebooks, code formatting, refactorin…</div></div></div></div></a></div></div><h2 id="ユーザ設定の変更"><a href="#ユーザ設定の変更" class="headerlink" title="ユーザ設定の変更"></a>ユーザ設定の変更</h2><p>ここは人の好みによりますが、自分のように特定のディレクトリに仮想環境を集めている場合について説明。<br>まず、画面左下の歯車アイコンから<strong>設定</strong>を選択。</p><p><a href="../../../../public/2018/11/1-3.png"><img src="../../../../public/2018/11/1-3.png"></a></p><p>次に、<strong>Settings</strong>が表示されるので、検索バーに<strong>venvPath</strong>と入力し、仮想環境を集めているディレクトリを指定します。<br>この際、パス区切り文字列はバックスラッシュのままでかまいません。</p><p><a href="../../../../public/2018/11/2-2.png"><img src="../../../../public/2018/11/2-2-300x115.png"></a></p><p>設定後はVisual Studio Codeを再起動します。</p><h2 id="仮想環境を選択"><a href="#仮想環境を選択" class="headerlink" title="仮想環境を選択"></a>仮想環境を選択</h2><p>Visual Studio Codeが起動したら、<strong>Ctrl+Shift+P</strong>でコマンドパレットを表示させ、<strong>Python</strong>と入力し、その中から<strong>Python: インタープリターを選択</strong>を選択します。</p><p><a href="../../../../public/2018/11/3-2.png"><img src="../../../../public/2018/11/3-2-300x187.png"></a></p><p>少しすると、システムにインストールしてある、Pythonと仮想環境に加え、先ほど指定したフォルダの配下にある仮想環境が一覧に表示されます。</p><p><a href="../../../../public/2018/11/4-2.png"><img src="../../../../public/2018/11/4-2-300x127.png"></a></p><p>Visual Studio Codeを起動したばかりの時だと、仮想環境の一覧が表示されないことがあります。<br>その時は、コマンドパレットからもう一度選択すれば表示されます。</p>]]></content>
+        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>備忘録。</p><h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><h2 id="拡張機能のインストール"><a href="#拡張機能のインストール" class="headerlink" title="拡張機能のインストール"></a>拡張機能のインストール</h2><p><strong>Microsoft</strong>の<strong>Python</strong>をインストールします。<br>インストール後はVisual Studio Codeを再起動します。</p><div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://marketplace.visualstudio.com/items?itemName=ms-python.python" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=marketplace.visualstudio.com"></img><div class="hbc-site-name">marketplace.visualstudio.com</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://ms-python.gallerycdn.vsassets.io/extensions/ms-python/python/2020.12.424452561/1608080870098/Microsoft.VisualStudio.Services.Icons.Default"></img></div><div class="hbc-text"><div class="hbc-title">Python - Visual Studio Marketplace</div><div class="hbc-url">https://marketplace.visualstudio.com/items?itemName=ms-python.python</div><div class="hbc-description">Extension for Visual Studio Code - Linting, Debugging (multi-threaded, remote), Intellisense, Jupyter Notebooks, code formatting, refactorin…</div></div></div></div></a></div></div><h2 id="ユーザ設定の変更"><a href="#ユーザ設定の変更" class="headerlink" title="ユーザ設定の変更"></a>ユーザ設定の変更</h2><p>ここは人の好みによりますが、自分のように特定のディレクトリに仮想環境を集めている場合について説明。<br>まず、画面左下の歯車アイコンから<strong>設定</strong>を選択。</p><p><a href="../../../../public/2018/11/1-3.png"><img src="../../../../public/2018/11/1-3.png"></a></p><p>次に、<strong>Settings</strong>が表示されるので、検索バーに<strong>venvPath</strong>と入力し、仮想環境を集めているディレクトリを指定します。<br>この際、パス区切り文字列はバックスラッシュのままでかまいません。</p><p><a href="../../../../public/2018/11/2-2.png"><img src="../../../../public/2018/11/2-2-300x115.png"></a></p><p>設定後はVisual Studio Codeを再起動します。</p><h2 id="仮想環境を選択"><a href="#仮想環境を選択" class="headerlink" title="仮想環境を選択"></a>仮想環境を選択</h2><p>Visual Studio Codeが起動したら、<strong>Ctrl+Shift+P</strong>でコマンドパレットを表示させ、<strong>Python</strong>と入力し、その中から<strong>Python: インタープリターを選択</strong>を選択します。</p><p><a href="../../../../public/2018/11/3-2.png"><img src="../../../../public/2018/11/3-2-300x187.png"></a></p><p>少しすると、システムにインストールしてある、Pythonと仮想環境に加え、先ほど指定したフォルダの配下にある仮想環境が一覧に表示されます。</p><p><a href="../../../../public/2018/11/4-2.png"><img src="../../../../public/2018/11/4-2-300x127.png"></a></p><p>Visual Studio Codeを起動したばかりの時だと、仮想環境の一覧が表示されないことがあります。<br>その時は、コマンドパレットからもう一度選択すれば表示されます。</p>]]></content>
       
       
       <categories>
           
           <category> Microsoft </category>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
-          <category> Python </category>
+          <category> プログラミング言語 </category>
           
           <category> Visual Studio Code </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -1511,9 +1509,7 @@
       
       <categories>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
-          <category> Python </category>
+          <category> プログラミング言語 </category>
           
           <category> gpupu </category>
           
@@ -1524,6 +1520,8 @@
           <category> GPUPU </category>
           
           <category> Chainer </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -1776,7 +1774,7 @@
       
       <categories>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
+          <category> プログラミング言語 </category>
           
           <category> Python </category>
           
@@ -1832,13 +1830,11 @@
           
           <category> Fedora </category>
           
-          <category> %e3%83%aa%e3%83%a2%e3%83%bc%e3%83%88%e3%83%87%e3%82%b9%e3%82%af%e3%83%88%e3%83%83%e3%83%97 </category>
-          
-          <category> VNC </category>
-          
           <category> Ubuntu </category>
           
           <category> リモートデスクトップ </category>
+          
+          <category> VNC </category>
           
       </categories>
       
@@ -1945,9 +1941,7 @@
       
       <categories>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
-          <category> Python </category>
+          <category> プログラミング言語 </category>
           
           <category> gpupu </category>
           
@@ -1962,6 +1956,8 @@
           <category> GPUPU </category>
           
           <category> Chainer </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -2287,13 +2283,13 @@
       
       <categories>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
-          <category> Python </category>
+          <category> プログラミング言語 </category>
           
           <category> python-2 </category>
           
           <category> Anaconda </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -2312,13 +2308,13 @@
       
       <categories>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
-          <category> Python </category>
+          <category> プログラミング言語 </category>
           
           <category> python-2 </category>
           
           <category> Anaconda </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -2856,11 +2852,7 @@
           
           <category> 仮想化 </category>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
           <category> Linux </category>
-          
-          <category> Python </category>
           
           <category> linux </category>
           
@@ -2868,9 +2860,13 @@
           
           <category> OpenCV </category>
           
+          <category> プログラミング言語 </category>
+          
           <category> Debian </category>
           
           <category> VirtualBox </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -3506,7 +3502,7 @@
       
       <categories>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
+          <category> プログラミング言語 </category>
           
           <category> Python </category>
           
@@ -3624,9 +3620,9 @@
       
       <categories>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
           <category> C/C++ </category>
+          
+          <category> プログラミング言語 </category>
           
           <category> Python </category>
           
@@ -3647,19 +3643,19 @@
       
       <categories>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
           <category> C/C++ </category>
-          
-          <category> Python </category>
           
           <category> その他 </category>
           
           <category> boost </category>
           
+          <category> プログラミング言語 </category>
+          
           <category> python-2 </category>
           
           <category> Boost.Python </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -3905,11 +3901,9 @@
           
           <category> Fedora </category>
           
-          <category> %e3%83%aa%e3%83%a2%e3%83%bc%e3%83%88%e3%83%87%e3%82%b9%e3%82%af%e3%83%88%e3%83%83%e3%83%97 </category>
+          <category> リモートデスクトップ </category>
           
           <category> VNC </category>
-          
-          <category> リモートデスクトップ </category>
           
       </categories>
       
@@ -4152,7 +4146,7 @@
       <link href="2017/07/30/2521/"/>
       <url>2017/07/30/2521/</url>
       
-        <content type="html"><![CDATA[<h1 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h1><p>前回はRHELでPython3を使えるようにしましたが、何か微妙になりました。</p><p>なので、<strong>Docker</strong>にPython3を使える環境を用意することにしました。</p><h1 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h1><p>既に先人の方が、Dockerファイルを用意してくださっています。<br>しかも、pip付きで。</p><div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="http://qiita.com/kekedadamama/items/154753aa8974774a8b2b" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=qiita.com"></img><div class="hbc-site-name">Qiita</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://qiita-user-contents.imgix.net/https%3A%2F%2Fcdn.qiita.com%2Fassets%2Fpublic%2Farticle-ogp-background-1150d8b18a7c15795b701a55ae908f94.png?ixlib=rb-1.2.2&w=1200&mark=https%3A%2F%2Fqiita-user-contents.imgix.net%2F~text%3Fixlib%3Drb-1.2.2%26w%3D840%26h%3D380%26txt%3DDocker%25E3%2581%25AEubuntu%25E3%2581%25AB%25E3%2582%2588%25E3%2582%258Bpython3.6%25E3%2581%25AE%25E3%2581%259F%25E3%2582%2581%25E3%2581%25AEDockerfile%26txt-color%3D%2523333%26txt-font%3DHiragino%2520Sans%2520W6%26txt-size%3D54%26txt-clip%3Dellipsis%26txt-align%3Dcenter%252Cmiddle%26s%3D7a01a2ee5afb21c89a674a55d06482bf&mark-align=center%2Cmiddle&blend=https%3A%2F%2Fqiita-user-contents.imgix.net%2F~text%3Fixlib%3Drb-1.2.2%26w%3D840%26h%3D500%26txt%3D%2540kekedadamama%26txt-color%3D%2523333%26txt-font%3DHiragino%2520Sans%2520W6%26txt-size%3D45%26txt-align%3Dright%252Cbottom%26s%3Db029b148801ccb2d0fc23df840dc9e14&blend-align=center%2Cmiddle&blend-mode=normal&s=4355ad5a8dae0293b0ced4124e23c64b"></img></div><div class="hbc-text"><div class="hbc-title">Dockerのubuntuによるpython3.6のためのDockerfile - Qiita</div><div class="hbc-url">http://qiita.com/kekedadamama/items/154753aa8974774a8b2b</div><div class="hbc-description">はじめにPython3.6 から追加された文法機能の記事を見かけ、使ってみようと思った時、とりあえずちょろっと使うだけだからDocker(Ubuntu)で試そうとしました。しかし、apt-getでpython3.6を入れ...</div></div></div></div></a></div></div><p>下記の内容を<strong>Dockerfile</strong>という名前で任意のフォルダに保存します。</p><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">16.10</span></span><br><span class="line"><span class="keyword">MAINTAINER</span> kekedadamama</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update -y &amp;&amp; apt-get install -yq wget build-essential gcc zlib1g-dev</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /root/</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tgz \</span></span><br><span class="line"><span class="bash">        &amp;&amp; tar zxf Python-3.6.0.tgz \</span></span><br><span class="line"><span class="bash">        &amp;&amp; <span class="built_in">cd</span> Python-3.6.0 \</span></span><br><span class="line"><span class="bash">        &amp;&amp; ./configure \</span></span><br><span class="line"><span class="bash">        &amp;&amp; make altinstall</span></span><br><span class="line"><span class="keyword">ENV</span> PYTHONIOENCODING <span class="string">&quot;utf-8&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /</span></span><br></pre></td></tr></table></figure><p>続いて、保存したDockerfileのある場所で下記のコマンドを実行します。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker build .</span><br><span class="line">... Removing intermediate container 6c279bffa616</span><br><span class="line">Successfully built a86393df781f</span><br></pre></td></tr></table></figure><p>これでビルドが実行されイメージが生成されます。</p><p>ですが、上のページだとDockeファイルの名前が、<strong>DockerFile</strong>になっており、</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ unable to prepare context: unable to evaluate symlinks <span class="keyword">in</span> Dockerfile path: lstat /home/takuya/DockerFiles/Ubuntu-Python36-pip/Dockerfile: no such file or directory</span><br></pre></td></tr></table></figure><p>というエラーが表示され5分ほど悩んでいました。<br>正しくは<strong>Dockerfile</strong>です。大文字小文字を区別する模様。面倒な。</p><h1 id="Try"><a href="#Try" class="headerlink" title="Try"></a>Try</h1><p>イメージが生成されているので、dockerで実行するだけです。<br><strong>Portainer</strong>で実行しても構いません。<br>細かい実行の際の設定は</p><div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://taktak.jp/2017/04/27/2124" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=taktak.jp"></img><div class="hbc-site-name">taktak.jp</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">.NET Core 2.0 PreviewとVisual Studio Codeでコンソールアプリをつくる Linux準備編 – A certain engineer &quot;COMPLEX&quot;</div><div class="hbc-url">https://taktak.jp/2017/04/27/2124</div></div></div></div></a></div></div><p>を参考に。</p><p>Pythonは</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ python3.6 -V</span><br><span class="line">Python 3.6.0</span><br></pre></td></tr></table></figure><p>です。<br>必要なら</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">alias</span> python=<span class="string">&#x27;python3.6&#x27;</span></span><br></pre></td></tr></table></figure><p>で使いやすく出来ます。<br>以上で環境の構築は終わりです。</p>]]></content>
+        <content type="html"><![CDATA[<h1 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h1><p>前回はRHELでPython3を使えるようにしましたが、何か微妙になりました。</p><div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://taktak.jp/2017/07/29/%e9%96%8b%e7%99%ba%e3%83%a1%e3%83%a2-%e3%81%9d%e3%81%ae73-red-hat-enterprise-linux-7-3%e3%81%a7bluetooth%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%81%bf%e3%82%8b/" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=taktak.jp"></img><div class="hbc-site-name">taktak.jp</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">開発メモ その73 Red Hat Enterprise Linux 7.3でbluetoothを使ってみる – A certain engineer &quot;COMPLEX&quot;</div><div class="hbc-url">https://taktak.jp/2017/07/29/%e9%96%8b%e7%99%ba%e3%83%a1%e3%83%a2-%e3%81%9d%e3%81%ae73-red-hat-enterprise-linux-7-3%e3%81%a7bluetooth%e3%82%92%e4%bd%bf%e3%81%a3%e3%81%a6%e3%81%bf%e3%82%8b/</div></div></div></div></a></div></div><p>なので、<strong>Docker</strong>にPython3を使える環境を用意することにしました。</p><h1 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h1><p>既に先人の方が、Dockerファイルを用意してくださっています。<br>しかも、pip付きで。</p><div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="http://qiita.com/kekedadamama/items/154753aa8974774a8b2b" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=qiita.com"></img><div class="hbc-site-name">Qiita</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://qiita-user-contents.imgix.net/https%3A%2F%2Fcdn.qiita.com%2Fassets%2Fpublic%2Farticle-ogp-background-1150d8b18a7c15795b701a55ae908f94.png?ixlib=rb-1.2.2&w=1200&mark=https%3A%2F%2Fqiita-user-contents.imgix.net%2F~text%3Fixlib%3Drb-1.2.2%26w%3D840%26h%3D380%26txt%3DDocker%25E3%2581%25AEubuntu%25E3%2581%25AB%25E3%2582%2588%25E3%2582%258Bpython3.6%25E3%2581%25AE%25E3%2581%259F%25E3%2582%2581%25E3%2581%25AEDockerfile%26txt-color%3D%2523333%26txt-font%3DHiragino%2520Sans%2520W6%26txt-size%3D54%26txt-clip%3Dellipsis%26txt-align%3Dcenter%252Cmiddle%26s%3D7a01a2ee5afb21c89a674a55d06482bf&mark-align=center%2Cmiddle&blend=https%3A%2F%2Fqiita-user-contents.imgix.net%2F~text%3Fixlib%3Drb-1.2.2%26w%3D840%26h%3D500%26txt%3D%2540kekedadamama%26txt-color%3D%2523333%26txt-font%3DHiragino%2520Sans%2520W6%26txt-size%3D45%26txt-align%3Dright%252Cbottom%26s%3Db029b148801ccb2d0fc23df840dc9e14&blend-align=center%2Cmiddle&blend-mode=normal&s=4355ad5a8dae0293b0ced4124e23c64b"></img></div><div class="hbc-text"><div class="hbc-title">Dockerのubuntuによるpython3.6のためのDockerfile - Qiita</div><div class="hbc-url">http://qiita.com/kekedadamama/items/154753aa8974774a8b2b</div><div class="hbc-description">はじめにPython3.6 から追加された文法機能の記事を見かけ、使ってみようと思った時、とりあえずちょろっと使うだけだからDocker(Ubuntu)で試そうとしました。しかし、apt-getでpython3.6を入れ...</div></div></div></div></a></div></div><p>下記の内容を<strong>Dockerfile</strong>という名前で任意のフォルダに保存します。</p><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu:<span class="number">16.10</span></span><br><span class="line"><span class="keyword">MAINTAINER</span> kekedadamama</span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apt-get update -y &amp;&amp; apt-get install -yq wget build-essential gcc zlib1g-dev</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /root/</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tgz \</span></span><br><span class="line"><span class="bash">        &amp;&amp; tar zxf Python-3.6.0.tgz \</span></span><br><span class="line"><span class="bash">        &amp;&amp; <span class="built_in">cd</span> Python-3.6.0 \</span></span><br><span class="line"><span class="bash">        &amp;&amp; ./configure \</span></span><br><span class="line"><span class="bash">        &amp;&amp; make altinstall</span></span><br><span class="line"><span class="keyword">ENV</span> PYTHONIOENCODING <span class="string">&quot;utf-8&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /</span></span><br></pre></td></tr></table></figure><p>続いて、保存したDockerfileのある場所で下記のコマンドを実行します。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker build .</span><br><span class="line">... Removing intermediate container 6c279bffa616</span><br><span class="line">Successfully built a86393df781f</span><br></pre></td></tr></table></figure><p>これでビルドが実行されイメージが生成されます。</p><p>ですが、上のページだとDockeファイルの名前が、<strong>DockerFile</strong>になっており、</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ unable to prepare context: unable to evaluate symlinks <span class="keyword">in</span> Dockerfile path: lstat /home/takuya/DockerFiles/Ubuntu-Python36-pip/Dockerfile: no such file or directory</span><br></pre></td></tr></table></figure><p>というエラーが表示され5分ほど悩んでいました。<br>正しくは<strong>Dockerfile</strong>です。大文字小文字を区別する模様。面倒な。</p><h1 id="Try"><a href="#Try" class="headerlink" title="Try"></a>Try</h1><p>イメージが生成されているので、dockerで実行するだけです。<br><strong>Portainer</strong>で実行しても構いません。<br>細かい実行の際の設定は</p><div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://taktak.jp/2017/04/27/2124" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=taktak.jp"></img><div class="hbc-site-name">taktak.jp</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">.NET Core 2.0 PreviewとVisual Studio Codeでコンソールアプリをつくる Linux準備編 – A certain engineer &quot;COMPLEX&quot;</div><div class="hbc-url">https://taktak.jp/2017/04/27/2124</div></div></div></div></a></div></div><p>を参考に。</p><p>Pythonは</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ python3.6 -V</span><br><span class="line">Python 3.6.0</span><br></pre></td></tr></table></figure><p>です。<br>必要なら</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">alias</span> python=<span class="string">&#x27;python3.6&#x27;</span></span><br></pre></td></tr></table></figure><p>で使いやすく出来ます。<br>以上で環境の構築は終わりです。</p>]]></content>
       
       
       <categories>
@@ -4161,17 +4155,17 @@
           
           <category> Docker </category>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
           <category> Linux </category>
-          
-          <category> Python </category>
           
           <category> linux </category>
           
           <category> Red Hat Enterprise Linux </category>
           
+          <category> プログラミング言語 </category>
+          
           <category> Portainer </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -4190,9 +4184,9 @@
       
       <categories>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
           <category> Linux </category>
+          
+          <category> プログラミング言語 </category>
           
           <category> Python </category>
           
@@ -4732,11 +4726,9 @@
           
           <category> Red Hat Enterprise Linux </category>
           
-          <category> %e3%83%aa%e3%83%a2%e3%83%bc%e3%83%88%e3%83%87%e3%82%b9%e3%82%af%e3%83%88%e3%83%83%e3%83%97 </category>
+          <category> リモートデスクトップ </category>
           
           <category> VNC </category>
-          
-          <category> リモートデスクトップ </category>
           
       </categories>
       
@@ -5340,11 +5332,9 @@
           
           <category> Red Hat Enterprise Linux </category>
           
-          <category> %e3%83%aa%e3%83%a2%e3%83%bc%e3%83%88%e3%83%87%e3%82%b9%e3%82%af%e3%83%88%e3%83%83%e3%83%97 </category>
+          <category> リモートデスクトップ </category>
           
           <category> VNC </category>
-          
-          <category> リモートデスクトップ </category>
           
       </categories>
       
@@ -5369,11 +5359,9 @@
           
           <category> Red Hat Enterprise Linux </category>
           
-          <category> %e3%83%aa%e3%83%a2%e3%83%bc%e3%83%88%e3%83%87%e3%82%b9%e3%82%af%e3%83%88%e3%83%83%e3%83%97 </category>
+          <category> リモートデスクトップ </category>
           
           <category> TeamViewer </category>
-          
-          <category> リモートデスクトップ </category>
           
       </categories>
       
@@ -6362,13 +6350,11 @@
           
           <category> .NETでパケットキャプチャを試してみる </category>
           
-          <category> %e3%83%91%e3%82%b1%e3%83%83%e3%83%88%e3%82%ad%e3%83%a3%e3%83%97%e3%83%81%e3%83%a3 </category>
+          <category> パケットキャプチャ </category>
           
           <category> SharpPcap </category>
           
           <category> WinPcap </category>
-          
-          <category> パケットキャプチャ </category>
           
       </categories>
       
@@ -6403,13 +6389,11 @@
           
           <category> .NETでパケットキャプチャを試してみる </category>
           
-          <category> %e3%83%91%e3%82%b1%e3%83%83%e3%83%88%e3%82%ad%e3%83%a3%e3%83%97%e3%83%81%e3%83%a3 </category>
+          <category> パケットキャプチャ </category>
           
           <category> Pcap.net </category>
           
           <category> WinPcap </category>
-          
-          <category> パケットキャプチャ </category>
           
       </categories>
       
@@ -6440,13 +6424,11 @@
           
           <category> .NETでパケットキャプチャを試してみる </category>
           
-          <category> %e3%83%91%e3%82%b1%e3%83%83%e3%83%88%e3%82%ad%e3%83%a3%e3%83%97%e3%83%81%e3%83%a3 </category>
+          <category> パケットキャプチャ </category>
           
           <category> Pcap.net </category>
           
           <category> WinPcap </category>
-          
-          <category> パケットキャプチャ </category>
           
       </categories>
       
@@ -6557,11 +6539,7 @@
           
           <category> Microsoft </category>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
           <category> .NET Framework </category>
-          
-          <category> Python </category>
           
           <category> net-framework </category>
           
@@ -6573,6 +6551,8 @@
           
           <category> netで○○○を試してみる </category>
           
+          <category> プログラミング言語 </category>
+          
           <category> .NETでPythonを試してみる </category>
           
           <category> web-framework </category>
@@ -6580,6 +6560,8 @@
           <category> Flask </category>
           
           <category> Web Framework </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -6600,11 +6582,7 @@
           
           <category> Microsoft </category>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
           <category> .NET Framework </category>
-          
-          <category> Python </category>
           
           <category> net-framework </category>
           
@@ -6616,6 +6594,8 @@
           
           <category> netで○○○を試してみる </category>
           
+          <category> プログラミング言語 </category>
+          
           <category> .NETでPythonを試してみる </category>
           
           <category> web-framework </category>
@@ -6623,6 +6603,8 @@
           <category> Flask </category>
           
           <category> Web Framework </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -6643,11 +6625,7 @@
           
           <category> Microsoft </category>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
           <category> .NET Framework </category>
-          
-          <category> Python </category>
           
           <category> net-framework </category>
           
@@ -6659,11 +6637,15 @@
           
           <category> netで○○○を試してみる </category>
           
+          <category> プログラミング言語 </category>
+          
           <category> python-2 </category>
           
           <category> .NETでPythonを試してみる </category>
           
           <category> IronPython </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -6769,11 +6751,7 @@
           
           <category> Microsoft </category>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
           <category> .NET Framework </category>
-          
-          <category> Python </category>
           
           <category> net-framework </category>
           
@@ -6785,11 +6763,15 @@
           
           <category> netで○○○を試してみる </category>
           
+          <category> プログラミング言語 </category>
+          
           <category> python-2 </category>
           
           <category> .NETでPythonを試してみる </category>
           
           <category> IronPython </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -6810,11 +6792,7 @@
           
           <category> Microsoft </category>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
           <category> .NET Framework </category>
-          
-          <category> Python </category>
           
           <category> net-framework </category>
           
@@ -6826,11 +6804,15 @@
           
           <category> netで○○○を試してみる </category>
           
+          <category> プログラミング言語 </category>
+          
           <category> python-2 </category>
           
           <category> .NETでPythonを試してみる </category>
           
           <category> IronPython </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -6851,11 +6833,7 @@
           
           <category> Microsoft </category>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
           <category> .NET Framework </category>
-          
-          <category> Python </category>
           
           <category> net-framework </category>
           
@@ -6863,11 +6841,15 @@
           
           <category> netで○○○を試してみる </category>
           
+          <category> プログラミング言語 </category>
+          
           <category> python-2 </category>
           
           <category> .NETでPythonを試してみる </category>
           
           <category> IronPython </category>
+          
+          <category> Python </category>
           
       </categories>
       
@@ -7198,11 +7180,9 @@
           
           <category> Red Hat Enterprise Linux </category>
           
-          <category> %e3%83%aa%e3%83%a2%e3%83%bc%e3%83%88%e3%83%87%e3%82%b9%e3%82%af%e3%83%88%e3%83%83%e3%83%97 </category>
+          <category> リモートデスクトップ </category>
           
           <category> TeamViewer </category>
-          
-          <category> リモートデスクトップ </category>
           
       </categories>
       
@@ -7252,11 +7232,9 @@
           
           <category> Red Hat Enterprise Linux </category>
           
-          <category> %e3%83%aa%e3%83%a2%e3%83%bc%e3%83%88%e3%83%87%e3%82%b9%e3%82%af%e3%83%88%e3%83%83%e3%83%97 </category>
+          <category> リモートデスクトップ </category>
           
           <category> TeamViewer </category>
-          
-          <category> リモートデスクトップ </category>
           
       </categories>
       
@@ -7919,7 +7897,7 @@
       
       <categories>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
+          <category> プログラミング言語 </category>
           
           <category> Python </category>
           
@@ -9499,13 +9477,11 @@
       
       <categories>
           
-          <category> %e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%9f%e3%83%b3%e3%82%b0%e8%a8%80%e8%aa%9e </category>
-          
-          <category> Python </category>
-          
           <category> サービス紹介 </category>
           
           <category> プログラミング言語 </category>
+          
+          <category> Python </category>
           
       </categories>
       
