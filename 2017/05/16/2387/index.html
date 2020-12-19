@@ -14,14 +14,14 @@ Test1.txt
 <p>というファイルが存在したとして、</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp t</span><br></pre></td></tr></table></figure>
 
-<p>という状態でTabキーを押下しても、表示されるのは<strong>test.txt</strong>だけです。<br>結構不便なので、対応したメモです。</p>
+<p>という状態でTabキーを押下しても、表示されるのは <strong>test.txt</strong> だけです。<br>結構不便なので、対応したメモです。</p>
 <h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><p>対応は簡単です。</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vi ~/.inputrc</span><br></pre></td></tr></table></figure>
 
 <p>でviを起動し、下記の一文を末尾に追加します。<br>ファイルが存在しなくてもそのまま作成して問題ありません。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set completion-ignore-case on</span><br></pre></td></tr></table></figure>
 
-<p>これで、そのホームディレクトリのユーザでは、TAbキー補完において、大文字小文字の区別が無くなります。<br>設定を有効にするために再度ログインか、端末上で、<strong>CTRL+X、CTRL+R</strong>を連続で押下する必要があります。<br>全ユーザに対して、大文字小文字の区別をなくす場合は、</p>
+<p>これで、そのホームディレクトリのユーザでは、TAbキー補完において、大文字小文字の区別が無くなります。<br>設定を有効にするために再度ログインか、端末上で、<strong>CTRL+X、CTRL+R</strong> を連続で押下する必要があります。<br>全ユーザに対して、大文字小文字の区別をなくす場合は、</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo vi /etc/inputrc</span><br></pre></td></tr></table></figure>
 
 <p>で同様に記述を追記します。</p>
