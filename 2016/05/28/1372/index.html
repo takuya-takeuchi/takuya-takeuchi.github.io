@@ -5,14 +5,16 @@ Windows版がある!!会社でWindows上で動作するDeepLearning環境はな�
 <h1 id="Windows版がある"><a href="#Windows版がある" class="headerlink" title="Windows版がある!!"></a>Windows版がある!!</h1><p>会社でWindows上で動作するDeepLearning環境はないか？という質問を受けて、調べることになりました。<br>その過程でCaffeがWindowsで動作するように、<strong>Microsoft</strong>がgithubで開発を行っていることを知りました。</p>
 <div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/Microsoft/caffe" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://avatars2.githubusercontent.com/u/6154722?s=400&v=4"></img></div><div class="hbc-text"><div class="hbc-title">microsoft/caffe</div><div class="hbc-url">https://github.com/Microsoft/caffe</div><div class="hbc-description">Caffe on both Linux and Windows. Contribute to microsoft/caffe development by creating an account on GitHub.</div></div></div></div></a></div></div>
 
-<p>CNTKがあるのに、Caffe?って思いましたが、Windowsシステムに開発者を集めるための一環としては、既にDeepLearningの世界ではそれなりの地位があるCaffeを使えるようにすることは非常に意義があるでしょう。<br>Windows向けのCaffeは個人デベロッパーがWindows向けにCaffeｗフォークして開発していました。</p>
+<p>CNTKがあるのに、Caffe?って思いましたが、Windowsシステムに開発者を集めるための一環としては、既にDeepLearningの世界ではそれなりの地位があるCaffeを使えるようにすることは非常に意義があるでしょう。</p>
+<p>Windows向けのCaffeは個人デベロッパーがWindows向けにCaffeｗフォークして開発していました。</p>
 <div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/niuzhiheng/caffe" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://avatars2.githubusercontent.com/u/1098101?s=400&v=4"></img></div><div class="hbc-text"><div class="hbc-title">niuzhiheng/caffe</div><div class="hbc-url">https://github.com/niuzhiheng/caffe</div><div class="hbc-description">Caffe. Contribute to niuzhiheng/caffe development by creating an account on GitHub.</div></div></div></div></a></div></div>
 
 <p>個人ではなく、巨大組織が開発にコミットするのは非常に心強いです。<br>(上述の個人フォークは一年前に開発が止まっています。)</p>
-<h1 id="インストール"><a href="#インストール" class="headerlink" title="インストール"></a>インストール</h1><p>マニュアルがあるので、それを見ながらインストールしていきます。<br>トップページにあります。<br><a target="_blank" rel="noopener" href="https://taktak.jp/2016/02/27/845">CNTKのインストール</a>といくつかかぶっていますのでサクサク行きましょう。</p>
+<h1 id="インストール"><a href="#インストール" class="headerlink" title="インストール"></a>インストール</h1><p>マニュアルがあるので、それを見ながらインストールしていきます。<br>トップページにあります。</p>
+<p><a target="_blank" rel="noopener" href="https://taktak.jp/2016/02/27/845">CNTKのインストール</a>といくつかかぶっていますのでサクサク行きましょう。</p>
 <h1 id="ソースコード"><a href="#ソースコード" class="headerlink" title="ソースコード"></a>ソースコード</h1><p>Githubからクローンします。<br>コマンドでもいいですし、TortoiseGitやSourceTreeのようなGUIクライアントでも良いです。</p>
-<h1 id="設定ファイルの準備"><a href="#設定ファイルの準備" class="headerlink" title="設定ファイルの準備"></a>設定ファイルの準備</h1><p>ビルドに必要な設定ファイルです。<br>クローンしたフォルダを **&lt;caffe_root&gt;**として、下記のコマンドを実行します。</p>
-<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">copy</span> &lt;caffe\_root&gt;\\windows\\CommonSettings.props.example caffe\_path&gt;\\windows\\CommonSettings.props </span><br></pre></td></tr></table></figure>
+<h1 id="設定ファイルの準備"><a href="#設定ファイルの準備" class="headerlink" title="設定ファイルの準備"></a>設定ファイルの準備</h1><p>ビルドに必要な設定ファイルです。<br>クローンしたフォルダを <strong><caffe_root></strong> として、下記のコマンドを実行します。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">copy</span> &lt;caffe_root&gt;\windows\CommonSettings.props.example caffe_path&gt;\windows\CommonSettings.props</span><br></pre></td></tr></table></figure>
 
 <h1 id="CUDA"><a href="#CUDA" class="headerlink" title="CUDA"></a>CUDA</h1><p>7.5をインストールします。</p>
 <div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://developer.nvidia.com/cuda-toolkit" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=developer.nvidia.com"></img><div class="hbc-site-name">NVIDIA Developer</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">CUDA Toolkit</div><div class="hbc-url">https://developer.nvidia.com/cuda-toolkit</div><div class="hbc-description">CUDA Toolkit Develop, Optimize and Deploy GPU-Accelerated Apps The NVIDIA® CUDA® Toolkit provides a development environment for creating hig…</div></div></div></div></a></div></div>
@@ -21,7 +23,9 @@ Windows版がある!!会社でWindows上で動作するDeepLearning環境はな�
 <h1 id="NVIDIA-CUDA-Deep-Neural-Network-library-cuDNN"><a href="#NVIDIA-CUDA-Deep-Neural-Network-library-cuDNN" class="headerlink" title="NVIDIA CUDA Deep Neural Network library (cuDNN)"></a>NVIDIA CUDA Deep Neural Network library (cuDNN)</h1><p><strong>cuDNN v3</strong>または<strong>cuDNN v4</strong>をインストールします。<br>ダウンロードのために、事前に登録しておく必要があります。登録はすぐにできるわけではないので、余裕を持って行っておきましょう。</p>
 <div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://developer.nvidia.com/cudnn" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=developer.nvidia.com"></img><div class="hbc-site-name">NVIDIA Developer</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">NVIDIA cuDNN</div><div class="hbc-url">https://developer.nvidia.com/cudnn</div><div class="hbc-description">NVIDIA cuDNN The NVIDIA CUDA® Deep Neural Network library (cuDNN) is a GPU-accelerated library of primitives for deep neural networks. cuDNN…</div></div></div></div></a></div></div>
 
-<p>CUDAインストール後、<strong>環境変数CUDA_PATH</strong>が設定されますが、そこにcuDNNをコピーします。<br>または、<strong>CommonSettings.props</strong>の24行目にある<strong>CuDnnPath ノード</strong>にcuDNNへのパスを追記します。<br>展開したzipの構成が、<strong>D:\Works\Lib\NVIDIA\cudnn-4.0\cuda\bin</strong>のようになっているなら、下記のようになります。<br><code>D:\Works\Lib\NVIDIA\cudnn-4.0</code> また、cuDNNを無効にすることもできます。CommonSettings.props内の<strong>UseCuDNN ノード</strong>のtrueをfalseに変更します。<br>下記のようになります。</p>
+<p>CUDAインストール後、<strong>環境変数CUDA_PATH</strong>が設定されますが、そこにcuDNNをコピーします。<br>または、<strong>CommonSettings.props</strong>の24行目にある<strong>CuDnnPath ノード</strong>にcuDNNへのパスを追記します。<br>展開したzipの構成が、<strong>D:\Works\Lib\NVIDIA\cudnn-4.0\cuda\bin</strong>のようになっているなら、下記のようになります。</p>
+<p><code>D:\Works\Lib\NVIDIA\cudnn-4.0</code></p>
+<p>また、cuDNNを無効にすることもできます。CommonSettings.props内の<strong>UseCuDNN ノード</strong>のtrueをfalseに変更します。<br>下記のようになります。</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">UseCuDNN</span>&gt;</span>false<span class="tag">&lt;/<span class="name">UseCuDNN</span>&gt;</span> </span><br></pre></td></tr></table></figure>
 
 <h1 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h1><p>まず、Caffe Python ラッパーをビルドするために、CommonSettings.props内の<strong>PythonSupportノード</strong>のfalseをtrueに変更します。<br>下記のようになります。</p>
@@ -30,45 +34,49 @@ Windows版がある!!会社でWindows上で動作するDeepLearning環境はな�
 <p>次に、Miniconda 2.7をインストールします。64-bitと32-bitがあるので、適切なインストーラを実行してください。</p>
 <div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="http://conda.pydata.org/miniconda.html" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=conda.pydata.org"></img><div class="hbc-site-name">conda.pydata.org</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">Miniconda — Conda   documentation</div><div class="hbc-url">http://conda.pydata.org/miniconda.html</div></div></div></div></a></div></div>
 
-<p><a href="../../../../public/2016/05/1-8.png"><img src="../../../../public/2016/05/1-8.png" alt="インストーラ初期画面"></a></p>
-<p>インストーラ初期画面</p>
-<p><a href="../../../../public/2016/05/2-7.png"><img src="../../../../public/2016/05/2-7.png" alt="ライセンス"></a></p>
-<p>ライセンス</p>
-<p><a href="../../../../public/2016/05/3-5.png"><img src="../../../../public/2016/05/3-5.png" alt="インストール先"></a></p>
-<p>インストール先</p>
-<p>マニュアルにはAll Userと書いてありますが、特に気にする必要はないでしょう。<br><a href="../../../../public/2016/05/4-3.png"><img src="../../../../public/2016/05/4-3.png" alt="インストール先ディレクトリ指定"></a></p>
-<p>インストール先ディレクトリ指定</p>
-<p>お好みの場所に。<br><a href="../../../../public/2016/05/5-1.png"><img src="../../../../public/2016/05/5-1.png" alt="オプション"></a></p>
-<p>オプション</p>
-<p>環境変数への追加は必須なので、最初のオプションはチェックします。<br>2つめのオプションはなくても良いです。<br><a href="../../../../public/2016/05/6-2.png"><img src="../../../../public/2016/05/6-2.png" alt="インストール中"></a></p>
-<p>インストール中</p>
-<p><a href="../../../../public/2016/05/7-2.png"><img src="../../../../public/2016/05/7-2.png" alt="インストール完了"></a> <a href="../../../../public/2016/05/8-2.png"><img src="../../../../public/2016/05/8-2.png" alt="インストール完了"></a></p>
-<p>インストール完了</p>
+<p><a href="../../../../public/2016/05/1-8.png"><img src="../../../../public/2016/05/1-8.png" alt="インストーラ初期画面"></a><br>インストーラ初期画面</p>
+<p><a href="../../../../public/2016/05/2-7.png"><img src="../../../../public/2016/05/2-7.png" alt="ライセンス"></a><br>ライセンス</p>
+<p><a href="../../../../public/2016/05/3-5.png"><img src="../../../../public/2016/05/3-5.png" alt="インストール先"></a><br>インストール先</p>
+<p>マニュアルにはAll Userと書いてありますが、特に気にする必要はないでしょう。</p>
+<p><a href="../../../../public/2016/05/4-3.png"><img src="../../../../public/2016/05/4-3.png" alt="インストール先ディレクトリ指定"></a><br>インストール先ディレクトリ指定</p>
+<p>お好みの場所に。</p>
+<p><a href="../../../../public/2016/05/5-1.png"><img src="../../../../public/2016/05/5-1.png" alt="オプション"></a><br>オプション</p>
+<p>環境変数への追加は必須なので、最初のオプションはチェックします。<br>2つめのオプションはなくても良いです。</p>
+<p><a href="../../../../public/2016/05/6-2.png"><img src="../../../../public/2016/05/6-2.png" alt="インストール中"></a><br>インストール中</p>
+<p><a href="../../../../public/2016/05/7-2.png"><img src="../../../../public/2016/05/7-2.png" alt="インストール完了"></a> <a href="../../../../public/2016/05/8-2.png"><img src="../../../../public/2016/05/8-2.png" alt="インストール完了"></a><br>インストール完了</p>
 <p>インストール完了後、Minicondaへのパスが<strong>環境変数PATH</strong>に追加されます。<br>さらに、Pythonのインストールディレクトリを<strong>PythonDirノード</strong>に記述します。<br>これはgithubのマニュアルにも書いていないので注意です。デフォルトで<strong>C:\Miniconda2</strong>になっているので、そこにインストールしたなら気にする必要はありません。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">PythonDir</span>&gt;</span>C:\\Program Files\\Miniconda2\\<span class="tag">&lt;/<span class="name">PythonDir</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">PythonDir</span>&gt;</span>C:\Program Files\Miniconda2\<span class="tag">&lt;/<span class="name">PythonDir</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>最後に、管理者権限で実行したコマンドプロンプトから下記のコマンドを実行します。</p>
 <figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install --yes numpy scipy matplotlib scikit-image pip pip install protobuf</span><br></pre></td></tr></table></figure>
 
-<p>必要なパッケージのダウンロードとインストールが実行されます。<br>少し時間がかかりますが、コーヒーでも飲んで待ちましょう。<br>最後に、Pythonを使って後述のビルドを実行した後、使用するために、下記のどちらかを実行します。</p>
-<p>PythonPath環境変数に<strong>\Build\x64\Release\pycaffe</strong>へのパスを通す</p>
-<p><strong>\Build\x64\Release\pycaffe\caffe</strong>を<strong>\lib\site-packages</strong>にコピー</p>
+<p>必要なパッケージのダウンロードとインストールが実行されます。<br>少し時間がかかりますが、コーヒーでも飲んで待ちましょう。</p>
+<p>最後に、Pythonを使って後述のビルドを実行した後、使用するために、下記のどちらかを実行します。</p>
+<ul>
+<li>PythonPath環境変数に <strong>\Build\x64\Release\pycaffe</strong> へのパスを通す</li>
+<li><strong>\Build\x64\Release\pycaffe\caffe</strong> を <strong>\lib\site-packages</strong> にコピー</li>
+</ul>
 <p>個人的には、後者がおすすめです。環境変数を汚したくないので。<br>シンボリックリンクでも貼って、常にsite-packagesがcaffeフォルダを参照するようにしましょう。<br>コマンドは下記です。</p>
-<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mklink \\lib\\site-packages\\caffe \\Build\\x64\\Release\\pycaffe\\caffe /D </span><br></pre></td></tr></table></figure>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mklink \lib\site-packages\caffe \Build\x64\Release\pycaffe\caffe /D</span><br></pre></td></tr></table></figure>
 
-<h1 id="MATLAB"><a href="#MATLAB" class="headerlink" title="MATLAB"></a>MATLAB</h1><p>MATLABを私は持っていませんので、マニュアルの説明だけです。<br>Caffe MATLAB ラッパーをビルドするために、CommonSettings.props内の<strong>MatlabSupportノード</strong>のfalseをtrueに変更します。<br>下記のようになります。</p>
+<h1 id="MATLAB"><a href="#MATLAB" class="headerlink" title="MATLAB"></a>MATLAB</h1><p>MATLABを私は持っていませんので、マニュアルの説明だけです。</p>
+<p>Caffe MATLAB ラッパーをビルドするために、CommonSettings.props内の<strong>MatlabSupportノード</strong>のfalseをtrueに変更します。<br>下記のようになります。</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">MatlabSupport</span>&gt;</span>true<span class="tag">&lt;/<span class="name">MatlabSupport</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>さらに、MATLABのインストールディレクトリを<strong>MatlabDirノード</strong>に記述します。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">MatlabDir</span>&gt;</span>C:\\Program Files\\MATLAB\\R2014b<span class="tag">&lt;/<span class="name">MatlabDir</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">MatlabDir</span>&gt;</span>C:\Program Files\MATLAB\R2014b<span class="tag">&lt;/<span class="name">MatlabDir</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>最後に、MATLABを使って後述のビルドを実行した後、使用するために、</p>
-<p>MATLABの検索パスに生成したmatcaffeフォルダーを追加</p>
-<p><strong>\Build\x64\Release</strong>をパスに通す</p>
+<ul>
+<li>MATLABの検索パスに生成したmatcaffeフォルダーを追加</li>
+<li><strong>\Build\x64\Release</strong>をパスに通す</li>
+</ul>
 <p>を実行します。</p>
 <h1 id="ビルド"><a href="#ビルド" class="headerlink" title="ビルド"></a>ビルド</h1><p>Visual Studio 2013でビルドします。<br><strong>\windows\Caffe.sln</strong>を開いてビルドしましょう。<br>もしくは、下記のコマンドをコマンドプロンプトから実行することで、Visual Studioを立ち上げることなくビルドできます。</p>
-<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> \\windows\\Caffe.sln &quot;C:\\Program Files (x86)\\MSBuild\\<span class="number">12</span>.<span class="number">0</span>\\Bin\\amd64\\MSBuild.exe&quot; /p:Configuration=Release /p:Platform=&quot;x64&quot; Caffe.sln /t:clean /verbosity:quiet /nologo &quot;C:\\Program Files (x86)\\MSBuild\\<span class="number">12</span>.<span class="number">0</span>\\Bin\\amd64\\MSBuild.exe&quot; /p:Configuration=Release /p:Platform=&quot;x64&quot; Caffe.sln /t:rebuild /verbosity:quiet /nologo &gt; Build.log</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> \windows\Caffe.sln</span><br><span class="line">&quot;C:\Program Files (x86)\MSBuild\<span class="number">12</span>.<span class="number">0</span>\Bin\amd64\MSBuild.exe&quot; /p:Configuration=Release /p:Platform=&quot;x64&quot; Caffe.sln /t:clean /verbosity:quiet /nologo</span><br><span class="line">&quot;C:\Program Files (x86)\MSBuild\<span class="number">12</span>.<span class="number">0</span>\Bin\amd64\MSBuild.exe&quot; /p:Configuration=Release /p:Platform=&quot;x64&quot; Caffe.sln /t:rebuild /verbosity:quiet /nologo &gt; Build.log</span><br></pre></td></tr></table></figure>
 
-<p>かなり時間がかかります。<br>ビルド完了後、<strong>\Build\x64\Release</strong>に<strong>caffe.exe</strong>が生成されています。<br>ビルド終了後も生成されていない場合は、Build.logを確認して、エラーに対処してください。<br>ちなみに、caffeには様々な依存ライブラリ (boost、glog、hdf5、LevelDB、OpenCV等) がありますが、それらの依存関係はNuGetで解決しています。</p>
+<p>かなり時間がかかります。</p>
+<p>ビルド完了後、<strong>\Build\x64\Release</strong>に<strong>caffe.exe</strong>が生成されています。<br>ビルド終了後も生成されていない場合は、Build.logを確認して、エラーに対処してください。</p>
+<p>ちなみに、caffeには様々な依存ライブラリ (boost、glog、hdf5、LevelDB、OpenCV等) がありますが、それらの依存関係はNuGetで解決しています。</p>
 <h1 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h1><p>環境構築が終わりましたので、次回はモデルを使用して、学習をしてみたいと思います。</p>
 </div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2016-05-28</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Microsoft/" title="Microsoft">Microsoft </a><a class="tag" href="/categories/e3-83-87-e3-82-a3-e3-83-bc-e3-83-97-e3-83-a9-e3-83-bc-e3-83-8b-e3-83-b3-e3-82-b0/" title="%e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0">%e3%83%87%e3%82%a3%e3%83%bc%e3%83%97%e3%83%a9%e3%83%bc%e3%83%8b%e3%83%b3%e3%82%b0 </a><a class="tag" href="/categories/e3-83-87-e3-82-a3-e3-83-bc-e3-83-97-e3-83-a9-e3-83-bc-e3-83-8b-e3-83-b3-e3-82-b0/Caffe/" title="Caffe">Caffe </a><a class="tag" href="/categories/Microsoft/Windows/" title="Windows">Windows </a><a class="tag" href="/categories/オープンソース/" title="オープンソース">オープンソース </a><a class="tag" href="/categories/ディープラーニング/" title="ディープラーニング">ディープラーニング </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2016/05/28/1372/,A certain engineer &quot;COMPLEX&quot;,ディープラーニング Caffe for Windows その1 環境構築,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2016/05/30/1401/" title="開発メモ その2 利用可能なWMIの名前空間一覧を確認する">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2016/05/27/1386/" title="開発メモ その1 Visual Studio 2013が起動しない">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>

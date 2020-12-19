@@ -2,31 +2,47 @@
 
 Problemこれまで、iOSでデバッグしてみましたが、Android Emulatorを使ってみようとして、動かないので放置してきましたが、解決に向けて腰を上げました。まず、問題としてiOSのようにエミュレータが表示されていないのが問題と思いま"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>Xamarinメモ その11 Android Emulatorが動かない</a></h3></div><div class="post-content"><p><a target="_blank" rel="noopener" href="https://taktak.jp/2016/04/30/1151">前回</a>はPCLのビルドが通らない問題を解決しました。</p>
 <a id="more"></a>
-<h1 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h1><p>これまで、iOSでデバッグしてみましたが、Android Emulatorを使ってみようとして、動かないので放置してきましたが、解決に向けて腰を上げました。<br>まず、問題としてiOSのようにエミュレータが表示されていないのが問題と思いました。<br><a href="../../../../public/2016/05/1.png"><img src="../../../../public/2016/05/1.png" alt="エミューレーターがない"></a></p>
-<p>エミューレーターがない</p>
+<h1 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h1><p>これまで、iOSでデバッグしてみましたが、Android Emulatorを使ってみようとして、動かないので放置してきましたが、解決に向けて腰を上げました。<br>まず、問題としてiOSのようにエミュレータが表示されていないのが問題と思いました。</p>
+<p><a href="../../../../public/2016/05/1.png"><img src="../../../../public/2016/05/1.png" alt="エミューレーターがない"></a><br>エミューレーターがない</p>
 <p>なので、これを追加します。</p>
-<h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><p>Visual Studioのツールバーの<strong>Android SDK Manager</strong>を起動します。<br><a href="../../../../public/2016/05/4.png"><img src="../../../../public/2016/05/4.png" alt="Android SDK Managerの起動"></a></p>
-<p>Android SDK Managerの起動ボタン</p>
-<p>もしくは、スタートメニューから <strong>[Xamarin]</strong> -&gt; <strong>[Platform Tools]</strong> -&gt; **[Android SDK Manager]**と選んでも良いです。<br>個人的にはvisual Studioを落としておいて、後述の方法で起動した方が良いと思います。<br>起動すると下記のような画面になります。<br><a href="../../../../public/2016/05/2.png"><img src="../../../../public/2016/05/2-1024x467.png" alt="Android SDK Manager"></a></p>
-<p>Android SDK Manager</p>
-<p>右下にアップデートがあることを示すボタンがあるので押下します。<br><a href="../../../../public/2016/05/3.png"><img src="../../../../public/2016/05/3.png" alt="ライセンス条件の了承確認"></a></p>
-<p>ライセンス条件の了承確認</p>
-<p>了承して進めていきます。<br><a href="../../../../public/2016/05/6.png"><img src="../../../../public/2016/05/6.png" alt="エラー"></a></p>
-<p>無慈悲なエラー</p>
-<p>途中、インストール先のフォルダを移動できない、というエラーメッセージが表示されました。<br>別のアプリがフォルダをロックしているのでしょう。<br>Visual Studioを終了させて、スタートメニューから起動する方法でやり直したら私は上手くいきました。最悪再起動してやり直すことも必要かもしれません。<br>インストールが終わったら、Visual Studioを起動or再起動してみるとエミュレータが追加されます。<br><a href="../../../../public/2016/05/7.png"><img src="../../../../public/2016/05/7.png" alt="エミュレータの追加"></a></p>
-<p>エミュレータの追加</p>
+<h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><p>Visual Studioのツールバーの<strong>Android SDK Manager</strong>を起動します。</p>
+<p><a href="../../../../public/2016/05/4.png"><img src="../../../../public/2016/05/4.png" alt="Android SDK Managerの起動"></a><br>Android SDK Managerの起動ボタン</p>
+<p>もしくは、スタートメニューから <strong>[Xamarin]</strong> -&gt; <strong>[Platform Tools]</strong> -&gt; <strong>[Android SDK Manager]</strong> と選んでも良いです。<br>個人的にはvisual Studioを落としておいて、後述の方法で起動した方が良いと思います。<br>起動すると下記のような画面になります。</p>
+<p><a href="../../../../public/2016/05/2.png"><img src="../../../../public/2016/05/2-1024x467.png" alt="Android SDK Manager"></a><br>Android SDK Manager</p>
+<p>右下にアップデートがあることを示すボタンがあるので押下します。</p>
+<p><a href="../../../../public/2016/05/3.png"><img src="../../../../public/2016/05/3.png" alt="ライセンス条件の了承確認"></a><br>ライセンス条件の了承確認</p>
+<p>了承して進めていきます。</p>
+<p><a href="../../../../public/2016/05/6.png"><img src="../../../../public/2016/05/6.png" alt="エラー"></a><br>無慈悲なエラー</p>
+<p>途中、インストール先のフォルダを移動できない、というエラーメッセージが表示されました。<br>別のアプリがフォルダをロックしているのでしょう。<br>Visual Studioを終了させて、スタートメニューから起動する方法でやり直したら私は上手くいきました。最悪再起動してやり直すことも必要かもしれません。</p>
+<p>インストールが終わったら、Visual Studioを起動or再起動してみるとエミュレータが追加されます。</p>
+<p><a href="../../../../public/2016/05/7.png"><img src="../../../../public/2016/05/7.png" alt="エミュレータの追加"></a><br>エミュレータの追加</p>
 <p>これから、デバッグして起動することでエミュレーターが起動します。<br><strong>Xamarin_Android_API_23</strong>ってやつを選びました。最新みたいだし。</p>
-<p>がとてつもなく、遅い。冗談抜きで5分以上待たされる。<br><a href="../../../../public/2016/05/8.png"><img src="../../../../public/2016/05/8.png" alt="起動中のスプラッシュスクリーン"></a></p>
+<br>
+<br>
+<br>
+
+<p>がとてつもなく、遅い。冗談抜きで5分以上待たされる。</p>
+<p><a href="../../../../public/2016/05/8.png"><img src="../../../../public/2016/05/8.png" alt="起動中のスプラッシュスクリーン"></a></p>
 <p>起動中のスプラッシュスクリーン</p>
-<p>この画面の後、真っ黒な画面で待たされる。<br><a href="../../../../public/2016/05/9.png"><img src="../../../../public/2016/05/9.png" alt="真っ黒"></a></p>
-<p>真っ黒</p>
-<p>少し変化したが、さらに待たされる。<br><a href="../../../../public/2016/05/10.png"><img src="../../../../public/2016/05/10.png" alt="Welcome"></a></p>
-<p>何か出た</p>
-<p>ふと気づくと、Visual Studioとエミューレーターの接続が切れているのか、ビルドのキャンセルボタンが押せなくなっている。<br>イラッ、としつつ再度デバッグする。<br>さらに待たされて、ようやく起動した。<br><a href="../../../../public/2016/05/11.png"><img src="../../../../public/2016/05/11.png" alt="起動完了"></a></p>
-<p>ようやく出た</p>
-<p>画面ちっさいし… 推測するに、何もエミュレータが起動していない状態からデバッグしようとするとタイムアウトしてしまうのでは？ ただ、それでも遅いときは遅いし、デバッグできないときがある。<br>ためしに、エミュレータを変えてみる。<br>**7” KitKat（4.4）XXXHDPI Phone(Android 4.4 - API 19)**ってやつ。</p>
+<p>この画面の後、真っ黒な画面で待たされる。</p>
+<p><a href="../../../../public/2016/05/9.png"><img src="../../../../public/2016/05/9.png" alt="真っ黒"></a><br>真っ黒</p>
+<p>少し変化したが、さらに待たされる。</p>
+<p><a href="../../../../public/2016/05/10.png"><img src="../../../../public/2016/05/10.png" alt="Welcome"></a><br>何か出た</p>
+<p>ふと気づくと、Visual Studioとエミューレーターの接続が切れているのか、ビルドのキャンセルボタンが押せなくなっている。<br>イラッ、としつつ再度デバッグする。<br>さらに待たされて、ようやく起動した。</p>
+<p><a href="../../../../public/2016/05/11.png"><img src="../../../../public/2016/05/11.png" alt="起動完了"></a><br>ようやく出た</p>
+<br>
+<br>
+<br>
+
+<p>画面ちっさいし… 推測するに、何もエミュレータが起動していない状態からデバッグしようとするとタイムアウトしてしまうのでは？</p>
+<p>ただ、それでも遅いときは遅いし、デバッグできないときがある。<br>ためしに、エミュレータを変えてみる。<br><strong>7” KitKat（4.4）XXXHDPI Phone(Android 4.4 - API 19)</strong> ってやつ。</p>
+<br>
+<br>
+<br>
+<br>
+
 <p>超速い (前のと比べて。別にiOS Simulatorよりも速い、というわけでもない)。</p>
-<p><a href="../../../../public/2016/05/12.png"><img src="../../../../public/2016/05/12.png"></a></p>
-<p>しかも何かかっこいいし。<br><a target="_blank" rel="noopener" href="https://twitter.com/nuits_jp/status/726445129058275328">nuits.jpさんによれば</a>Viaual Studio Emulator for Androidなるものらしい。<br>なるほど、最新が良いとは限らない訳ね。</p>
+<p><a href="../../../../public/2016/05/12.png"><img src="../../../../public/2016/05/12.png"></a><br>しかも何かかっこいいし。</p>
+<p><a target="_blank" rel="noopener" href="https://twitter.com/nuits_jp/status/726445129058275328">nuits.jpさんによれば</a>Viaual Studio Emulator for Androidなるものらしい。<br>なるほど、最新が良いとは限らない訳ね。</p>
 <h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>Androidのデバッグは、iOSのデバッグよりも面倒でした。<br>どうも、Xamarin Android Playerなるものがあるらしいので、それを使いたいと思います。</p>
 </div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2016-05-01</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Microsoft/" title="Microsoft">Microsoft </a><a class="tag" href="/categories/Microsoft/NET-Framework/" title=".NET Framework">.NET Framework </a><a class="tag" href="/categories/Xamarin/" title="Xamarin">Xamarin </a><a class="tag" href="/categories/Microsoft/NET-Framework/C/" title="C#">C# </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2016/05/01/1149/,A certain engineer &quot;COMPLEX&quot;,Xamarinメモ その11 Android Emulatorが動かない,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2016/05/01/1213/" title="Xamarinメモ その12 新規作成直後のプロジェクトでAndroidエミュが一覧に表示されない">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2016/04/30/1151/" title="Xamarinメモ その10 PCLのビルドが通らない">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
