@@ -13,7 +13,40 @@ iPhoneのTouchIDで急激に認知度が向上した気がします。特に日�
 <p>とはいっても、ニッチな技術で攻めるのは間違っていなくて、AuthenTec社はそれが幸いしてAppleに評価してもらえたわけです。</p>
 <h3 id="特徴データ"><a href="#特徴データ" class="headerlink" title="特徴データ"></a>特徴データ</h3><p>さて、指紋、掌紋、足紋でも、他でもそうですが、採取した生体情報から、その生体情報を特徴付ける情報のみを抽出してデータ化します。<br>これを特徴データと呼んでいますが、指紋の場合、そのなかに特徴点 (Minutia) と呼ばれるものがあります。<br>特徴点が12個一致すれば、照合上、同一指紋とみなすことができます。<br>また、指紋においては、隆線 (芯線:Skeleton)も大事なデータですが、指紋の紋様自体も重要です。</p>
 <h3 id="紋様"><a href="#紋様" class="headerlink" title="紋様"></a>紋様</h3><p>紋様には様々な種類がありますが、人種によって、紋様毎の発現率が異なります。下記はその一例です。実際はもっと種類があります。</p>
-<p>[table id=23 /] </p>
+<table>
+<thead>
+<tr>
+<th align="left">和名</th>
+<th align="left">英語</th>
+<th align="left">略</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">渦状紋</td>
+<td align="left">Whorls</td>
+<td align="left">W</td>
+</tr>
+<tr>
+<td align="left">弓状紋</td>
+<td align="left">Arch</td>
+<td align="left">A</td>
+</tr>
+<tr>
+<td align="left">蹄状紋</td>
+<td align="left">Loops</td>
+<td align="left">L</td>
+</tr>
+<tr>
+<td align="left">突起弓状紋</td>
+<td align="left">Tented Arch</td>
+<td align="left">T</td>
+</tr>
+<tr>
+<td align="left">側蹄状紋</td>
+<td align="left">Right Loop</td>
+<td align="left">R</td>
+</tr>
+</tbody></table>
 <p><a href="../../../../public/2016/04/Patterns.png"><img src="../../../../public/2016/04/Patterns-1024x229.png"></a><br>紋様の一例</p>
 <p>前置きが長くなりましたが、これらの紋様をディープラーニングで分類してみましょう。</p>
 <h1 id="準備1"><a href="#準備1" class="headerlink" title="準備1"></a>準備1</h1><p>今回、DeepLearningのために、<strong>GeForce GTX 750 Ti</strong>を入手しました。<br>というわけで、Caffeのビルド設定を変更します。<br>Pythonは有効にし、<strong>CpuOnlyBuild</strong>をfalse、<strong>UseCuDNN</strong>をtrueにします。</p>

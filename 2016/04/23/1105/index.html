@@ -29,7 +29,26 @@ ProblemXamarin.Formsで**Blank App (Portable)**でプロジェクトを作りま
 </blockquote>
 <p>訳:スクリーン全体を占有するVisualElementです</p>
 <p>とのこと。それぞれ試しに作ってみると、</p>
-<p>[table id=22 /]</p>
+<table>
+<thead>
+<tr>
+<th align="left">種類</th>
+<th align="left">内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Forms ContentPage</td>
+<td align="left">csファイル</td>
+</tr>
+<tr>
+<td align="left">Forms ContentView</td>
+<td align="left">csファイル</td>
+</tr>
+<tr>
+<td align="left">Forms Xaml Page</td>
+<td align="left">csファイル<br>Xamlファイル</td>
+</tr>
+</tbody></table>
 <p>となります。</p>
 <p><strong>ContentPage</strong></p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Reflection.Emit;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> Xamarin.Forms;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Xamarin.Forms.Portable1.Views</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MainPage</span> : <span class="title">ContentPage</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MainPage</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Content = <span class="keyword">new</span> StackLayout</span><br><span class="line">            &#123;</span><br><span class="line">                Children = &#123;</span><br><span class="line">                    <span class="keyword">new</span> Label &#123; Text = <span class="string">&quot;Hello ContentPage&quot;</span> &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>

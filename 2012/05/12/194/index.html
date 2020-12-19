@@ -17,7 +17,64 @@
 
 <p>for,foreach,LINQ毎に、ShortとLongを用意しました。ShortとLongの際は、{,}で改行、空行を含むか否かです。<br>これを <strong>Metrics.exe</strong> で計測してみましょう。</p>
 <p>下記はメトリックスの結果です。</p>
-<p>[table id=8 /]</p>
+<table>
+<thead>
+<tr>
+<th align="left">メトリックス項目</th>
+<th align="left">ForShort</th>
+<th align="left">ForLong</th>
+<th align="left">ForEachShort</th>
+<th align="left">ForEachLong</th>
+<th align="left">LinqShort</th>
+<th align="left">LinqLong</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">MaintainabilityIndex<br>(保守容易性指数)</td>
+<td align="left">81</td>
+<td align="left">77</td>
+<td align="left">82</td>
+<td align="left">78</td>
+<td align="left">77</td>
+<td align="left">77</td>
+</tr>
+<tr>
+<td align="left">CyclomaticComplexity<br>(サイクロマティック複雑度)</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">3</td>
+<td align="left">3</td>
+</tr>
+<tr>
+<td align="left">ClassCoupling<br>(クラス結合度)</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">4</td>
+<td align="left">4</td>
+</tr>
+<tr>
+<td align="left">DepthOfInheritance<br>(継承の深さ)</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">LinesOfCode<br>(コード行)</td>
+<td align="left">2</td>
+<td align="left">3</td>
+<td align="left">2</td>
+<td align="left">3</td>
+<td align="left">3</td>
+<td align="left">3</td>
+</tr>
+</tbody></table>
 <p>結果を見ると、配列の宣言は <strong>1 行</strong> として計算されています。<br>for文もforeach文も改行すれば、適切に行数をカウントしているようです。<br>{,},空行はカウントされていません。</p>
 <p>おもしろいのは、<strong>LINQ</strong> です。<strong>System.Array.ForEach</strong> です。改行しようがしまいが <strong>2行</strong> としてカウントされています。</p>
 <p>ここまで来て「おかしいのでは？」と思った方。正しいです。<br>そう。一部誤差はあれど、あまりにもソースコードに忠実なカウントになっています。</p>
@@ -31,7 +88,64 @@
 <p>警告が出ています。</p>
 <p><strong>「解析対象のアセンブリ CodeMetricsTest.exe のデバッグ情報がないよ。最適な解析結果を出すためには、対象のアセンブリと同じディレクトリに CodeMetricsTest.exe のデバッグ情報を含む .pdb ファイルを含めててくれよ。」(意訳)</strong> </p>
 <p>もそんなの関係ねぇ。<br>その結果が下記です。</p>
-<p>[table id=9 /]</p>
+<table>
+<thead>
+<tr>
+<th align="left">メトリックス項目</th>
+<th align="left">ForShort</th>
+<th align="left">ForLong</th>
+<th align="left">ForEachShort</th>
+<th align="left">ForEachLong</th>
+<th align="left">LinqShort</th>
+<th align="left">LinqLong</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">MaintainabilityIndex<br>(保守容易性指数)</td>
+<td align="left">72</td>
+<td align="left">72</td>
+<td align="left">69</td>
+<td align="left">69</td>
+<td align="left">74</td>
+<td align="left">74</td>
+</tr>
+<tr>
+<td align="left">CyclomaticComplexity<br>(サイクロマティック複雑度)</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">3</td>
+<td align="left">3</td>
+</tr>
+<tr>
+<td align="left">ClassCoupling<br>(クラス結合度)</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">4</td>
+<td align="left">4</td>
+</tr>
+<tr>
+<td align="left">DepthOfInheritance<br>(継承の深さ)</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">LinesOfCode<br>(コード行)</td>
+<td align="left">5</td>
+<td align="left">5</td>
+<td align="left">6</td>
+<td align="left">6</td>
+<td align="left">4</td>
+<td align="left">4</td>
+</tr>
+</tbody></table>
 <p>クラス結合度やサイクロマティック複雑度は変化していませんが、コード行が増加したため、保守容易性指数が低下しています。<br>正確な情報を必要とする場合は、PDBファイルは必須と言わざるを得ません。<br>また、デバッグ情報がないため、ShortとLongの結果が完全に一致しています。これこそ、<strong>「この数は IL コードに基づいているため、ソース コード ファイル内の正確な行数ではありません。」</strong>の証明に他なりません。<br>さらには、LinqShort、LinqLongのコード行が他より良くなっています。<br>が、これはまやかしです。</p>
 <p><a href="../../../../public/2012/05/CodeMetrics2.png"><img src="../../../../public/2012/05/CodeMetrics2-300x184.png" title="CodeMetrics2"></a></p>
 <p>上記の画像の左側に、**<LinqLong>b__2、<LinqShort>b__0** というメソッドがコンパイラによって追加されています。<br>右側は <strong><LinqLong>b__2</strong> の中身です。<br>単純に関数化してLinqShort、LinqLongのコード行が減ったように見えているだけです。</p>

@@ -20,11 +20,69 @@ Explanationインデックスの設定Indexes with C# Driverに"><meta name="key
 <p><a href="../../../../public/2015/12/Index.png"><img src="../../../../public/2015/12/Index.png" alt="Index"></a></p>
 <p>mongo-expressで確認すると、<strong>Indexes #</strong> が 2 になっています。</p>
 <p>そして、前回と同じように、検索を実行します。検索結果の個数は10になります。<br>その結果が下記になります。</p>
-<p>[table id=18 /]</p>
+<table>
+<thead>
+<tr>
+<th align="left">オブジェクトサイズ/オブジェクト数</th>
+<th align="left">1,000,000</th>
+<th align="left">1,000,000 (インデックス適用後)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Small (51.0 bytes)</td>
+<td align="left">420.8 ms</td>
+<td align="left">610.8 ms</td>
+</tr>
+<tr>
+<td align="left">Middle (80.1 kb)</td>
+<td align="left">221577.1 ms</td>
+<td align="left">586 ms</td>
+</tr>
+<tr>
+<td align="left">Large (100 kb)</td>
+<td align="left">計測不可</td>
+<td align="left">588 ms</td>
+</tr>
+</tbody></table>
 <p>劇的に改善しました。370倍です。Largeに至っては計測できるようにさえなりました。<br>Smallが悪化してますが、誤差でしょう。多分。<br>実行後、<strong>mongod.exe</strong> のメモリ量は大きく増えていません。</p>
 <h2 id="検索結果の個数は影響するか？"><a href="#検索結果の個数は影響するか？" class="headerlink" title="検索結果の個数は影響するか？"></a>検索結果の個数は影響するか？</h2><p>前回、メモリ確保が原因なのか、途中で例外を投げて落ちました。<br>今回は、検索結果の個数が1,000,000から10になるようにしてあります。</p>
 <p>では、これを変化させたら、検索速度はどう変化するでしょうか？ 1,000,000件のデータを対象に、検索結果の個数が増えていった場合のパフォーマンスを下記に記載します。</p>
-<p>[table id=19 /]</p>
+<table>
+<thead>
+<tr>
+<th align="left">オブジェクトサイズ/検索結果数</th>
+<th align="left">10</th>
+<th align="left">100</th>
+<th align="left">1,000</th>
+<th align="left">10,000</th>
+<th align="left">100,000</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Small (51.0 bytes)</td>
+<td align="left">610.8 ms</td>
+<td align="left">515.6 ms</td>
+<td align="left">558.5 ms</td>
+<td align="left">582.8 ms</td>
+<td align="left">956.2 ms</td>
+</tr>
+<tr>
+<td align="left">Middle (80.1 kb)</td>
+<td align="left">586 ms</td>
+<td align="left">512 ms</td>
+<td align="left">1571.4 ms</td>
+<td align="left">7171.2 ms</td>
+<td align="left">計測不可</td>
+</tr>
+<tr>
+<td align="left">Large (100 kb)</td>
+<td align="left">588 ms</td>
+<td align="left">494.7 ms</td>
+<td align="left">1870.2 ms</td>
+<td align="left">11292.6 ms</td>
+<td align="left">計測不可</td>
+</tr>
+</tbody></table>
 <p>増えていくごとに悪化していく傾向です。<br>ただし、劇的に悪化しているのは、初回のクエリだけ100秒とかで、それ以降はキャッシュが聞いています。それでも、後半は <strong>2,000 ms</strong> とかかかっていますが。<br>それでも、インデックスを設定する前と比べたら、劇的すぎる改善です。</p>
 <h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>バイナリファイルを扱う際は、必ずインデックスを設定し、検索のパフォーマンスを向上させるのと、検索途中の結果でOutOfMemoryExceptionを発生させないようにする必要があります。<br>必要なら複数のインデックスを設定して、結果が少なくなるようするべきです。</p>
 <h1 id="Source-Code"><a href="#Source-Code" class="headerlink" title="Source Code"></a>Source Code</h1><p>テストに使った最終的なコードは下記になります。<br><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi/Demo/tree/master/MongoDB7">https://github.com/takuya-takeuchi/Demo/tree/master/MongoDB7</a></p>

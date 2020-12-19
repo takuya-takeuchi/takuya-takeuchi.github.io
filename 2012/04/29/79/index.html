@@ -26,7 +26,58 @@ Explanationおさらいですが"><meta name="keywords"><meta content="width=dev
 <script src="https://gist.github.com/takuya-takeuchi/5b708f53a179db642608d20f96d6c2bc.js"></script>
 
 <p>現実的には、絶対にあり得ないコードですが、これを <strong>Metrics.exe</strong> で計測してみましょう。<br>その結果が下記になります。</p>
-<p>[table id=2 /]</p>
+<table>
+<thead>
+<tr>
+<th align="left">メトリックス項目</th>
+<th align="left">CodeMetricsTest.exe</th>
+<th align="left">CodeMetricsTest</th>
+<th align="left">Program</th>
+<th align="left">Main(string[]) : void</th>
+<th align="left">Program()</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">MaintainabilityIndex<br>(保守容易性指数)</td>
+<td align="left">23</td>
+<td align="left">23</td>
+<td align="left">23</td>
+<td align="left">15</td>
+<td align="left">100</td>
+</tr>
+<tr>
+<td align="left">CyclomaticComplexity<br>(サイクロマティック複雑度)</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">1</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">ClassCoupling<br>(クラス結合度)</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+<tr>
+<td align="left">DepthOfInheritance<br>(継承の深さ)</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">LinesOfCode<br>(コード行)</td>
+<td align="left">502</td>
+<td align="left">502</td>
+<td align="left">502</td>
+<td align="left">501</td>
+<td align="left">1</td>
+</tr>
+</tbody></table>
 <p><strong>サイクロマティック複雑度</strong>が変化していなくても、ただ<strong>コード行</strong>が増えるだけで、<strong>保守容易性指数</strong> が低下しているのがわかります。</p>
 <h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>まとめると、<strong>保守容易性指数</strong>は、</p>
 <ul>

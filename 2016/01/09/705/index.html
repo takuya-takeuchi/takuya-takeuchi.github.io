@@ -31,7 +31,127 @@ Introduction長期にわたってデータベースを利用していると、�
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ mongo --port 27017</span><br><span class="line">&gt; use admin</span><br><span class="line">switched to db admin</span><br><span class="line">&gt; db.auth(<span class="string">&quot;admin&quot;</span>,<span class="string">&quot;password&quot;</span>)</span><br><span class="line">1</span><br><span class="line">&gt; use hogehoge</span><br><span class="line">&gt; db.runCommand ( &#123; compact: <span class="string">&#x27;foo&#x27;</span>&#125;)</span><br><span class="line">&#123; <span class="string">&quot;ok&quot;</span> : 1 &#125;</span><br></pre></td></tr></table></figure>
 
 <p>データベースの修正が必要なので、admin権限で一度認証を通すためにadminデータベースにつないで認証します。<br>その後、対象のデータベースにつないでコレクション名を指定してコマンドを発行します。<br>私の環境だとすぐに結果が返ってきました。<br>下記は実行前後のデータベースの情報をmongo-expressで確認した結果です。</p>
-<p>[table id=20 /]</p>
+<table>
+<thead>
+<tr>
+<th align="left">コレクション</th>
+<th align="left">SmallObjectData<br>Before</th>
+<th align="left">SmallObjectData<br>After</th>
+<th align="left">MiddleObjectData<Br>Before</th>
+<th align="left">MiddleObjectData<Br>After</th>
+<th align="left">LargeObjectData<br>Before</th>
+<th align="left">LargeObjectData<br>After</th>
+<th align="left">LargeData<br>Before</th>
+<th align="left">LargeData<br>After</th>
+<th align="left">Data<br>Before</th>
+<th align="left">Data<br>After</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Collections (incl. system.namespaces)</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">Data Size</td>
+<td align="left">51.0 mb</td>
+<td align="left">51.0 mb</td>
+<td align="left">80.1 gb</td>
+<td align="left">80.1 gb</td>
+<td align="left">100 gb</td>
+<td align="left">100 gb</td>
+<td align="left">100 gb</td>
+<td align="left">100 gb</td>
+<td align="left">51.0 mb</td>
+<td align="left">51.0 mb</td>
+</tr>
+<tr>
+<td align="left">Storage Size</td>
+<td align="left">14.4 mb</td>
+<td align="left">14.4 mb</td>
+<td align="left">4.12 gb</td>
+<td align="left">4.12 gb</td>
+<td align="left">8.22 gb</td>
+<td align="left">8.22 gb</td>
+<td align="left">8.22 gb</td>
+<td align="left">8.22 gb</td>
+<td align="left">14.4 mb</td>
+<td align="left">14.3 mb</td>
+</tr>
+<tr>
+<td align="left">Avg Obj Size #</td>
+<td align="left">51.0 bytes</td>
+<td align="left">51.0 bytes</td>
+<td align="left">80.1 kb</td>
+<td align="left">80.1 kb</td>
+<td align="left">100 kb</td>
+<td align="left">100 kb</td>
+<td align="left">100 kb</td>
+<td align="left">100 kb</td>
+<td align="left">51.0 bytes</td>
+<td align="left">51.0 bytes</td>
+</tr>
+<tr>
+<td align="left">Objects #</td>
+<td align="left">1000000</td>
+<td align="left">1000000</td>
+<td align="left">1000000</td>
+<td align="left">1000000</td>
+<td align="left">1000000</td>
+<td align="left">1000000</td>
+<td align="left">1000000</td>
+<td align="left">1000000</td>
+<td align="left">1000000</td>
+<td align="left">1000000</td>
+</tr>
+<tr>
+<td align="left">Extents #</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+<tr>
+<td align="left">Indexes #</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">Index Size</td>
+<td align="left">19.7 mb</td>
+<td align="left">19.7 mb</td>
+<td align="left">19.7 mb</td>
+<td align="left">19.7 mb</td>
+<td align="left">19.7 mb</td>
+<td align="left">19.7 mb</td>
+<td align="left">8.91 mb</td>
+<td align="left">8.91 mb</td>
+<td align="left">8.92 mb</td>
+<td align="left">8.92 mb</td>
+</tr>
+</tbody></table>
 <p>変化した個所が1箇所しかないですし、微々たる変化です。<br>ストレージフォルダのサイズも <strong>19.5 GB (20,976,769,972 バイト)</strong> から <strong>19.5 GB (20,976,930,330 バイト)</strong> になって、むしろ増えています。</p>
 <p>Insert,Select,インデックスの設定くらいしかしていないと、変化しないのでしょうね。</p>
 <h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>かなり端折ったところもありますが、これで一区切りつけます。<br>自分としては、Insert,Select.Dropができればそれでよいデータベースが欲しく、SQLとか面倒だと思って、NoSQLの検討を始めた次第でしたが、思った以上にボリュームの多い内容になりました。</p>

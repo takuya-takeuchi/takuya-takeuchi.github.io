@@ -26,7 +26,25 @@
 <blockquote>
 <p>レジストリキーが長いパスの新しい扱いの有効/無効を許可します。長いパスの扱いを有効にするために、<strong>HKLM\SYSTEM\CurrentControlSet\Control\FileSystem LongPathsEnabled (Type: REG_DWORD)</strong> にキーを設定します。キーの値は、影響のあるwin32のファイルまたはディレクトリ関数(後述のリスト)の最初の呼び出し後、システム(プロセス毎)によって、キャッシュされます。レジストリキーはプロセスの生存中は再読込されません。<br>システム上の全てのアプリケーションにキーの値を認識させるために、いくつかのプロセスは値が設定される前に起動されたがために、システムの再起動を要求されるかもしれません。<br>レジストリキーはグループポリシーの<strong>コンピューターの構成 -&gt; 管理用テンプレート -&gt; システム -&gt; ファイルシステム -&gt; Win32 の長いパスを有効にする</strong> によっても制御することが出来ます。<br>また、マニフェストによっても新しい長いパスの扱いを有効にすることが出来ます。</p>
 </blockquote>
-<p>です。<br>本文の<strong>also</strong>の係りをみるに、レジストリキーの設定さえあればOKのはずです。<br>ぶっちゃけ理由がわかりません。<br>が、manifestを有効にすれば動作しました。<br>最終的な検証は下記の通り。<br>[table id=27 /]</p>
+<p>です。<br>本文の<strong>also</strong>の係りをみるに、レジストリキーの設定さえあればOKのはずです。<br>ぶっちゃけ理由がわかりません。<br>が、manifestを有効にすれば動作しました。<br>最終的な検証は下記の通り。</p>
+<table>
+<thead>
+<tr>
+<th align="left">.NET バージョン</th>
+<th align="left">ローカルグループポリシー有効<br>App.configあり/Manifestあり</th>
+<th align="left">ローカルグループポリシー有効<br>App.configなし/Manifestあり</th>
+<th align="left">ローカルグループポリシー無効<br>App.configあり/Manifestあり</th>
+<th align="left">ローカルグループポリシー無効<br>App.configなし/Manifestあり</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">.NET 4.6.2</td>
+<td align="left">OK</td>
+<td align="left">OK</td>
+<td align="left">DirectoryNotFoundException</td>
+<td align="left">DirectoryNotFoundException</td>
+</tr>
+</tbody></table>
 <p>結局、Creators Updateから長いパスを扱うには、</p>
 <ul>
 <li>グループポリシー (またはレジストリ) の設定を有効</li>

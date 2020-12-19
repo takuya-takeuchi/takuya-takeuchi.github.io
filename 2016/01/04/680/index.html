@@ -11,7 +11,30 @@ IntroductionNpSQLの売りはデータの読み書きです。RDBMSが持つ柔�
 <p>MongoDB上では、書き込みの結果、下記の数値が得られました。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Data Size 51.0 mb</span><br><span class="line">Storage Size 14.4 mb</span><br><span class="line">Avg Obj Size # 51.0 bytes</span><br><span class="line">Objects # 1000000</span><br></pre></td></tr></table></figure>
 
-<p>[table id=15 /]</p>
+<table>
+<thead>
+<tr>
+<th align="left">オペレーション/オブジェクト数</th>
+<th align="left">1,000,000</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Drop</td>
+<td align="left">228.5 ms</td>
+</tr>
+<tr>
+<td align="left">Insert (One)</td>
+<td align="left">132881.25 ms</td>
+</tr>
+<tr>
+<td align="left">Insert (Many)</td>
+<td align="left">131191.67 ms</td>
+</tr>
+<tr>
+<td align="left">Select (Countだけ)</td>
+<td align="left">11 ms</td>
+</tr>
+</tbody></table>
 <p>OneとManyは、Insertに使うメソッドの違いです。単一のオブジェクトの挿入かIEnumrableの挿入かの違いです。<br>差はないも同然でしたが。<br>一応書き込みは0.1-0.2ms/個のようです。これは速いのか？</p>
 <h2 id="Write-Large-Objects"><a href="#Write-Large-Objects" class="headerlink" title="Write Large Objects"></a>Write Large Objects</h2><p>次は下記のオブジェクトを1,000,000個書き込みます。</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">sealed</span> <span class="keyword">class</span> <span class="title">LargeData</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ObjectId Id</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>;</span><br><span class="line">        <span class="keyword">set</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">byte</span>[] DataBytes</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">set</span>;</span><br><span class="line">        <span class="keyword">get</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> DateTime Established</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">get</span>;</span><br><span class="line">        <span class="keyword">set</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -30,7 +53,35 @@ IntroductionNpSQLの売りはデータの読み書きです。RDBMSが持つ柔�
 <p><strong>100,000(個)*100(kb)=9765MB</strong></p>
 <p>とすると、半分ならギリギリ大丈夫？<br>…ダメでした。25,000でようやくOKでしたが、それでもメモリは5GB近く確保したままでした。<br>でも、InsertOneなら1,000,000個挿入しても、7GBまで保持しました。なんで？</p>
 <p>このテスト、すっごいHDDに負荷かかる(白目) ずっとHDD、100%なんだぜ？</p>
-<p>[table id=16 /]</p>
+<table>
+<thead>
+<tr>
+<th align="left">オペレーション/オブジェクト数</th>
+<th align="left">25,000</th>
+<th align="left">1,000,000</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Drop</td>
+<td align="left">235 ms</td>
+<td align="left">246.3 ms</td>
+</tr>
+<tr>
+<td align="left">Insert (One)</td>
+<td align="left">16815 ms</td>
+<td align="left">818100 ms</td>
+</tr>
+<tr>
+<td align="left">Insert (Many)</td>
+<td align="left">19671 ms</td>
+<td align="left">計測不可</td>
+</tr>
+<tr>
+<td align="left">Select (Countだけ)</td>
+<td align="left">14.67 ms</td>
+<td align="left">計測不可</td>
+</tr>
+</tbody></table>
 <p>参考値ですが、オブジェクト数とスピードは比例に近い感じですね。<br>あと、0.81ms/個のようです。こちらは単純にオブジェクトサイズには比例しないようですが。</p>
 <h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>予想以上に苦労しました。<br>まさかOutOfMemoryExpcetionで躓くとは予想外でした。<br>パフォーマンスとしては、あまり良いとも悪いとも言えないです。<br>どこかでRDMBSで似たデータ構造の比較試験がないでしょうか？</p>
 <p>次は読み込みのパフォーマンス試験を予定です。</p>

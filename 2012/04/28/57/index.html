@@ -27,7 +27,58 @@ Explanation生成されたメトリックスの結果は下記のような XML�
 <p><strong>保守容易性指数</strong> - コードの相対的な保守容易性を表す、0 ～ 100 のインデックス値を算出します。<br>値が大きいほど、保守容易性が優れていることを示します。<br>色分けしたコード評価を使用して、コード内の問題部分をすばやく識別することができます。<br>緑色の評価は 20 ～ 100 の範囲にあることを示し、コードの保守容易性が良好であることを示します。<br>黄色の評価は 10 ～ 19 の範囲にあることを示し、コードの保守容易性が中程度であることを示します。<br>赤の評価は 0 ～ 9 の範囲にあることを示し、保守容易性が低いことを示します。<br><strong>サイクロマティック複雑度</strong> - コードの構造上の複雑さを測定します。<br>これは、プログラムのフローにある、異なるコード パスの数を計算することで作成されます。<br>複雑な制御フローが含まれるプログラムでは、十分なコード カバレッジを実現するためにより多くのテストが必要となり、保守性が低下します。<br>メモ 場合によっては、Visual Studio 2010 のメソッドのサイクロマティック複雑度の計算が旧バージョンと異なります。<br>詳細については、「コード メトリックに関する問題のトラブルシューティング」で Visual Studio 2010 のコードの複雑度の計算における変更点についての説明を参照してください。<br><strong>継承の深さ</strong> - クラス階層構造のルートまでのクラス定義の数を示します。<br>階層構造が深くなるにつれて、特定のメソッドおよびフィールドが定義または再定義されている場所を把握することがより困難になる場合があります。<br><strong>クラス結合度</strong> - パラメーター、ローカル変数、戻り値の型、メソッド呼び出し、ジェネリックまたはテンプレートのインスタンス化、基本クラス、インターフェイス実装、外部の型で定義されたフィールド、および属性による装飾を使用して、一意のクラスへの結合度を測定します。<br>適切なソフトウェア デザインでは、型およびメソッドの連携は高まり、結合性は低くなります。<br>結合性が高いということは、他の型への依存関係が多いために再利用や保守が困難なデザインであることを示します。<br><strong>コード行</strong> - コード内の行の概数を示します。<br>この数は IL コードに基づいているため、ソース コード ファイル内の正確な行数ではありません。<br>数が非常に大きい場合、型またはメソッドでの処理が多すぎるため、分割が必要であることを示すことがあります。<br>また、型やメソッドの保守が困難なことを示す場合もあります。</p>
 </blockquote>
 <h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>これらを踏まえて、サンプルである <strong>CodeMetricsTest.exe</strong> の結果を表に纏めてみました。</p>
-<p>[table id=1 /]</p>
+<table>
+<thead>
+<tr>
+<th align="left">メトリックス項目</th>
+<th align="left">CodeMetricsTest.exe</th>
+<th align="left">CodeMetricsTest</th>
+<th align="left">Program</th>
+<th align="left">Main(string[]) : void</th>
+<th align="left">Program()</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">MaintainabilityIndex<br>(保守容易性指数)</td>
+<td align="left">100</td>
+<td align="left">100</td>
+<td align="left">100</td>
+<td align="left">100</td>
+<td align="left">100</td>
+</tr>
+<tr>
+<td align="left">CyclomaticComplexity<br>(サイクロマティック複雑度)</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">1</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">ClassCoupling<br>(クラス結合度)</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+<tr>
+<td align="left">DepthOfInheritance<br>(継承の深さ)</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">LinesOfCode<br>(コード行)</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">1</td>
+</tr>
+</tbody></table>
 <p>極めてシンプルなコードのため結果も極めて良好です(当たり前) 結果を表に纏めるといろいろ見えてきます。</p>
 <ul>
 <li>メトリックスの対象は、<strong>アセンブリ</strong>、<strong>名前空間</strong>、<strong>型</strong>、<strong>型のメンバ</strong>という4つの単位で計測される</li>

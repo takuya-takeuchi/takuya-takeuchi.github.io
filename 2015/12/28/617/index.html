@@ -43,7 +43,46 @@ Introduction顔認識を行う際、前処理を行いました。サンプル�
 </ul>
 <p>のパターンで速度を計測しました。</p>
 <h3 id="実験結果"><a href="#実験結果" class="headerlink" title="実験結果"></a>実験結果</h3><p>計測結果は</p>
-<p>[table id=14 /]</p>
+<table>
+<thead>
+<tr>
+<th align="left">種別/ループ数</th>
+<th align="left">100</th>
+<th align="left">1000</th>
+<th align="left">10000</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Sequential</td>
+<td align="left">228.6666667 ms</td>
+<td align="left">2270 ms</td>
+<td align="left">22841.66667 ms</td>
+</tr>
+<tr>
+<td align="left">OpenCV</td>
+<td align="left">86.66666667 ms</td>
+<td align="left">853.6666667 ms</td>
+<td align="left">8483.333333 ms</td>
+</tr>
+<tr>
+<td align="left">Optimized</td>
+<td align="left">128.6666667 ms</td>
+<td align="left">961.6666667 ms</td>
+<td align="left">9478 ms</td>
+</tr>
+<tr>
+<td align="left">Optimized (Parallel)</td>
+<td align="left">88 ms</td>
+<td align="left">979.3333333 ms</td>
+<td align="left">9556 ms</td>
+</tr>
+<tr>
+<td align="left">Optimized (C++/CLI)</td>
+<td align="left">69.33333333 ms</td>
+<td align="left">582 ms</td>
+<td align="left">5680.333333 ms</td>
+</tr>
+</tbody></table>
 <p>となりました。</p>
 <p>Seqentialはやはり遅いですね。全体的にOptimizedと比較して、2.0-2.5倍くらいの差です。ループ回数分の差だと言えます。<br>OpenCVのコアがNativeなので、Optimizedでもパフォーマンスに差が出るのは予想通りですが、それなりに善戦したと思います。<br>C++/CLIを使えばOpenCVを超えることも十分可能です。まぁそこまでするなら、最初からC++/CLIで全部コーディングするべきだと思いますが。<br>並列化は今回はあまり意味をなしませんでしたね。もっと大きな画像なら有意な差が出ると思うのですが。</p>
 <h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>OpenCVは手軽に結果を確認できるあたりが良いです。<br>ですが、本気でパフォーマンスを追求するなら、OpenCVではなく、自分でロジックを実装することも必要です。<br>WPFやUWPでリッチなUIを実装し、高度な画像処理部はOpenCVまたは自分で実装するということになるでしょう。<br><del>MFC?知らねぇなぁ。</del></p>

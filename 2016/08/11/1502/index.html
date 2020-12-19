@@ -29,7 +29,31 @@ MAXPATHの制限がなくなります制限付きです"><meta name="keywords"><
 
 <p>という例外を投げました。<br>理想では、「.NET 4.6.2 + app.configあり」の環境だけで実行できるつもりでした。<br>少なくとも、app.configがないとダメ、という感じだと思いましたが、この結果は不思議です。</p>
 <p>ローカルグループポリシーの有効前後で結果が変化し、最終的にこうなりました。</p>
-<p>[table id=24 /]</p>
+<table>
+<thead>
+<tr>
+<th align="left">.NET バージョン</th>
+<th align="left">ローカルグループポリシー有効<br>App.configあり</th>
+<th align="left">ローカルグループポリシー有効<br>App.configなし</th>
+<th align="left">ローカルグループポリシー無効<br>App.configあり</th>
+<th align="left">ローカルグループポリシー無効<br>App.configなし</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">.NET 4.6.2</td>
+<td align="left">OK</td>
+<td align="left">OK</td>
+<td align="left">DirectoryNotFoundException</td>
+<td align="left">DirectoryNotFoundException</td>
+</tr>
+<tr>
+<td align="left">.NET 4.6.1</td>
+<td align="left">OK</td>
+<td align="left">PathTooLongException</td>
+<td align="left">DirectoryNotFoundException</td>
+<td align="left">PathTooLongException</td>
+</tr>
+</tbody></table>
 <p>調べてみると、下記のMSDN Blogに記事がありました。</p>
 
 

@@ -17,7 +17,64 @@ Explanationおさらいですが、サイクロマティック複雑度はMSDN�
 
 <p><strong>(2012.05.01 23:49 上記ソースが一部文字化けしていたのを修正しました。)</strong></p>
 <p>今回もサンプルとしては良いかもしれませんが…的なソースですが、これを <strong>Metrics.exe</strong> で計測してみましょう。<br>その結果が下記になります。</p>
-<p>[table id=3 /]</p>
+<table>
+<thead>
+<tr>
+<th align="left">メトリックス項目</th>
+<th align="left">Case1</th>
+<th align="left">Case2</th>
+<th align="left">Case3</th>
+<th align="left">Case4</th>
+<th align="left">Case5</th>
+<th align="left">Case6</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">MaintainabilityIndex<br>(保守容易性指数)</td>
+<td align="left">71</td>
+<td align="left">66</td>
+<td align="left">67</td>
+<td align="left">67</td>
+<td align="left">78</td>
+<td align="left">70</td>
+</tr>
+<tr>
+<td align="left">CyclomaticComplexity<br>(サイクロマティック複雑度)</td>
+<td align="left">4</td>
+<td align="left">7</td>
+<td align="left">4</td>
+<td align="left">4</td>
+<td align="left">2</td>
+<td align="left">4</td>
+</tr>
+<tr>
+<td align="left">ClassCoupling<br>(クラス結合度)</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">1</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">DepthOfInheritance<br>(継承の深さ)</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">LinesOfCode<br>(コード行)</td>
+<td align="left">5</td>
+<td align="left">8</td>
+<td align="left">7</td>
+<td align="left">7</td>
+<td align="left">3</td>
+<td align="left">5</td>
+</tr>
+</tbody></table>
 <p>分岐ステートメントがあると <strong>サイクロマティック複雑度</strong> が1増加するのではなく、そこに含まれる条件式の個数分だけ増加するようです。<br>たとえば、Case6メソッドの2つめのfor文には2つの条件式があるので、最初のfor文と併せて、1+1+2=4とサイクロマティック複雑度が計算されています。</p>
 <p>では、条件式が含まれれば、サイクロマティック複雑度が増加するかというとそうではないようです。</p>
 <script src="https://gist.github.com/takuya-takeuchi/9366e53276ef7ffd12c0f75e30bee56f.js"></script>

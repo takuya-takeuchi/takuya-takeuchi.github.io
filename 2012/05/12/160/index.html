@@ -18,7 +18,40 @@ Explanat"><meta name="keywords"><meta content="width=device-width, initial-scale
 
 <p>これを <strong>Metrics.exe</strong> で計測してみましょう。</p>
 <p>下記はメトリックスの結果のうち、<strong>Family クラス</strong>、<strong>FireVampire クラス</strong>に着目した表です。</p>
-<p>[table id=6 /]</p>
+<table>
+<thead>
+<tr>
+<th align="left">メトリックス項目</th>
+<th align="left">Family</th>
+<th align="left">FireVampire</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">MaintainabilityIndex<br>(保守容易性指数)</td>
+<td align="left">100</td>
+<td align="left">100</td>
+</tr>
+<tr>
+<td align="left">CyclomaticComplexity<br>(サイクロマティック複雑度)</td>
+<td align="left">1</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">ClassCoupling<br>(クラス結合度)</td>
+<td align="left">0</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">DepthOfInheritance<br>(継承の深さ)</td>
+<td align="left">1</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">LinesOfCode<br>(コード行)</td>
+<td align="left">1</td>
+<td align="left">1</td>
+</tr>
+</tbody></table>
 <p><strong>Family クラス</strong> は、メンバに何もありません。<br>しかし、継承の深さが 1 なのは前回説明したとおりですが、クラス結合度は <strong>0</strong> です。<br>これは何を意味しているのでしょうか？ この結果についての解が<a target="_blank" rel="noopener" href="http://msdn.microsoft.com/ja-jp/library/bb385914%28v=vs.90%29.aspx">こちら</a>に記述されています。</p>
 <blockquote>
 <p><strong>クラス結合度</strong> - パラメータ、ローカル変数、戻り値、メソッド呼び出し、ジェネリックまたはテンプレートのインスタンス化、基本クラス、インターフェイス実装、外部の型で定義されたフィールド、および属性による装飾を使用して、一意のクラスへの結合度を測定します。<strong>計算では、int32、string、object など、プリミティブ型や組み込み型は除外します。</strong> 適切なソフトウェア デザインでは、型およびメソッドの連携は高まり、結合性は低くなります。結合性が高いということは、他の型への依存関係が多いために再利用や保守が困難なデザインであることを示します。</p>
@@ -26,7 +59,40 @@ Explanat"><meta name="keywords"><meta content="width=device-width, initial-scale
 <p>つまり、全てのクラスの継承元である <strong>Object クラス</strong> は結合度の計算から除外するわけですね。<br>他にも、プリミティブ型や組み込み型が除外されるとありますが、これらは<a target="_blank" rel="noopener" href="http://msdn.microsoft.com/ja-jp/library/ms228360%28v=vs.80%29.aspx">こちらのページ</a>の<strong>組み込みのデータ型</strong>の章で確認できます。</p>
 <p><strong>FireVampire クラス</strong> も、メンバに何もありませんが、クラス結合度が <strong>1</strong> なのは、<strong>Family クラス</strong> を継承しているから <strong>+1</strong> なのでしょう。</p>
 <p>次は、<strong>Cthugha クラス</strong>、<strong>Nyarlathotep クラス</strong>に着目した表です。</p>
-<p>[table id=7 /]</p>
+<table>
+<thead>
+<tr>
+<th align="left">メトリックス項目</th>
+<th align="left">Cthugha</th>
+<th align="left">Nyarlathotep</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">MaintainabilityIndex<br>(保守容易性指数)</td>
+<td align="left">97</td>
+<td align="left">97</td>
+</tr>
+<tr>
+<td align="left">CyclomaticComplexity<br>(サイクロマティック複雑度)</td>
+<td align="left">2</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">ClassCoupling<br>(クラス結合度)</td>
+<td align="left">2</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">DepthOfInheritance<br>(継承の深さ)</td>
+<td align="left">2</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">LinesOfCode<br>(コード行)</td>
+<td align="left">2</td>
+<td align="left">2</td>
+</tr>
+</tbody></table>
 <p><strong>Nyarlathotep クラス</strong> は前述の <strong>FireVampire クラス</strong> と同じです。<br>プロパティの String クラス、継承元の Object クラスは計算から除外されており、計算対象は継承元の <strong>GreatOldOne クラス</strong> のみが計算対象です。</p>
 <p>問題は、<strong>Cthugha クラス</strong> です。<br>メンバに <strong>FireVampire クラス</strong> の配列を保持しています。<br>ここで1つ疑問が浮かびます。</p>
 <p>クラス結合度の計算対象には、Object クラスを除外した継承元のクラスは計算対象になるのは前述の通りです。<br>では、この継承元のクラス、というのは、<strong>パラメータ、ローカル変数、戻り値、メソッド呼び出し、ジェネリックまたはテンプレートのインスタンス化、インターフェイス実装、外部の型で定義されたフィールド、および属性による装飾</strong> にも適用されるのでしょうか？ 結論から言えば答えは <strong>No</strong> です。</p>

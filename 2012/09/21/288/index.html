@@ -8,7 +8,38 @@
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ログの出力を制限</span></span><br><span class="line">config.log_level = <span class="symbol">:warn</span></span><br></pre></td></tr></table></figure>
 
 <p>また、ログのレベルは下記の内容が使用できるようです。</p>
-<p>[table id=10 /]</p>
+<table>
+<thead>
+<tr>
+<th align="left">レベル</th>
+<th align="left">意味</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">unknown</td>
+<td align="left">不明</td>
+</tr>
+<tr>
+<td align="left">fatal</td>
+<td align="left">致命的</td>
+</tr>
+<tr>
+<td align="left">error</td>
+<td align="left">エラー</td>
+</tr>
+<tr>
+<td align="left">warn</td>
+<td align="left">警告</td>
+</tr>
+<tr>
+<td align="left">info</td>
+<td align="left">情報</td>
+</tr>
+<tr>
+<td align="left">debug</td>
+<td align="left">デバッグ</td>
+</tr>
+</tbody></table>
 <p>これで終了です。<br>従来は、<strong>C:\Program Files\BitNami Redmine Stack\apps\redmine\config\environments\production.rb</strong> に</p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ログの出力を制限</span></span><br><span class="line">config.logger = Logger.new(config.log_path)</span><br><span class="line">config.logger.level = Logger::WARN</span><br></pre></td></tr></table></figure>
 

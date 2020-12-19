@@ -17,9 +17,111 @@ Explanationおさらいですが、継承の深さはMSDNのコード メトリ�
 
 <p>今回はいつにも増して残念極まりないソースですが、これを <strong>Metrics.exe</strong> で計測してみましょう。</p>
 <p>下記はメトリックスの結果のうち、クラスに着目した表です。</p>
-<p>[table id=4 /]</p>
+<table>
+<thead>
+<tr>
+<th align="left">メトリックス項目</th>
+<th align="left">Human</th>
+<th align="left">Student</th>
+<th align="left">KamijoToma</th>
+<th align="left">Accelerator</th>
+<th align="left">TsuchimikadoMotoharu</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">MaintainabilityIndex<br>(保守容易性指数)</td>
+<td align="left">100</td>
+<td align="left">100</td>
+<td align="left">95</td>
+<td align="left">96</td>
+<td align="left">95</td>
+</tr>
+<tr>
+<td align="left">CyclomaticComplexity<br>(サイクロマティック複雑度)</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">5</td>
+<td align="left">3</td>
+<td align="left">4</td>
+</tr>
+<tr>
+<td align="left">ClassCoupling<br>(クラス結合度)</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">5</td>
+<td align="left">4</td>
+<td align="left">5</td>
+</tr>
+<tr>
+<td align="left">DepthOfInheritance<br>(継承の深さ)</td>
+<td align="left">1</td>
+<td align="left">2</td>
+<td align="left">3</td>
+<td align="left">3</td>
+<td align="left">3</td>
+</tr>
+<tr>
+<td align="left">LinesOfCode<br>(コード行)</td>
+<td align="left">1</td>
+<td align="left">1</td>
+<td align="left">5</td>
+<td align="left">3</td>
+<td align="left">4</td>
+</tr>
+</tbody></table>
 <p>次は、メトリックスの結果のうち、インターフェイスに着目した表です。</p>
-<p>[table id=5 /]</p>
+<table>
+<thead>
+<tr>
+<th align="left">メトリックス項目</th>
+<th align="left">IImagineBreaker</th>
+<th align="left">ISupernaturalPower</th>
+<th align="left">IAccelerator</th>
+<th align="left">IMagic</th>
+<th align="left">IAutoReverse</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">MaintainabilityIndex<br>(保守容易性指数)</td>
+<td align="left">100</td>
+<td align="left">100</td>
+<td align="left">100</td>
+<td align="left">100</td>
+<td align="left">100</td>
+</tr>
+<tr>
+<td align="left">CyclomaticComplexity<br>(サイクロマティック複雑度)</td>
+<td align="left">2</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+</tr>
+<tr>
+<td align="left">ClassCoupling<br>(クラス結合度)</td>
+<td align="left">2</td>
+<td align="left">0</td>
+<td align="left">1</td>
+<td align="left">0</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">DepthOfInheritance<br>(継承の深さ)</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+<tr>
+<td align="left">LinesOfCode<br>(コード行)</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+</tbody></table>
 <p>そして、最後は、上記サンプルのクラスダイアグラム図になります。<br>図中の <strong>DI</strong> は　<strong>Depth of Inheritance (DI)</strong> の略です。</p>
 <p><a href="../../../../public/2012/05/ClassDiagram.png"><img src="../../../../public/2012/05/ClassDiagram-300x180.png" title="ClassDiagram"></a></p>
 <p> 前述の定義通りメトリックスの結果から、継承の深さは、クラス階層構造のルートである <strong>Object クラス</strong> までのクラスの数であることを証明してくれました。</p>
