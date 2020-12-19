@@ -14,7 +14,8 @@
 <li>Pythonをコマンドプロンプトで呼び出し、ファイルで結果を受け取り解析</li>
 <li>Pythonで動作しているWebサービスのAPIを叩く</li>
 </ul>
-<p>あたりでしょうか。<br>1,2番目は面倒ですし、なによりださいので、3番目を利用します。<br>Webサービスなら、WCFによって簡単に.NETから呼び出せます。<br>というのも、Pythonをコマンドプロンプトで呼ぶと、呼び出しのコストが大きいと思います。<br>試してみた限り、Pythonの起動は遅いです。おそらく必要なモジュールなどを読み込んでいるからだと思うのですが、無視できない間隔で待たされます。<br>なので、起動コストを無視するために、常に起動しっぱなしにして、必要なときに必要な演算結果を受け取る形式がベスト。<br>ですので、今回はPythonでシンプルなRESTfulサービスを作成し、C#アプリからアクセスします。<br>そのために軽量なWebフレームワークであるPythonモジュール <strong>Flask</strong> を使用します。<br>Flaskについては下記を。</p>
+<p>あたりでしょうか。<br>1,2番目は面倒ですし、なによりださいので、3番目を利用します。<br>Webサービスなら、WCFによって簡単に.NETから呼び出せます。<br>というのも、Pythonをコマンドプロンプトで呼ぶと、呼び出しのコストが大きいと思います。<br>試してみた限り、Pythonの起動は遅いです。おそらく必要なモジュールなどを読み込んでいるからだと思うのですが、無視できない間隔で待たされます。<br>なので、起動コストを無視するために、常に起動しっぱなしにして、必要なときに必要な演算結果を受け取る形式がベスト。</p>
+<p>ですので、今回はPythonでシンプルなRESTfulサービスを作成し、C#アプリからアクセスします。<br>そのために軽量なWebフレームワークであるPythonモジュール <strong>Flask</strong> を使用します。<br>Flaskについては下記を。</p>
 <div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://ja.wikipedia.org/wiki/Flask" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=ja.wikipedia.org"></img><div class="hbc-site-name">ja.wikipedia.org</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">Flask - Wikipedia</div><div class="hbc-url">https://ja.wikipedia.org/wiki/Flask</div></div></div></div></a></div></div>
 
 <p>また、使用するPythonはMinicondaを使用します。<br>今回のソースは下記になります </p>
