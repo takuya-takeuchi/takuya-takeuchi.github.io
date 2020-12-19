@@ -110,16 +110,16 @@ Caffe更新 (2017/04/23)ディープラーニング Caffe その3 環境構築 w
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> caffe cp Makefile.config.example Makefile.config sudo gedit Makefile.config</span><br></pre></td></tr></table></figure>
 
 <p>下記のコメント行を有効化</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CPU\_ONLY := 1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CPU_ONLY := 1</span></span><br></pre></td></tr></table></figure>
 
 <p>下記のコメント行の直下に追加</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CUSTOM\_CXX := g++ CUSTOM\_CXX := g++-4.6</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CUSTOM_CXX := g++ CUSTOM_CXX := g++-4.6</span></span><br></pre></td></tr></table></figure>
 
 <p>下記の行をコメントアウト</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CUDA\_DIR := /usr/local/cuda</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CUDA_DIR := /usr/local/cuda</span><br></pre></td></tr></table></figure>
 
 <p>下記のコメント行を有効化</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CUDA\_DIR := /usr</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CUDA_DIR := /usr</span></span><br></pre></td></tr></table></figure>
 
 <p><strong>16. caffe本体のコンパイル</strong></p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make make <span class="built_in">test</span> make runtest</span><br></pre></td></tr></table></figure>

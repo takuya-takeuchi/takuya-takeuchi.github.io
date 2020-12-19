@@ -27,7 +27,7 @@
 <p>次に。リポジトリを閲覧するための設定を変更します。</p>
 <p><strong>InstallDir\apps\redmine\htdocs\config\configuration.yml</strong>をテキストエディタで開きます。</p>
 <p>130行目あたりを</p>
-<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">- scm\_mercurial\_command:</span></span><br><span class="line"><span class="addition">+ scm\_mercurial\_command: InstallDir\hg\hg.exe</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">- scm_mercurial_command:</span></span><br><span class="line"><span class="addition">+ scm_mercurial_command: InstallDir\hg\hg.exe</span></span><br></pre></td></tr></table></figure>
 
 <p>に修正します。<br>その後、Redmineを再起動します。</p>
 <p>再起動後、<strong>管理-&gt;設定-&gt;リポジトリ</strong>にて<strong>使用するバージョン管理システム</strong>を確認すると、Mercurialが使用できるようになっています。<br>(チェックボックスにチェックがついていないなら、チェックしてください)</p>

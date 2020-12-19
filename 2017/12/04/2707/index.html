@@ -15,20 +15,24 @@ InstructionsApp"><meta name="keywords"><meta content="width=device-width, initia
 </ul>
 </li>
 </ul>
-<p>の3種になります。<br>パフォーマンスとか考えると、C++の非UWPって気もしますが、そもそもパフォーマンス云々ならWindows IoTなんか選択しません。<br>Windows IoTを選ぶのは、開発効率の高さ、既存資産の流用、多数の言語サポートなのですから。</p>
+<p>の3種になります。<br>パフォーマンスとか考えると、C++の非UWPって気もしますが、<del>そもそもパフォーマンス云々ならWindows IoTなんか選択しません。</del></p>
+<p>Windows IoTを選ぶのは、開発効率の高さ、既存資産の流用、多数の言語サポートなのですから。</p>
 <h2 id="Foreground-Apps"><a href="#Foreground-Apps" class="headerlink" title="Foreground Apps"></a>Foreground Apps</h2><p>で、前述の通り、GUIなら選択肢は<strong>Foreground Apps</strong>しかないといっています。<br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/iot-core/develop-your-app/buildingappsforiotcore">Developing foreground applications</a>によれば、</p>
 <blockquote>
 <p>All of the standard UWP languages and project templates are fully supported on IoT Core.</p>
 </blockquote>
 <h5 id="訳-全ての基本的なUWPの言語及びプロジェクトテンプレートはIoTコア上で完全にサポートされます。"><a href="#訳-全ての基本的なUWPの言語及びプロジェクトテンプレートはIoTコア上で完全にサポートされます。" class="headerlink" title="訳: 全ての基本的なUWPの言語及びプロジェクトテンプレートはIoTコア上で完全にサポートされます。"></a>訳: 全ての基本的なUWPの言語及びプロジェクトテンプレートはIoTコア上で完全にサポートされます。</h5><p>とあるので、普通にUWPアプリを作ればそれで動くはずです。</p>
-<h2 id="Background-Apps"><a href="#Background-Apps" class="headerlink" title="Background Apps"></a>Background Apps</h2><p>問題は、GUIを使わないタイプ。<br><strong>Background App</strong>とよばれる、このタイプはコンソールアプリなのですが、従来の<strong>Mainメソッド</strong>から構成されるものとは異なり、どちらかといえばサービスアプリケーションに近い印象を受けます。そもそもコンソール画面は表示されないので、コンソールアプリとも言えませんが。<br>Background Appsを作成するには、<strong>Windows.ApplicationModel.Background.IBackgroundTask インターフェイス</strong>を継承したクラスを作成するだけです。<br>そのクラスはタスクとして扱われ、バックグラウンドで実行されるという仕組みです。<br>サンプルを見る限りは非常に簡単ですが、ここはテンプレートを利用しましょう。<br>というか、MSDNにもそう書いてあります。<br>でも、Visual Studioをインストールしてもテンプレートは存在せず、<strong>Visual Studio Marketplace</strong>から入手せよとのこと。えぇ…</p>
+<h2 id="Background-Apps"><a href="#Background-Apps" class="headerlink" title="Background Apps"></a>Background Apps</h2><p>問題は、GUIを使わないタイプ。<br><strong>Background App</strong>とよばれる、このタイプはコンソールアプリなのですが、従来の<strong>Mainメソッド</strong>から構成されるものとは異なり、どちらかといえばサービスアプリケーションに近い印象を受けます。そもそもコンソール画面は表示されないので、コンソールアプリとも言えませんが。</p>
+<p>Background Appsを作成するには、<strong>Windows.ApplicationModel.Background.IBackgroundTask インターフェイス</strong>を継承したクラスを作成するだけです。<br>そのクラスはタスクとして扱われ、バックグラウンドで実行されるという仕組みです。</p>
+<p>サンプルを見る限りは非常に簡単ですが、ここはテンプレートを利用しましょう。<br>というか、MSDNにもそう書いてあります。<br>でも、Visual Studioをインストールしてもテンプレートは存在せず、<strong>Visual Studio Marketplace</strong>から入手せよとのこと。えぇ…</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=MicrosoftIoT.WindowsIoTCoreProjectTemplates">Windows IoT Core Project Templates</a></li>
 <li><a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=MicrosoftIoT.WindowsIoTCoreProjectTemplatesforVS15">Windows IoT Core Project Templates for VS 2017</a></li>
 </ul>
 <p>入手したインストーラを実行し、<strong>新しいプロジェクト</strong>を開くと、<strong>Windows IoT Core</strong>が追加されます。</p>
 <p><a href="../../../../public/2017/12/bd28c4a9a6ec722100d1bfed5cf509cf.png"><img src="../../../../public/2017/12/bd28c4a9a6ec722100d1bfed5cf509cf.png"></a></p>
-<p><a href="../../../../public/2017/12/8c9a77301be08cfd6425cd68d0e3de7f.png"><img src="../../../../public/2017/12/8c9a77301be08cfd6425cd68d0e3de7f.png"></a><br> ターゲットのWindows 10のビルドを選択します。</p>
+<p><a href="../../../../public/2017/12/8c9a77301be08cfd6425cd68d0e3de7f.png"><img src="../../../../public/2017/12/8c9a77301be08cfd6425cd68d0e3de7f.png"></a></p>
+<p>ターゲットのWindows 10のビルドを選択します。</p>
 <p>作成されたプロジェクトは、<strong>StartupTask.cs</strong>というソースが一つ(+他の細々したもの)というシンプルなものです。</p>
 <p><a href="../../../../public/2017/12/9fa909c177793da776f6ca453d6f9af7.png"><img src="../../../../public/2017/12/9fa909c177793da776f6ca453d6f9af7-1024x725.png"></a></p>
 <p>これを元に作成していけば、アイデアを形に出来るでしょう。きっと。</p>
