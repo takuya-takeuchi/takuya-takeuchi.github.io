@@ -4,17 +4,31 @@ ResolutionDockerの自動起動恐らくデフォルトで自動起動になっ�
 <h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><h2 id="Dockerの自動起動"><a href="#Dockerの自動起動" class="headerlink" title="Dockerの自動起動"></a>Dockerの自動起動</h2><p>恐らくデフォルトで自動起動になっているとは思います。<br>もし、自動起動設定になっていない場合は下記。</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl <span class="built_in">enable</span> docker </span><br></pre></td></tr></table></figure>
 
-<h2 id="コンテナの自動起動"><a href="#コンテナの自動起動" class="headerlink" title="コンテナの自動起動"></a>コンテナの自動起動</h2><p>再起動を指定できるのは、Dockerのバージョン1.2.0から。<br><strong>run</strong>実行時に<strong>--restartオプション</strong>を付与することでDocker起動時にコンテナを自動で起動させることができます。<br>また、オプションに追加可能なポリシーは下記。</p>
-<p>ポリシー</p>
-<p>内容</p>
-<p>no</p>
-<p>再起動しない (既定値)</p>
-<p>on-failure</p>
-<p>終了ステータスが非0の場合に再起動する</p>
-<p>on-failure:X</p>
-<p>終了ステータスが非0の場合にX回だけ再起動する</p>
-<p>always</p>
-<p>終了ステータスを無視して再起動する</p>
+<h2 id="コンテナの自動起動"><a href="#コンテナの自動起動" class="headerlink" title="コンテナの自動起動"></a>コンテナの自動起動</h2><p>再起動を指定できるのは、Dockerのバージョン1.2.0から。<br><strong>run</strong> 実行時に <strong>–restartオプション</strong> を付与することでDocker起動時にコンテナを自動で起動させることができます。<br>また、オプションに追加可能なポリシーは下記。</p>
+<table>
+<thead>
+<tr>
+<th align="left">ポリシー</th>
+<th align="left">内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">no</td>
+<td align="left">再起動しない (既定値)</td>
+</tr>
+<tr>
+<td align="left">on-failure</td>
+<td align="left">終了ステータスが非0の場合に再起動する</td>
+</tr>
+<tr>
+<td align="left">on-failure:X</td>
+<td align="left">終了ステータスが非0の場合にX回だけ再起動する</td>
+</tr>
+<tr>
+<td align="left">always</td>
+<td align="left">終了ステータスを無視して再起動する</td>
+</tr>
+</tbody></table>
 <div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://docs.docker.com/engine/reference/run/#restart-policies---restart" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=docs.docker.com"></img><div class="hbc-site-name">Docker Documentation</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="/favicons/docs@2x.ico"></img></div><div class="hbc-text"><div class="hbc-title">Docker run reference</div><div class="hbc-url">https://docs.docker.com/engine/reference/run/#restart-policies---restart</div><div class="hbc-description">Configure containers at runtime</div></div></div></div></a></div></div>
 
 <p>ただし、上記の場合は、runで指定する場合で、既に作成したコンテナには使えません。<br>作成済みコンテナのに対してrestartを設定するには下記。</p>
