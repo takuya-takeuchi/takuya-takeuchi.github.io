@@ -41,7 +41,7 @@
 pre {
   font-size: 15px;
   background-color: #f0f0f0!important;
-  font-family: 'Roboto Mono','Lucida Console','Trebuchet MS','Courier New', Monaco, courier,'Microsoft Jhenghei','Microsoft Meiryo', monospace!important
+  font-family: 'Roboto Mono','Lucida Console','Trebuchet MS','Courier New', Monaco, courier, Hiragino Kaku Gothic ProN,Hiragino Sans,ヒラギノ角ゴ ProN W3,Meiryo, monospace!important
 }
 
 figure.highlight {
