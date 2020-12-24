@@ -23,7 +23,9 @@ Windowsでの導入記事が見つからないので自分でやってみます�
 </ul>
 <p>が必要だと書いてあります。<br>げんなりします。</p>
 <h3 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h3><p>既に私のシステムにはPythonがあるので省略します。<br><strong>Anaconda</strong>なり<strong>Miniconda</strong>なりでインストールするのが簡単です。<br>Minicondaでしたら、インストールした際のスクリーンショット付きで記事があります。</p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://taktak.jp/2016/05/28/1372" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=taktak.jp"></img><div class="hbc-site-name">taktak.jp</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">ディープラーニング Caffe for Windows その1 環境構築 – A certain engineer &quot;COMPLEX&quot;</div><div class="hbc-url">https://taktak.jp/2016/05/28/1372</div></div></div></div></a></div></div>
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://taktak.jp/2016/05/28/1372" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=taktak.jp"></img><div class="hbc-site-name">taktak.jp</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">ディープラーニング Caffe for Windows その1 環境構築 · A certain engineer &quot;COMPLEX&quot;</div><div class="hbc-url">https://taktak.jp/2016/05/28/1372</div><div class="hbc-description">結構前にUbuntuにCaffeをインストールしました。
+
+Windows版がある!!会社でWindows上で動作するDeepLearning環境はないか？という質問を受けて、調べることになりました。その過程でCaffeがWindowsで動作するように、Microsoftがgit…</div></div></div></div></a></div></div>
 
 <h3 id="msys2"><a href="#msys2" class="headerlink" title="msys2"></a>msys2</h3><p><strong>msys2</strong>はインストーラーで提供されています。<br><a target="_blank" rel="noopener" href="http://www.msys2.org/">公式ページ</a>からダウンロードでします。<br>msysは<a target="_blank" rel="noopener" href="https://ja.wikipedia.org/wiki/MSYS">wiki</a>によると、</p>
 <blockquote>
@@ -46,7 +48,7 @@ Windowsでの導入記事が見つからないので自分でやってみます�
 <h3 id="msys2のパッケージ追加"><a href="#msys2のパッケージ追加" class="headerlink" title="msys2のパッケージ追加"></a>msys2のパッケージ追加</h3><p>追加のパッケージが必要とのことなので、先ほどインストールしたmsys2を起動します。<br>スタートメニューから<strong>MSYS2 64bit</strong>を開きます。</p>
 <p><a href="../../../../public/2017/12/af94d0d0edc2e2da11158bbf6eb9be15.png"><img src="../../../../public/2017/12/af94d0d0edc2e2da11158bbf6eb9be15.png"></a></p>
 <p>で、<strong>MSYS2 MSYS</strong>をクリックします。選択肢が複数あって、「うっ」って思いました。止めて欲しいね。<br>シェルが起動したら、</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -Syuu git curl zip unzip</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -Syuu git curl zip unzip</span><br></pre></td></tr></table></figure>
 
 <p>と入力します。</p>
 <p><a href="../../../../public/2017/12/747891ac95f49e1db245ff6ac40d1b80.png"><img src="../../../../public/2017/12/747891ac95f49e1db245ff6ac40d1b80.png"></a></p>
@@ -55,7 +57,7 @@ Windowsでの導入記事が見つからないので自分でやってみます�
 <p>が、途中で、 </p>
 <p><a href="../../../../public/2017/12/209ca7b4fdb5ea6e33703c1820bf65e5.png"><img src="../../../../public/2017/12/209ca7b4fdb5ea6e33703c1820bf65e5.png"></a></p>
 <p>はぁ!?</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">警告: terminate MSYS2 without returning to shell and check <span class="keyword">for</span> updates again</span><br><span class="line">警告: <span class="keyword">for</span> example close your terminal window instead of calling <span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">警告: terminate MSYS2 without returning to shell and check for updates again</span><br><span class="line">警告: for example close your terminal window instead of calling exit</span><br></pre></td></tr></table></figure>
 
 <p>と出ました。<br>要約すると、もう一度シェルを立ち上げ直して同じ事をしろ、ってことです。<br>が、閉じるボタンを押下すると、処理中なのか応答が鈍いですが、</p>
 <p><a href="../../../../public/2017/12/9059c9edd4778555314c9512de4ca076.png"><img src="../../../../public/2017/12/9059c9edd4778555314c9512de4ca076.png"></a></p>

@@ -16,10 +16,10 @@ GitH"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0
 <div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/alexbevi/redmine_acts_as_taggable_on" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://avatars1.githubusercontent.com/u/135803?s=400&v=4"></img></div><div class="hbc-text"><div class="hbc-title">alexbevi/redmine_acts_as_taggable_on</div><div class="hbc-url">https://github.com/alexbevi/redmine_acts_as_taggable_on</div><div class="hbc-description">A gem which allows multiple Redmine plugins to use acts_as_taggable_on without stepping on each others&#39; toes. - alexbevi/redmine_acts_as_tag…</div></div></div></div></a></div></div>
 
 <p>この際、gitを使ってCloneするのですが、**git://**というプロトコルで通信するため、会社の通信環境では通らないわけです。<br>しかもporxyのおまけ付き。これは別にいいです。<br>下記のコマンドでgitプロトコルを強制的にhttpsアクセスに切り替えています。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global url.<span class="string">&quot;https://&quot;</span>.insteadOf git://</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global url.&quot;https://&quot;.insteadOf git://</span><br></pre></td></tr></table></figure>
 
 <p>また、下記のコマンドでproxyを有効にします。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.proxy http://proxy.example.com:8080</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.proxy http://proxy.example.com:8080</span><br></pre></td></tr></table></figure>
 
 <p>ここまでこれば普通に動くはずなんです。<br>が、動かない。bundle installでredmine_acts_as_taggable_onを持ってくるのに失敗する。<br>エラーの出力も、具体的なエラーを出さない。</p>
 <h1 id="dllが古い"><a href="#dllが古い" class="headerlink" title="dllが古い"></a>dllが古い</h1><p>さて、悩むこと2時間。<br>何が原因だったのか、というと思い出しました。</p>

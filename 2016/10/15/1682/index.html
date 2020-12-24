@@ -3,24 +3,14 @@
 <p>会社で、Linux環境で開発をしています。<br>しかしながら、メールとかを使用するマシンはWindows上にあり、開発マシンは共有です。なので、メール見るマシンの前で開発したいわけです。<br>でも、VNCはレスポンスが悪くてとてもじゃないけど使えません (同じネットワークにあるのにも関わらず!!)。</p>
 <p>なので、Visual Studio Codeでコーディングし、WinSCPで転送、SSHでログインしてビルド、そしてgit、という非常に面倒な開発プロセス使うわけですが、Visual Studio や TortoiseGit になれていると、コミットするにも一苦労。<br>更にエラーメッセージも英語で辛い。</p>
 <p>そんな中、<strong>git pull</strong> したときに何故かエディタが立ち上がりました。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Please enter a commit message to explain why this merge is necessary,</span></span><br><span class="line"><span class="comment"># especially if it merges an updated upstream into a topic branch.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Lines starting with &#x27;#&#x27; will be ignored, and an empty message aborts</span></span><br><span class="line"><span class="comment"># the commit.</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Please enter a commit message to explain why this merge is necessary,</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> especially <span class="keyword">if</span> it merges an updated upstream into a topic branch.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Lines starting with <span class="string">&#x27;#&#x27;</span> will be ignored, and an empty message aborts</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> the commit.</span></span><br></pre></td></tr></table></figure>
 
 <p>トピックブランチにアップストリームのブランチをマージする場合にコメントが必要ってことらしいですが、ブランチの扱いもおぼつかないのに、こんなこと言われても困ります。<br>空のメッセージはコミットをアボートしますってありますし。</p>
 <p>なので、ググったら、 </p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="http://snickerjp.blogspot.jp/2015/04/git-pull-no-edit.html" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=snickerjp.blogspot.jp"></img><div class="hbc-site-name">元うなぎ屋</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="//1.bp.blogspot.com/-FjfKOBOdj1w/VSO-4uz4xkI/AAAAAAAB84E/GlAA9xJDKyE/w1200-h630-p-k-no-nu/1428423174_git-branch-256.png"></img></div><div class="hbc-text"><div class="hbc-title">「git pull」した時に出る、commitエディタを表示しないようにする</div><div class="hbc-url">http://snickerjp.blogspot.jp/2015/04/git-pull-no-edit.html</div><div class="hbc-description">なのまるです～
 
-git の自動化を行っているとおかしなことが起きて困ったので、対処法メモです！
-
-もくじ
-
-
-gitを使ったスクリプトを実行したときに発生した問題
-
-中では、[git pull] をしているわけですが、
-    Merge branch &#39;master&#39; of …</div></div></div></div></a></div></div>
 
 <p>同じ現象に遭遇している方が。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># git pull --no-edit</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> git pull --no-edit</span></span><br></pre></td></tr></table></figure>
 
 <p>すれば、エディタが起動しない、とのこと。<br>助かりました。</p>
 </div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2016-10-15</span><i class="fa fa-tag"></i><a class="tag" href="/categories/バージョン管理システム/" title="バージョン管理システム">バージョン管理システム </a><a class="tag" href="/categories/バージョン管理システム/git/" title="git">git </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2016/10/15/1682/,A certain engineer &quot;COMPLEX&quot;,開発メモ その22 git pull したときにエディタを表示されないようにする,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2016/11/08/1687/" title="開発メモ その23 GDBでデバッグしてみる">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2016/10/02/1677/" title="開発メモ その21 Red Hat Enterprise Linux 7.2のポートを開放する">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>

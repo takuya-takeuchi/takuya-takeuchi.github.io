@@ -10,7 +10,7 @@ Caffe更新 (2017/04/23)ディープラーニング Caffe その3 環境構築 w
 <h2 id="VNCの許可"><a href="#VNCの許可" class="headerlink" title="VNCの許可"></a>VNCの許可</h2><ol>
 <li>ターミナルから下記のコマンドで <strong>dconf-editor</strong> をインストールします</li>
 </ol>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install dconf-tools </span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install dconf-tools </span><br></pre></td></tr></table></figure>
 
 <ol start="2">
 <li>メニューから dconf-editor を呼び出します。</li>
@@ -64,50 +64,50 @@ Caffe更新 (2017/04/23)ディープラーニング Caffe その3 環境構築 w
 </ul>
 <p>とのことなので指示に従いますが、実際作業中はオプションのものが必要になったりしました。<br>GPUは使わないので、CUDAは無視します。</p>
 <p><strong>1. ATLAS</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libatlas-base-dev</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libatlas-base-dev</span><br></pre></td></tr></table></figure>
 
 <p><strong>2. Boost</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libboost-all-dev</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libboost-all-dev</span><br></pre></td></tr></table></figure>
 
 <p><strong>3. protobuf</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libprotobuf-dev</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libprotobuf-dev</span><br></pre></td></tr></table></figure>
 
 <p><strong>4. glog</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libgoogle-glog-dev</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libgoogle-glog-dev</span><br></pre></td></tr></table></figure>
 
 <p><strong>5. gflags</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libgflags-dev</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libgflags-dev</span><br></pre></td></tr></table></figure>
 
 <p><strong>6. hdf5</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libhdf5-serial-dev</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libhdf5-serial-dev</span><br></pre></td></tr></table></figure>
 
 <p><strong>7. git</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install git</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install git</span><br></pre></td></tr></table></figure>
 
 <p><strong>8. g++ 4.6</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install g++-4.6</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install g++-4.6</span><br></pre></td></tr></table></figure>
 
 <p><strong>9. protobuf-compiler</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install protobuf-compiler</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install protobuf-compiler</span><br></pre></td></tr></table></figure>
 
 <p><strong>10. OpenCV</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libopencv-dev</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libopencv-dev</span><br></pre></td></tr></table></figure>
 
 <p><strong>11. leveldb</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libleveldb-dev</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libleveldb-dev</span><br></pre></td></tr></table></figure>
 
 <p><strong>12. lmdb</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install liblmdb-dev</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install liblmdb-dev</span><br></pre></td></tr></table></figure>
 
 <p><strong>13. snappy</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libsnappy-dev</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libsnappy-dev</span><br></pre></td></tr></table></figure>
 
 <p><strong>14. caffe本体のダウンロード</strong></p>
 <p>gitのクローン先はどこでもいいです。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/ git <span class="built_in">clone</span> https://github.com/BVLC/caffe.git</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/ git clone https://github.com/BVLC/caffe.git</span><br></pre></td></tr></table></figure>
 
 <p><strong>15. caffe本体のコンパイル準備</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> caffe cp Makefile.config.example Makefile.config sudo gedit Makefile.config</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd caffe cp Makefile.config.example Makefile.config sudo gedit Makefile.config</span><br></pre></td></tr></table></figure>
 
 <p>下記のコメント行を有効化</p>
 <figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CPU_ONLY := 1</span></span><br></pre></td></tr></table></figure>
@@ -122,44 +122,44 @@ Caffe更新 (2017/04/23)ディープラーニング Caffe その3 環境構築 w
 <figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CUDA_DIR := /usr</span></span><br></pre></td></tr></table></figure>
 
 <p><strong>16. caffe本体のコンパイル</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make make <span class="built_in">test</span> make runtest</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make make test make runtest</span><br></pre></td></tr></table></figure>
 
 <p>エラーが出ずに終了すれば構築は完了です。</p>
 <h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h2><p>Pythonから使いたい場合は、もうひとがんばりです。</p>
 <p><strong>1. Python</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-dev</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-dev</span><br></pre></td></tr></table></figure>
 
 <p><strong>2. pip</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-pip</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-pip</span><br></pre></td></tr></table></figure>
 
 <p><strong>3. numpy</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-numpy</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-numpy</span><br></pre></td></tr></table></figure>
 
 <p><strong>4. skimage</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-skimage</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-skimage</span><br></pre></td></tr></table></figure>
 
 <p><strong>5. 依存パッケージのダウンロード</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/caffe/python <span class="keyword">for</span> req <span class="keyword">in</span> $(cat requirements.txt); <span class="keyword">do</span> sudo pip install <span class="variable">$req</span>; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/caffe/python for req in $(cat requirements.txt); do sudo pip install $req; done</span><br></pre></td></tr></table></figure>
 
 <p><strong>6. pycaffeのコンパイル</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/caffe/ make pycaffe</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/caffe/ make pycaffe</span><br></pre></td></tr></table></figure>
 
 <p><strong>7. 環境変数の設定</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit ~/.bashrc</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit ~/.bashrc</span><br></pre></td></tr></table></figure>
 
 <p>最終行に</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PYTHONPATH=/usr/<span class="built_in">local</span>/caffe/python/:<span class="variable">$PYTHONPATH</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PYTHONPATH=/usr/local/caffe/python/:$PYTHONPATH</span><br></pre></td></tr></table></figure>
 
 <p>を追加します</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
 
 <p><strong>7. importのテスト</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python import caffe</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python import caffe</span><br></pre></td></tr></table></figure>
 
 <p>ここで、</p>
 <p>libdc1394 error: Failed to initialize libdc1394 </p>
 <p>と表示されますが、これ以外のエラーがなければ問題ないようです。<br><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/12689304/ctypes-error-libdc1394-error-failed-to-initialize-libdc1394">stackoverflow</a> で、この問題の簡単な解決策が提示されていました。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln /dev/null /dev/raw1394</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln /dev/null /dev/raw1394</span><br></pre></td></tr></table></figure>
 
 <p>でエラーが消えるようです。</p>
 <h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>不慣れなLinuxで時間がかかりましたが、これで環境の構築は完了です。<br>次回は実際に使えたらな、と思います。</p>
