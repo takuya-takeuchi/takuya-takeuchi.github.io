@@ -227,6 +227,13 @@ html {
           font-size: 2.1rem;
           line-height: 1.2em; }
 
+          h1:after {
+            content: ' ';
+            display: block;
+            padding: 8px 0 0 0;
+            border-bottom: 1px solid #b2b2b2;
+          }
+
           h2 {
             font-size: 1.9rem;
             line-height: 1.2em; }
