@@ -4,11 +4,30 @@
   
     
     <entry>
-      <title>開発メモ その212 Ubuntu 18.04.5でXRDPを使う</title>
-      <link href="2021/01/17/4374/"/>
-      <url>2021/01/17/4374/</url>
+      <title>開発メモ その215 Linuxでddコマンドの進捗を表示する</title>
+      <link href="2021/01/17/4378/"/>
+      <url>2021/01/17/4378/</url>
       
-        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>肝は<strong>18.04.5</strong>であること。<br>以前、<strong>18.04.3</strong> の<a href="https://taktak.jp/2019/11/10/4203/">記事</a>を書きましたが、その改訂。</p><h1 id="What-is-a-problem"><a href="#What-is-a-problem" class="headerlink" title="What is a problem?"></a>What is a problem?</h1><p>どうも、<strong>xorgxrdp</strong>のインストールが失敗する模様。<br>そのため、前回のスクリプトを修正。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">if [ $# -ne 1 ]; then</span><br><span class="line">  echo &quot;Pass password of running user to execute command as root&quot; 1&gt;&amp;2</span><br><span class="line">  exit 1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">echo $1 | sudo -S apt install -y xrdp</span><br><span class="line">echo $1 | sudo sed -e &#x27;s/^new_cursors=true/new_cursors=false/g&#x27; \</span><br><span class="line">                   -i /etc/xrdp/xrdp.ini</span><br><span class="line">echo $1 | sudo systemctl restart xrdp</span><br><span class="line"></span><br><span class="line">D=/usr/share/ubuntu:/usr/local/share:/usr/share:/var/lib/snapd/desktop</span><br><span class="line">cat &lt;&lt;EOF &gt; ~/.xsessionrc</span><br><span class="line">export GNOME_SHELL_SESSION_MODE=ubuntu</span><br><span class="line">export XDG_CURRENT_DESKTOP=ubuntu:GNOME</span><br><span class="line">export XDG_DATA_DIRS=$&#123;D&#125;</span><br><span class="line">export XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg</span><br><span class="line">EOF</span><br><span class="line">cat &lt;&lt;EOF | \</span><br><span class="line">  sudo tee /etc/polkit-1/localauthority/50-local.d/xrdp-color-manager.pkla</span><br><span class="line">[Netowrkmanager]</span><br><span class="line">Identity=unix-user:*</span><br><span class="line">Action=org.freedesktop.color-manager.create-device</span><br><span class="line">ResultAny=no</span><br><span class="line">ResultInactive=no</span><br><span class="line">ResultActive=yes</span><br><span class="line">EOF</span><br><span class="line">echo $1 | sudo systemctl restart polkit</span><br><span class="line"></span><br><span class="line">echo $1 | sudo apt install xserver-xorg-core xorgxrdp xrdp</span><br><span class="line">echo $1 | sudo systemctl restart xrdp</span><br><span class="line">echo $1 | sudo systemctl restart polkit</span><br></pre></td></tr></table></figure>]]></content>
+        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>ディスククローン時に、<strong>dd</strong> コマンドを使うことはよくあるが、進捗が表示されないため、何時終わるかの予測が立てられない。</p><h1 id="How-to-resolve"><a href="#How-to-resolve" class="headerlink" title="How to resolve?"></a>How to resolve?</h1><p>dd コマンドを実行中、別のシェルから下記を実行。</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo pkill -USR1 dd</span><br></pre></td></tr></table></figure><p>定期的に実行するなら</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ watch -n 60 pkill -USR1 dd</span><br></pre></td></tr></table></figure><p>そもそも、<strong>pkill</strong> で何をしているかというと、<strong>SIGUSR1</strong> というシグナルを送信している。<br><strong>USR</strong> は <em>USeR defined</em> のこと、つまりユーザ定義のシグナル。<br>このシグナルの挙動はアプリケーションが自由に設定できる。<br><strong>dd</strong> は、このシグナルを受信すると、進捗を表示すると言うわけである。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>開発メモ その215 Ubuntu 18.04 でカーネルパニック後に自動再起動させる</title>
+      <link href="2021/01/17/4377/"/>
+      <url>2021/01/17/4377/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>よく分からないけど、マシンのシャットダウンまたはリブート後、カーネルパニックで停止するようになってしまった。<br>しかも新規インストールしたばかりで。</p><h1 id="How-to"><a href="#How-to" class="headerlink" title="How to?"></a>How to?</h1><p>原因を追及する能力は無いので、正しくマシンを再起動させるようにする。<br>カーネルパニックが起きたら、強制的に再起動する。</p><h3 id="etc-sysctl-conf"><a href="#etc-sysctl-conf" class="headerlink" title="/etc/sysctl.conf"></a>/etc/sysctl.conf</h3><p>下記を追加する。</p><figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="addition">+ kernel.panic = 20</span></span><br></pre></td></tr></table></figure><p>上記の場合、カーネルパニック発生後、20秒後に再起動がかかる。</p>]]></content>
       
       
       <categories>
@@ -16,8 +35,6 @@
           <category> Linux </category>
           
           <category> Ubuntu </category>
-          
-          <category> リモートデスクトップ </category>
           
       </categories>
       
@@ -69,11 +86,11 @@
     
     
     <entry>
-      <title>開発メモ その215 Ubuntu 18.04 でカーネルパニック後に自動再起動させる</title>
-      <link href="2021/01/17/4377/"/>
-      <url>2021/01/17/4377/</url>
+      <title>開発メモ その212 Ubuntu 18.04.5でXRDPを使う</title>
+      <link href="2021/01/17/4374/"/>
+      <url>2021/01/17/4374/</url>
       
-        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>よく分からないけど、マシンのシャットダウンまたはリブート後、カーネルパニックで停止するようになってしまった。<br>しかも新規インストールしたばかりで。</p><h1 id="How-to"><a href="#How-to" class="headerlink" title="How to?"></a>How to?</h1><p>原因を追及する能力は無いので、正しくマシンを再起動させるようにする。<br>カーネルパニックが起きたら、強制的に再起動する。</p><h3 id="etc-sysctl-conf"><a href="#etc-sysctl-conf" class="headerlink" title="/etc/sysctl.conf"></a>/etc/sysctl.conf</h3><p>下記を追加する。</p><figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="addition">+ kernel.panic = 20</span></span><br></pre></td></tr></table></figure><p>上記の場合、カーネルパニック発生後、20秒後に再起動がかかる。</p>]]></content>
+        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>肝は<strong>18.04.5</strong>であること。<br>以前、<strong>18.04.3</strong> の<a href="https://taktak.jp/2019/11/10/4203/">記事</a>を書きましたが、その改訂。</p><h1 id="What-is-a-problem"><a href="#What-is-a-problem" class="headerlink" title="What is a problem?"></a>What is a problem?</h1><p>どうも、<strong>xorgxrdp</strong>のインストールが失敗する模様。<br>そのため、前回のスクリプトを修正。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">if [ $# -ne 1 ]; then</span><br><span class="line">  echo &quot;Pass password of running user to execute command as root&quot; 1&gt;&amp;2</span><br><span class="line">  exit 1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">echo $1 | sudo -S apt install -y xrdp</span><br><span class="line">echo $1 | sudo sed -e &#x27;s/^new_cursors=true/new_cursors=false/g&#x27; \</span><br><span class="line">                   -i /etc/xrdp/xrdp.ini</span><br><span class="line">echo $1 | sudo systemctl restart xrdp</span><br><span class="line"></span><br><span class="line">D=/usr/share/ubuntu:/usr/local/share:/usr/share:/var/lib/snapd/desktop</span><br><span class="line">cat &lt;&lt;EOF &gt; ~/.xsessionrc</span><br><span class="line">export GNOME_SHELL_SESSION_MODE=ubuntu</span><br><span class="line">export XDG_CURRENT_DESKTOP=ubuntu:GNOME</span><br><span class="line">export XDG_DATA_DIRS=$&#123;D&#125;</span><br><span class="line">export XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg</span><br><span class="line">EOF</span><br><span class="line">cat &lt;&lt;EOF | \</span><br><span class="line">  sudo tee /etc/polkit-1/localauthority/50-local.d/xrdp-color-manager.pkla</span><br><span class="line">[Netowrkmanager]</span><br><span class="line">Identity=unix-user:*</span><br><span class="line">Action=org.freedesktop.color-manager.create-device</span><br><span class="line">ResultAny=no</span><br><span class="line">ResultInactive=no</span><br><span class="line">ResultActive=yes</span><br><span class="line">EOF</span><br><span class="line">echo $1 | sudo systemctl restart polkit</span><br><span class="line"></span><br><span class="line">echo $1 | sudo apt install xserver-xorg-core xorgxrdp xrdp</span><br><span class="line">echo $1 | sudo systemctl restart xrdp</span><br><span class="line">echo $1 | sudo systemctl restart polkit</span><br></pre></td></tr></table></figure>]]></content>
       
       
       <categories>
@@ -81,6 +98,8 @@
           <category> Linux </category>
           
           <category> Ubuntu </category>
+          
+          <category> リモートデスクトップ </category>
           
       </categories>
       
