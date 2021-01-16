@@ -4,6 +4,92 @@
   
     
     <entry>
+      <title>開発メモ その212 Ubuntu 18.04.5でXRDPを使う</title>
+      <link href="2021/01/17/4374/"/>
+      <url>2021/01/17/4374/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>肝は<strong>18.04.5</strong>であること。<br>以前、<strong>18.04.3</strong> の<a href="https://taktak.jp/2019/11/10/4203/">記事</a>を書きましたが、その改訂。</p><h1 id="What-is-a-problem"><a href="#What-is-a-problem" class="headerlink" title="What is a problem?"></a>What is a problem?</h1><p>どうも、<strong>xorgxrdp</strong>のインストールが失敗する模様。<br>そのため、前回のスクリプトを修正。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">if [ $# -ne 1 ]; then</span><br><span class="line">  echo &quot;Pass password of running user to execute command as root&quot; 1&gt;&amp;2</span><br><span class="line">  exit 1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">echo $1 | sudo -S apt install -y xrdp</span><br><span class="line">echo $1 | sudo sed -e &#x27;s/^new_cursors=true/new_cursors=false/g&#x27; \</span><br><span class="line">                   -i /etc/xrdp/xrdp.ini</span><br><span class="line">echo $1 | sudo systemctl restart xrdp</span><br><span class="line"></span><br><span class="line">D=/usr/share/ubuntu:/usr/local/share:/usr/share:/var/lib/snapd/desktop</span><br><span class="line">cat &lt;&lt;EOF &gt; ~/.xsessionrc</span><br><span class="line">export GNOME_SHELL_SESSION_MODE=ubuntu</span><br><span class="line">export XDG_CURRENT_DESKTOP=ubuntu:GNOME</span><br><span class="line">export XDG_DATA_DIRS=$&#123;D&#125;</span><br><span class="line">export XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg</span><br><span class="line">EOF</span><br><span class="line">cat &lt;&lt;EOF | \</span><br><span class="line">  sudo tee /etc/polkit-1/localauthority/50-local.d/xrdp-color-manager.pkla</span><br><span class="line">[Netowrkmanager]</span><br><span class="line">Identity=unix-user:*</span><br><span class="line">Action=org.freedesktop.color-manager.create-device</span><br><span class="line">ResultAny=no</span><br><span class="line">ResultInactive=no</span><br><span class="line">ResultActive=yes</span><br><span class="line">EOF</span><br><span class="line">echo $1 | sudo systemctl restart polkit</span><br><span class="line"></span><br><span class="line">echo $1 | sudo apt install xserver-xorg-core xorgxrdp xrdp</span><br><span class="line">echo $1 | sudo systemctl restart xrdp</span><br><span class="line">echo $1 | sudo systemctl restart polkit</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+          <category> Ubuntu </category>
+          
+          <category> リモートデスクトップ </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>開発メモ その214 Ubuntuでパッケージの自動アップデートを停止する</title>
+      <link href="2021/01/17/4376/"/>
+      <url>2021/01/17/4376/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>カーネルなど自動アップデートされると困るので、自動アップデートを停止します。</p><h1 id="How-to"><a href="#How-to" class="headerlink" title="How to?"></a>How to?</h1><h3 id="etc-apt-apt-conf-d-20auto-upgrades"><a href="#etc-apt-apt-conf-d-20auto-upgrades" class="headerlink" title="/etc/apt/apt.conf.d/20auto-upgrades"></a>/etc/apt/apt.conf.d/20auto-upgrades</h3><p>下記のように修正</p><figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">- APT::Periodic::Update-Package-Lists &quot;1&quot;;</span></span><br><span class="line"><span class="deletion">- APT::Periodic::Unattended-Upgrade &quot;1&quot;;</span></span><br><span class="line"><span class="addition">+ APT::Periodic::Update-Package-Lists &quot;0&quot;;</span></span><br><span class="line"><span class="addition">+ APT::Periodic::Unattended-Upgrade &quot;0&quot;;</span></span><br></pre></td></tr></table></figure><h3 id="etc-apt-apt-conf-d-50unattended-upgrades"><a href="#etc-apt-apt-conf-d-50unattended-upgrades" class="headerlink" title="/etc/apt/apt.conf.d/50unattended-upgrades"></a>/etc/apt/apt.conf.d/50unattended-upgrades</h3><p>カーネルだけ停止したいので、下記のように修正</p><figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">- Unattended-Upgrade::Package-Blacklist &#123;</span></span><br><span class="line"><span class="deletion">- //      &quot;vim&quot;;</span></span><br><span class="line"><span class="deletion">- //      &quot;libc6&quot;;</span></span><br><span class="line"><span class="deletion">- //      &quot;libc6-dev&quot;;</span></span><br><span class="line"><span class="deletion">- //      &quot;libc6-i686&quot;;</span></span><br><span class="line"><span class="deletion">- &#125;;</span></span><br><span class="line"><span class="addition">+ Unattended-Upgrade::Package-Blacklist &#123;</span></span><br><span class="line"><span class="addition">+      &quot;linux-headers-generic&quot;;</span></span><br><span class="line"><span class="addition">+      &quot;linux-signed-generic&quot;;</span></span><br><span class="line"><span class="addition">+      &quot;linux-signed-image-generic&quot;;</span></span><br><span class="line"><span class="addition">+ &#125;;</span></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+          <category> Ubuntu </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>開発メモ その213 NVIDIAディスプレイドライバーをインストールする際にエラーになる</title>
+      <link href="2021/01/17/4375/"/>
+      <url>2021/01/17/4375/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>良くあるネタの備忘録。<br>NVIDIAのディスプレイドライバーをインストールする際に、エラーになる。<br>具体的には、</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cat /var/<span class="built_in">log</span>/cuda-installer.log</span></span><br><span class="line">[INFO]: Driver not installed.</span><br><span class="line">[INFO]: Checking compiler version...</span><br><span class="line">[INFO]: gcc location: /usr/bin/gcc</span><br><span class="line"></span><br><span class="line">[INFO]: gcc version: gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04) </span><br><span class="line"></span><br><span class="line">[INFO]: Initializing menu</span><br><span class="line">[INFO]: Setup complete</span><br><span class="line">[INFO]: Components to install: </span><br><span class="line">[INFO]: Driver</span><br><span class="line">[INFO]: 460.27.04</span><br><span class="line">[INFO]: Executing NVIDIA-Linux-x86_64-460.27.04.run --ui=none --no-questions --accept-license --disable-nouveau --no-cc-version-check --install-libglvnd  2&gt;&amp;1</span><br><span class="line">[INFO]: Finished with code: 256</span><br><span class="line">[ERROR]: Install of driver component failed.</span><br><span class="line">[ERROR]: Install of 460.27.04 failed, quitting</span><br></pre></td></tr></table></figure><p>のようなエラーが出る。</p><h1 id="What-is-a-problem"><a href="#What-is-a-problem" class="headerlink" title="What is a problem?"></a>What is a problem?</h1><p>デフォルトのディスプレイドライバーである <strong>nouveau</strong> が悪さをしているので、コレを無効化してインストールする。</p><p><strong>/etc/modprobe.d/blacklist-nouveau.conf</strong> を作成し、下記を記載。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">blacklist nouveau</span><br><span class="line">options nouveau modeset=0</span><br></pre></td></tr></table></figure><p>記載後、カーネルモジュールを再読込し、再起動</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo update-initramfs -u</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo reboot</span></span><br></pre></td></tr></table></figure><p>これでインストールが成功する。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+          <category> Ubuntu </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>開発メモ その215 Ubuntu 18.04 でカーネルパニック後に自動再起動させる</title>
+      <link href="2021/01/17/4377/"/>
+      <url>2021/01/17/4377/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>よく分からないけど、マシンのシャットダウンまたはリブート後、カーネルパニックで停止するようになってしまった。<br>しかも新規インストールしたばかりで。</p><h1 id="How-to"><a href="#How-to" class="headerlink" title="How to?"></a>How to?</h1><p>原因を追及する能力は無いので、正しくマシンを再起動させるようにする。<br>カーネルパニックが起きたら、強制的に再起動する。</p><h3 id="etc-sysctl-conf"><a href="#etc-sysctl-conf" class="headerlink" title="/etc/sysctl.conf"></a>/etc/sysctl.conf</h3><p>下記を追加する。</p><figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="addition">+ kernel.panic = 20</span></span><br></pre></td></tr></table></figure><p>上記の場合、カーネルパニック発生後、20秒後に再起動がかかる。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+          <category> Ubuntu </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>開発メモ その211 boostを使った最小のCMakeプロジェクト その3</title>
       <link href="2020/06/13/4373/"/>
       <url>2020/06/13/4373/</url>
