@@ -4,6 +4,27 @@
   
     
     <entry>
+      <title>開発メモ その222 nginxで簡単にファイルを公開する</title>
+      <link href="2021/03/11/4384/"/>
+      <url>2021/03/11/4384/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>会社でHTTP経由でファイルをやり取るするサーバーが必要になったので急遽用意。<br>備忘録。 </p><p>ソースやDockerfile一式は下記。</p><div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/takuya-takeuchi/Demo/tree/master/nginx" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://avatars.githubusercontent.com/u/6241854?s=400&v=4"></img></div><div class="hbc-text"><div class="hbc-title">takuya-takeuchi/Demo</div><div class="hbc-url">https://github.com/takuya-takeuchi/Demo/tree/master/nginx</div><div class="hbc-description">Sample source code for Demonstration, Experiment and Test - takuya-takeuchi/Demo</div></div></div></div></a></div></div><h1 id="How-to-do"><a href="#How-to-do" class="headerlink" title="How to do?"></a>How to do?</h1><p>基本は上のソースに含まれるPowerShellスクリプトを叩くだけ。<br>WindowsでもLinuxっでも動くはず。</p><p>下は、Windows上での実行例。</p><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">pwsh BuildAndRun.ps1</span><br><span class="line">Sending build context to Docker daemon  <span class="number">4.096</span>kB</span><br><span class="line">Step <span class="number">1</span>/<span class="number">5</span> : FROM nginx</span><br><span class="line"> ---&gt; <span class="number">35</span>c43ace9216</span><br><span class="line">Step <span class="number">2</span>/<span class="number">5</span> : ADD ./server.conf /etc/nginx/conf.d/default.conf</span><br><span class="line"> ---&gt; <span class="keyword">Using</span> cache</span><br><span class="line"> ---&gt; ab42e3e17f2a</span><br><span class="line">Step <span class="number">3</span>/<span class="number">5</span> : RUN mkdir /root/logs</span><br><span class="line"> ---&gt; <span class="keyword">Using</span> cache</span><br><span class="line"> ---&gt; <span class="number">47620</span>ce6b9f1</span><br><span class="line">Step <span class="number">4</span>/<span class="number">5</span> : RUN chmod <span class="number">755</span> <span class="literal">-R</span> /root</span><br><span class="line"> ---&gt; <span class="keyword">Using</span> cache</span><br><span class="line"> ---&gt; <span class="number">2</span>a417b60d8db</span><br><span class="line">Step <span class="number">5</span>/<span class="number">5</span> : CMD [<span class="string">&quot;nginx&quot;</span>, <span class="string">&quot;-g&quot;</span>, <span class="string">&quot;daemon off;&quot;</span>]</span><br><span class="line"> ---&gt; <span class="keyword">Using</span> cache</span><br><span class="line"> ---&gt; b20cce53c5f2</span><br><span class="line">Successfully built b20cce53c5f2</span><br><span class="line">Successfully tagged simple<span class="literal">-nginx</span><span class="literal">-server</span>:latest</span><br><span class="line">SECURITY WARNING: You are building a Docker image from Windows against a non<span class="literal">-Windows</span> Docker host. All files and directories added to build context will have <span class="string">&#x27;-rwxr-xr-x&#x27;</span> permissions. It is recommended to double check and reset permissions <span class="keyword">for</span> sensitive files and directories.</span><br><span class="line">e0270ff4cc7926123264126653a2a75ff4ed945d131cf69f6a7724d90724509d</span><br></pre></td></tr></table></figure><p>コンテナ起動後、ブラウザで8080にアクセス。</p><p><a href="../../../../public/2021/03/11/4384/001.png"><img src="../../../../public/2021/03/11/4384/001.png" alt="hello world" title="hello world"></a></p><p><strong>public</strong> フォルダに好きなファイルを放り込めば簡単に共有できます。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Apple </category>
+          
+          <category> Mac </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>開発メモ その221 macOS 復旧のユーティリティウインドウにキーボードなしで入る</title>
       <link href="2021/02/15/4383/"/>
       <url>2021/02/15/4383/</url>
