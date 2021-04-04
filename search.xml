@@ -4,6 +4,46 @@
   
     
     <entry>
+      <title>開発メモ その226 正規表現で指定文字列を含む行以外の削除</title>
+      <link href="2021/04/03/4387/"/>
+      <url>2021/04/03/4387/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>備忘録。</p><h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^((?!○○○).)+\n</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 正規表現 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>開発メモ その225 コマンドプロンプトの簡易編集モードが邪魔</title>
+      <link href="2021/03/17/4386/"/>
+      <url>2021/03/17/4386/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>今更過ぎるネタですが、いい加減イライラすることのが多いため。</p><p><strong>簡易編集モード</strong> の際、コマンドプロンプトを左クリックすると、文字が選択されてしまい、同時に文字がコピーされてしまい、今から貼り付けようとしていた文字がクリップボードから消えてしまう、ちょっとしたイライラが発生。</p><p>だから、こいつを無効化する。</p><h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><p>起動しているコマンドプロンプトのメニューバーにあるアイコンを左クリックし、プロパティを選択。</p><p><a href="../../../../public/2021/03/17/4386/001.png"><img src="../../../../public/2021/03/17/4386/001.png" alt="プロパティ" title="プロパティ"></a></p><p><strong>簡易編集モード</strong> のチェックボックスを外す。<br>以上。</p><p>次からは、文字列を選択するにも、一度コンテキストメニューから、 <strong>マーク</strong> を選択して、選択モードに切り替え、文字列選択、右クリックで確定、コンテキストメニューから <strong>貼り付け</strong> を行うという、少し手間な状態になるが、事故は防げます。</p><p><a href="../../../../public/2021/03/17/4386/002.png"><img src="../../../../public/2021/03/17/4386/002.png" alt="プロパティ" title="プロパティ"></a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Microsoft </category>
+          
+          <category> ASP.NET Core </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>開発メモ その224 特定のディレクトリを無視してディレクトリを再帰コピーする</title>
       <link href="2021/03/14/4385/"/>
       <url>2021/03/14/4385/</url>
