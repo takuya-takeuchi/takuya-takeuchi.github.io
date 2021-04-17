@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>開発メモ その228 コンテキストメニューから管理者権限付でコマンドプロンプトを起動する</title>
+      <link href="2021/04/18/4389/"/>
+      <url>2021/04/18/4389/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>備忘録。<br>PowerShellは立ち上がりの遅さが嫌いです。<br>スクリプトを書く分にはバッチよりも全然いいんですけど。</p><h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><p>解決策はこちら。</p><p>下記の方が教えてくれました。</p><div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="http://interprism.hatenablog.com/entry/win10-context-menu-cmd-with-admin-auth" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=interprism.hatenablog.com"></img><div class="hbc-site-name">interprism&#39;s blog</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/i/interprism/20180104/20180104005951.png"></img></div><div class="hbc-text"><div class="hbc-title">Windows10でエクスプローラの右クリックメニューからPowerShellあるいはコマンドプロンプトを管理者権限で開けるようにする - interprism&#39;s blog</div><div class="hbc-url">http://interprism.hatenablog.com/entry/win10-context-menu-cmd-with-admin-auth</div><div class="hbc-description">この投稿は インタープリズムはAdvent Calendarを愛しています。世界中のだれよりも。 Advent Calendar 2017の12日目 の記事です。 Windows10にアップグレードしたのですが・・・ こんにちはito.yです。 最近、使用している環境をWindo…</div></div></div></div></a></div></div><p>下のコマンドを全て、管理者権限を付けて起動したPowerShellに貼り付けます。<br>スクリプトファイルを作る必要はないです。</p><figure class="highlight ps"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$menu</span> = <span class="string">&#x27;コマンドウィンドウをここで開く(管理者)&#x27;</span></span><br><span class="line"><span class="variable">$command</span> = <span class="string">&quot;cmd.exe /s /k pushd &quot;</span><span class="string">&quot;%V&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line"><span class="string">&#x27;directory&#x27;</span>, <span class="string">&#x27;directory\background&#x27;</span>, <span class="string">&#x27;drive&#x27;</span> | <span class="built_in">ForEach-Object</span> &#123;</span><br><span class="line"><span class="built_in">New-Item</span> <span class="literal">-Path</span> <span class="string">&quot;Registry::HKEY_CLASSES_ROOT\<span class="variable">$_</span>\shell&quot;</span> <span class="literal">-Name</span> runas\command <span class="literal">-Force</span> |</span><br><span class="line"><span class="built_in">Set-ItemProperty</span> <span class="literal">-Name</span> <span class="string">&#x27;(default)&#x27;</span> <span class="literal">-Value</span> <span class="variable">$command</span> <span class="literal">-PassThru</span> |</span><br><span class="line"><span class="built_in">Set-ItemProperty</span> <span class="literal">-Path</span> &#123;<span class="variable">$_</span>.PSParentPath&#125; <span class="literal">-Name</span> <span class="string">&#x27;(default)&#x27;</span> <span class="literal">-Value</span> <span class="variable">$menu</span> <span class="literal">-PassThru</span> |</span><br><span class="line"><span class="built_in">Set-ItemProperty</span> <span class="literal">-Name</span> HasLUAShield <span class="literal">-Value</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>削除する場合は下記。<br>こちらも、管理者権限を付けて起動したPowerShellに貼り付けます。<br>スクリプトファイルを作る必要はないです。</p><figure class="highlight ps"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;directory&#x27;</span>, <span class="string">&#x27;directory\background&#x27;</span>, <span class="string">&#x27;drive&#x27;</span> | <span class="built_in">ForEach-Object</span> &#123;</span><br><span class="line">    <span class="built_in">Remove-Item</span> <span class="literal">-Path</span> <span class="string">&quot;Registry::HKEY_CLASSES_ROOT\<span class="variable">$_</span>\shell\runas&quot;</span> <span class="literal">-Force</span> <span class="literal">-Recurse</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> Windows </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>開発メモ その227 C++でのバイナリファイルの読み書き</title>
       <link href="2021/04/18/4388/"/>
       <url>2021/04/18/4388/</url>
