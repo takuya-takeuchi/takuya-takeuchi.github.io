@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><title>開発メモ その234 UWPの不安定なトラブル解決 · A certain engineer "COMPLEX"</title><meta name="description" content="Introduction備忘録。
+Resolution配置できないビルド完了後、下記のようなエラーが出ることがある。
+
+
+
+
+言語
+メッセージ
+
+
+
+日本語
+予期しないホスト ID が検出されたため、操作を完了できませんでした
+
+
+英語
+The operation could not be comp"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その234 UWPの不安定なトラブル解決</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>備忘録。</p>
+<h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><h2 id="配置できない"><a href="#配置できない" class="headerlink" title="配置できない"></a>配置できない</h2><p>ビルド完了後、下記のようなエラーが出ることがある。</p>
+<p><a href="../../../../public/2021/05/23/4394/001.png"><img src="../../../../public/2021/05/23/4394/001.png" alt="UWP" title="UWP"></a></p>
+<table>
+<thead>
+<tr>
+<th>言語</th>
+<th>メッセージ</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>日本語</td>
+<td><strong>予期しないホスト ID が検出されたため、操作を完了できませんでした</strong></td>
+</tr>
+<tr>
+<td>英語</td>
+<td>The operation could not be completed because an unexpected host ID was encountered</td>
+</tr>
+</tbody></table>
+<p>一応、修正アップデートは <a target="_blank" rel="noopener" href="https://support.microsoft.com/en-us/topic/september-26-2018-kb4458469-os-build-17134-320-3fed79aa-e7d3-064c-1874-ccbe8e6d5b27">September 26, 2018—KB4458469 (OS Build 17134.320)</a> で出ているが、最新の Visual Studio 2019 16.5 でも発生するので別の何かがありそう。</p>
+<h3 id="解決策"><a href="#解決策" class="headerlink" title="解決策"></a>解決策</h3><p>マシンを再起動する。<br>ソリューションをクリーンするとか、Visual Studioを再起動するとか無駄です。<br>潔くマシンを再起動する。</p>
+<h2 id="UWPアプリのデバッグ後ランダムにクラッシュする"><a href="#UWPアプリのデバッグ後ランダムにクラッシュする" class="headerlink" title="UWPアプリのデバッグ後ランダムにクラッシュする"></a>UWPアプリのデバッグ後ランダムにクラッシュする</h2><p>現象は下記。</p>
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" target="_blank" rel="noopener" href="https://github.com/xamarin/Xamarin.Forms/issues/12884"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://opengraph.githubassets.com/bfc290320822a1439974cd2ec934a015e25496b0a7f2957d519d5ad0b42e2d71/xamarin/Xamarin.Forms/issues/12884"></img></div><div class="hbc-text"><div class="hbc-title">[Bug] UWP is throwing exception randomly after 4.8.0.1687 and VS 2019  16.8.1  · Issue #12884 · xamarin/Xamarin.Forms</div><div class="hbc-url">https://github.com/xamarin/Xamarin.Forms/issues/12884</div><div class="hbc-description">Description After updating VS 2019 16.8.1 version. I am keep getting exception on the function shown below screenshot. This is happening in …</div></div></div></div></a></div></div>
+
+<p><strong>XamlTypeInfo.g.cs</strong> という自動生成されたクラスメソッドで <code>GetXamlTypeByName(string typeName)</code> が <code>System.ExecutionEngineException</code> を投げて死にます。<br>分かりづらいのは、原因の例外となった引数の値の中身が都度違うこと (ライブラリの名前が入っている)</p>
+<h3 id="解決策-1"><a href="#解決策-1" class="headerlink" title="解決策"></a>解決策</h3><p>Xamarinとして修正が入っているが、<a target="_blank" rel="noopener" href="https://github.com/microsoft/dotnet/blob/master/releases/UWP/net-native2.2/README.md#uwp-6212-february-9th-2021">Microsoft.NETCore.UniversalWindowsPlatform 6.2.12</a> で修正が入っている。</p>
+<p>または、プロジェクトファイルを開き</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">EnableTypeInfoReflection</span>&gt;</span>false<span class="tag">&lt;/<span class="name">EnableTypeInfoReflection</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>を追加し、かつホットリロードを無効にする。<br>ホットリロードの無効だけでは完全に解決できない (落ちる頻度は減る)。</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2021-05-23</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Microsoft/" title="Microsoft">Microsoft </a><a class="tag" href="/categories/Microsoft/Universal-Windows-Platform/" title="Universal Windows Platform">Universal Windows Platform </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2021/05/23/4394/,A certain engineer &quot;COMPLEX&quot;,開発メモ その234 UWPの不安定なトラブル解決,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="next pagbuttons"><a class="btn" role="navigation" href="/2021/05/15/4393/" title="開発メモ その232 Linux と OSX で GitLab Runner が動かない">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
