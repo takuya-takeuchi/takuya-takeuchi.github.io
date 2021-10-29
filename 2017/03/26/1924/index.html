@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><title>.NETでRPCを試してみる gRPC編 第0回 · A certain engineer "COMPLEX"</title><meta name="description" content="IntroductionRESTを使って、簡単なクラサバアプリを構築したのですが、
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>.NETでRPCを試してみる gRPC編 第0回 · A certain engineer "COMPLEX"</title><meta name="description" content="IntroductionRESTを使って、簡単なクラサバアプリを構築したのですが、
 
 バイナリの転送が重い
 jsonまたはxmlで返すから、BASE64で通信量が増える
@@ -15,7 +15,7 @@ jsonまたはxmlで返すから、BASE64で通信量が増える
 </ul>
 <p>というのが、制約になって食指が動きません。</p>
 <p>そんな中、<strong>gRPC</strong> なるGoogleが作った<strong>HTTP/2</strong>を標準でサポートした新しいRPC (Remote Procedure Call ) フレームワークを見つけました。<br>2015年2月に発表されたらしいので、今さら感が漂いますが… </p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="http://www.grpc.io/" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=www.grpc.io"></img><div class="hbc-site-name">gRPC</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://grpc.io/img/logos/grpc-icon-color.png"></img></div><div class="hbc-text"><div class="hbc-title">gRPC</div><div class="hbc-url">http://www.grpc.io/</div><div class="hbc-description">A high-performance, open source universal RPC framework</div></div></div></div></a></div></div>
+
 
 <p><strong>HTTP/2</strong>を基礎としており、<strong>Protocol Buffers</strong>を使ってサービスを定義するので高速な通信が可能、と最新技術を使っているのも、カッコいい。<br>素晴らしいのは、言語サポートが広く、<a target="_blank" rel="noopener" href="http://www.grpc.io/">公式ページ</a>によれば、</p>
 <ul>
@@ -33,7 +33,7 @@ jsonまたはxmlで返すから、BASE64で通信量が増える
 </ul>
 <p>をサポートしています。<br>C#をサポートしているので、試してみないわけにはいきません。<br>Pythonもサポートしており、簡単にテストできそうです。</p>
 <h1 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h1><p>自分でビルドするか、nugetでインストールもできます。<br>お手軽に nuget でインストールします。</p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://www.nuget.org/packages/Grpc/" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=www.nuget.org"></img><div class="hbc-site-name">www.nuget.org</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://api.nuget.org/v3-flatcontainer/grpc/2.34.0/icon"></img></div><div class="hbc-text"><div class="hbc-title">Grpc 2.34.0</div><div class="hbc-url">https://www.nuget.org/packages/Grpc/</div><div class="hbc-description">Metapackage for gRPC C#</div></div></div></div></a></div></div>
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://www.nuget.org/packages/Grpc/" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=www.nuget.org"></img><div class="hbc-site-name">www.nuget.org</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://api.nuget.org/v3-flatcontainer/grpc/2.41.1/icon"></img></div><div class="hbc-text"><div class="hbc-title">Grpc 2.41.1</div><div class="hbc-url">https://www.nuget.org/packages/Grpc/</div><div class="hbc-description">Metapackage for gRPC C#</div></div></div></div></a></div></div>
 
 <p>簡単ですね。</p>
 <h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>今回は導入のみ。<br>次回は、C#-Pythonで通信してみます。</p>

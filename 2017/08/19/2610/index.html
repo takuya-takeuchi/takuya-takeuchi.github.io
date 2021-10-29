@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><title>.NETでLinuxと遊んでみる Visual Studio Code編 第7回 · A certain engineer "COMPLEX"</title><meta name="description" content="Introduction前々回は、GLibc内の関数をP/Invokeで呼び出してみました。
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>.NETでLinuxと遊んでみる Visual Studio Code編 第7回 · A certain engineer "COMPLEX"</title><meta name="description" content="Introduction前々回は、GLibc内の関数をP/Invokeで呼び出してみました。
 
 
 また、CMakeでビルドしたC++のライブラリで関数を公開してみました。
@@ -13,7 +13,7 @@
 
 <p>これを利用して、.NET CoreでビルドしたC#のアプリケーションから、自作のC++ライブラリの関数を呼びだしてみます。</p>
 <h1 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h1><p>C#とC++の簡単なプロジェクトを用意します。<br>今回のサンプルは </p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/takuya-takeuchi/Demo/tree/master/DotNetCoreLinux6" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://avatars0.githubusercontent.com/u/6241854?s=400&v=4"></img></div><div class="hbc-text"><div class="hbc-title">takuya-takeuchi/Demo</div><div class="hbc-url">https://github.com/takuya-takeuchi/Demo/tree/master/DotNetCoreLinux6</div><div class="hbc-description">Sample source code for Demonstration, Experiment and Test - takuya-takeuchi/Demo</div></div></div></div></a></div></div>
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/takuya-takeuchi/Demo/tree/master/DotNetCoreLinux6" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://opengraph.githubassets.com/10ee00ef1f690a09a4d3d02c44e780b8b56de245ae9905c5a463a8640276a150/takuya-takeuchi/Demo"></img></div><div class="hbc-text"><div class="hbc-title">Demo/DotNetCoreLinux6 at master · takuya-takeuchi/Demo</div><div class="hbc-url">https://github.com/takuya-takeuchi/Demo/tree/master/DotNetCoreLinux6</div><div class="hbc-description">Sample source code for Demonstration, Experiment and Test - Demo/DotNetCoreLinux6 at master · takuya-takeuchi/Demo</div></div></div></div></a></div></div>
 
 <p>になります。</p>
 <p>サンプルは下記の構成になります。</p>

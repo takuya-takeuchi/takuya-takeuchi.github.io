@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><title>開発メモ その179 Lenovo Chromebook S330にUbuntu18.04をインストールしSSHで接続 · A certain engineer "COMPLEX"</title><meta name="description" content="Introduction
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>開発メモ その179 Lenovo Chromebook S330にUbuntu18.04をインストールしSSHで接続 · A certain engineer "COMPLEX"</title><meta name="description" content="Introduction
 
 こんなのを購入して遊んでいます。
 ベースはLinuxなので遊びたいのですが、Chromebookへの接続はいろいろ制限されています。例えば、Teamviewerはクライアント専用。これは面白くないです。
@@ -10,7 +10,7 @@
 <h1 id="Install-Ubuntu"><a href="#Install-Ubuntu" class="headerlink" title="Install Ubuntu"></a>Install Ubuntu</h1><p>まずは仮想OSのインストール。</p>
 <h2 id="デベロッパーモードで起動"><a href="#デベロッパーモードで起動" class="headerlink" title="デベロッパーモードで起動"></a>デベロッパーモードで起動</h2><p>ESCキーとF3 (再読込ボタン) を押しながら電源を入れ、<strong>Ctrl+D</strong> を押してデベロッパーモードで起動。<br>ローカルのデータが消えますので購入直後に実施しましょう。</p>
 <h2 id="croutonをインストール"><a href="#croutonをインストール" class="headerlink" title="croutonをインストール"></a>croutonをインストール</h2><p><strong>crouton</strong>は、ChromeBookにLinux環境を構築するためのツール。</p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/dnschneid/crouton" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://avatars1.githubusercontent.com/u/522200?s=400&v=4"></img></div><div class="hbc-text"><div class="hbc-title">dnschneid/crouton</div><div class="hbc-url">https://github.com/dnschneid/crouton</div><div class="hbc-description">Chromium OS Universal Chroot Environment. Contribute to dnschneid/crouton development by creating an account on GitHub.</div></div></div></div></a></div></div>
+
 
 <p>Chromeブラウザを起動しアドレスバーに <strong><a target="_blank" rel="noopener" href="https://goo.gl/fd3zc">https://goo.gl/fd3zc</a></strong> と入力し保存します。<br>省略アドレスで、<strong><a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/dnschneid/crouton/master/installer/crouton">https://raw.githubusercontent.com/dnschneid/crouton/master/installer/crouton</a></strong>にリダイレクトされます。</p>
 <h2 id="Ubuntu-18-04をインストール"><a href="#Ubuntu-18-04をインストール" class="headerlink" title="Ubuntu 18.04をインストール"></a>Ubuntu 18.04をインストール</h2><p><strong>Ctrl+Alt+T</strong>でターミナルタブを開きます。<br>シェルに切り替えるために</p>
