@@ -10,7 +10,7 @@
 <p>確かに、<code>nm -D /lib/x86_64-linux-gnu/libssl.so.1.0.0 | grep BIO_up_ref</code> ってしても、問題のシンボルが見つからない。</p>
 <p>でも、<a target="_blank" rel="noopener" href="https://docs.microsoft.com/ja-jp/dotnet/core/install/linux-ubuntu#supported-distributions">サポートされているディストリビューション</a> のページでは Ubuntu 16.04 において、3.1 はサポート対象であると明記されている。</p>
 <h1 id="Why？"><a href="#Why？" class="headerlink" title="Why？"></a>Why？</h1><p>答えは下記にあった。</p>
-
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://docs.microsoft.com/ja-jp/dotnet/core/compatibility/cryptography#net-core-30-prefers-openssl-11x-to-openssl-10x" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=docs.microsoft.com"></img><div class="hbc-site-name">docs.microsoft.com</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://docs.microsoft.com/dotnet/media/dotnet-logo.png"></img></div><div class="hbc-text"><div class="hbc-title">暗号での破壊的変更 - .NET</div><div class="hbc-url">https://docs.microsoft.com/ja-jp/dotnet/core/compatibility/cryptography#net-core-30-prefers-openssl-11x-to-openssl-10x</div><div class="hbc-description">.NET Core 2.1 から 3.0 での暗号に関する破壊的変更の一覧を示します。</div></div></div></div></a></div></div>
 
 <blockquote>
 <p>.NET Core 3.0 では、OpenSSL 1.0.x よりも OpenSSL 1.1.x が優先されます<br>Linux 用 .NET Core では、複数の Linux ディストリビューションで動作するため、OpenSSL 1.0.x と OpenSSL 1.1.x の両方がサポートされます。 .NET Core 2.1 および .NET Core 2.2 では、最初に 1.0.x が検索されてから、1.1.x にフォールバックされます。 .NET Core 3.0 では、最初に 1.1.x が検索されます。 この変更は、新しい暗号化標準のサポートを追加するために行われました。</p>

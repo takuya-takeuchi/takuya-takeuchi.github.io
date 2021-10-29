@@ -19,7 +19,7 @@
 </ul>
 <p>と繰り返しで格納されています。<br>なので、それを順番にバッファに書き出しするだけです。<br>bitsPerSampleを8で除算しているのは、byteに変換しているからですね。</p>
 <h1 id="テスト"><a href="#テスト" class="headerlink" title="テスト"></a>テスト</h1><p>手元に複数チャネルの音声ファイルが無かったので、ネットから探しました。<br>そこで見つけたのが下記。</p>
-
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/Samples.html" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=www-mmsp.ece.mcgill.ca"></img><div class="hbc-site-name">www-mmsp.ece.mcgill.ca</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">AIFF / AIFC Sample Files</div><div class="hbc-url">http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/Samples.html</div></div></div></div></a></div></div>
 
 <p>不幸にも5.1chがリンク切れなのですが、8chとか普通じゃお目にかかりそうもないものを見つけたので試しに分割してみました。<br><a target="_blank" rel="noopener" href="http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/Samples/Microsoft/8_Channel_ID.wav">8_Channel_ID.wav</a>をダウンロードして、デモアプリに渡します。<br>するとデモアプリと同じフォルダに1.wav,2.wav….8.wavの8つのwavファイルが生成されます。<br>分割されたファイルにはそれぞれ、</p>
 <ul>

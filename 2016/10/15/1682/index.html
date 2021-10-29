@@ -7,7 +7,17 @@
 
 <p>トピックブランチにアップストリームのブランチをマージする場合にコメントが必要ってことらしいですが、ブランチの扱いもおぼつかないのに、こんなこと言われても困ります。<br>空のメッセージはコミットをアボートしますってありますし。</p>
 <p>なので、ググったら、 </p>
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="http://snickerjp.blogspot.jp/2015/04/git-pull-no-edit.html" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=snickerjp.blogspot.jp"></img><div class="hbc-site-name">元うなぎ屋</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="//1.bp.blogspot.com/-FjfKOBOdj1w/VSO-4uz4xkI/AAAAAAAB84E/GlAA9xJDKyE/w1200-h630-p-k-no-nu/1428423174_git-branch-256.png"></img></div><div class="hbc-text"><div class="hbc-title">「git pull」した時に出る、commitエディタを表示しないようにする</div><div class="hbc-url">http://snickerjp.blogspot.jp/2015/04/git-pull-no-edit.html</div><div class="hbc-description">なのまるです～
 
+git の自動化を行っているとおかしなことが起きて困ったので、対処法メモです！
+
+もくじ
+
+
+gitを使ったスクリプトを実行したときに発生した問題
+
+中では、[git pull] をしているわけですが、
+    Merge branch &#39;master&#39; of …</div></div></div></div></a></div></div>
 
 <p>同じ現象に遭遇している方が。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> git pull --no-edit</span></span><br></pre></td></tr></table></figure>

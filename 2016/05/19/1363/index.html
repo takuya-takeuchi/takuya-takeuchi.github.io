@@ -15,7 +15,7 @@
 <p>ですが、このソフトもそれなりに導入に際してトラブルが多いです。<br>もちろん、トラブルを乗り越える価値は絶対にあります。</p>
 <p>久しぶりにPCを初期化して0から環境を構築したので、すんなりマイグレーションできなかったわけです。</p>
 <p>で、何が問題かというと、<strong>bundle install</strong>で依存gemを自動で持ってくるようにしたのですが、これが失敗するんです。<br>まず、redmine_knowledgebaseのgemspecはredmine_acts_as_taggable_onというgemを持ってこようとします。</p>
-
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/alexbevi/redmine_acts_as_taggable_on" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://opengraph.githubassets.com/1f842321559f55d9e1cd6bac54e890b170fa61d51e1cde77ae22dee56a7c725d/alexbevi/redmine_acts_as_taggable_on"></img></div><div class="hbc-text"><div class="hbc-title">GitHub - alexbevi/redmine_acts_as_taggable_on: A gem which allows multiple Redmine plugins to use acts_as_taggable_on without stepping on each others&#39; toes.</div><div class="hbc-url">https://github.com/alexbevi/redmine_acts_as_taggable_on</div><div class="hbc-description">A gem which allows multiple Redmine plugins to use acts_as_taggable_on without stepping on each others&amp;#39; toes. - GitHub - alexbevi/redmin…</div></div></div></div></a></div></div>
 
 <p>この際、gitを使ってCloneするのですが、**git://**というプロトコルで通信するため、会社の通信環境では通らないわけです。<br>しかもporxyのおまけ付き。これは別にいいです。<br>下記のコマンドでgitプロトコルを強制的にhttpsアクセスに切り替えています。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global url.&quot;https://&quot;.insteadOf git://</span><br></pre></td></tr></table></figure>

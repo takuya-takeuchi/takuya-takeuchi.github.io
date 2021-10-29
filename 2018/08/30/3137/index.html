@@ -14,7 +14,7 @@ CWnd::UpdateWindowやCWnd::Invalidat"><meta name="keywords"><meta content="width
 <p>これらの関数は最後の引数に <strong>BOOL bRedraw = FALSE</strong> をとります。<br>これらの関数にTRUEを渡すことで背景の更新が可能になります。</p>
 <p><strong>Spy</strong>で確認したのですが、これらの関数は内部で <strong>WM_PAINT</strong>を使っているようです。<br>そのため <strong>CWnd::UpdateWindow</strong> を使って同じ状況を作り出したにもかかわらず、<strong>CWnd::UpdateWindow</strong> は効果が無い。</p>
 <p>この現象に言及した唯一の記事が下記。</p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://stackoverflow.com/questions/12800581/update-mfcs-csliderctrl" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=stackoverflow.com"></img><div class="hbc-site-name">Stack Overflow</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded"></img></div><div class="hbc-text"><div class="hbc-title">Update MFC&#39;s CSliderCtrl</div><div class="hbc-url">https://stackoverflow.com/questions/12800581/update-mfcs-csliderctrl</div><div class="hbc-description">I am working on a C++ MFC project and bumping in the following. I have a CSliderCtrl on my form which I call MFC_scKINECTANGLE. To make it t…</div></div></div></div></a></div></div>
+
 
 <p>上記の関数以外にも、<strong>CWnd::EnableWindow</strong>でも更新が可能だと言っています。<br>しかし、この関数を使う場合は、一度現在のEnable/Disableと反対の値を設定する必要があるため、著しくちらつく欠点があります。</p>
 <p>ですので、最初に紹介した関数を使うことで、ちらつきを押さえて背景色を更新できます。<br>つまり、現在の設定と同じ値を使って更新するのです。</p>
