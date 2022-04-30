@@ -25,7 +25,7 @@ Explanation前回は、マージではなく埋め込みという方法でアセ
 <p>これを機に難読化のソフトを見直しました。</p>
 <p>今回選んだのは、<a target="_blank" rel="noopener" href="http://babelfor.net/products/obfuscator">Babel Obfuscator</a> です。<br>以前紹介しましたが、GUIが秀逸です。<a target="_blank" rel="noopener" href="https://www.devexpress.com/">DevExpressのコンポーネント</a>を使っているのか、かっこいいインターフェイスです。</p>
 <p>ちなみに、私は気に入りましたので、有償版を購入しました。<br>執筆時点での最新版は 8.3.0.0 です。</p>
-<h2 id="Assembly-Merge"><a href="#Assembly-Merge" class="headerlink" title="Assembly Merge"></a>Assembly Merge</h2><p>実際に使ってみます。<br>今回のサンプルソースは、**<a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi/Demo/tree/master/Obfuscation5">GitHub</a>** にあります。</p>
+<h2 id="Assembly-Merge"><a href="#Assembly-Merge" class="headerlink" title="Assembly Merge"></a>Assembly Merge</h2><p>実際に使ってみます。<br>今回のサンプルソースは、**<a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi/Demo/tree/master/Obfuscation/Obfuscation5">GitHub</a>** にあります。</p>
 <p>前回は、埋め込んだアセンブリに対してまでリフレクションを実行した、つまり既にわかっているアセンブリに対するアセンブリの埋め込みが問題を引き起こしたようです。<br>なので、今回のサンプルはアセンブリのLoadは実行しません。あくまで、メソッドのリフレクションのみです。</p>
 <p>Babel Obfuscator起動後、左側のInputをクリックし、右側にObfuscation5.exeをドラッグアンドドロップします。<br>次に追加されたObfuscation5.exeの左側にある +マークをクリックし、ノードを展開します。<br>InputsタブのFileにObfuscation5Lib.dllを追加し、ActionをEmbedに変更します。<br>そして、左端のチェックボックスにチェックがついていることを確認します。</p>
 <p><a href="../../../../public/2015/12/1-1.png"><img src="../../../../public/2015/12/1-1-300x204.png" alt="難読化準備"></a></p>
