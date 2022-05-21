@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>開発メモ その263 WSL2 のメモリ使用量を確認及び変更する · A certain engineer "COMPLEX"</title><meta name="description" content="Introduction備忘録。
+Windows Subsystem for Linux 2 で Docker for Windows を動かしている。
+12345&amp;gt;wsl -l -v  NAME                   STATE           VERSION* Ubunt"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その263 WSL2 のメモリ使用量を確認及び変更する</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>備忘録。</p>
+<p><strong>Windows Subsystem for Linux 2</strong> で Docker for Windows を動かしている。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;wsl -l -v</span><br><span class="line">  NAME                   STATE           VERSION</span><br><span class="line">* Ubuntu                 Running         2</span><br><span class="line">  docker-desktop         Running         2</span><br><span class="line">  docker-desktop-data    Running         2</span><br></pre></td></tr></table></figure>
+
+<p>それはそれとして、この WSL2 は一体どれほどのメモリを使っているのか？というのを知りたくなった。<br>なぜかというと、 <strong>Sentry</strong> というアプリケーションで発生したエラーを追跡し、管理してくれるソフトウェアを docker で使いたくなったのだが、要求仕様に</p>
+<ul>
+<li>4 CPU Cores</li>
+<li>8 GB RAM</li>
+</ul>
+<p>なんて書かれていて、「はて、自分のマシンの WSL2 はどのくらいメモリを食っているのか？」と思った次第。</p>
+<h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><p>まず、現時点で動ている WSL2 の、メモリ使用量は、タスクマネージャーから <strong>vmmem</strong> を見ることで確認。</p>
+<p><a href="../../../../public/2022/05/21/4422/001.png"><img src="../../../../public/2022/05/21/4422/001.png" alt="vmmem" title="vmmem"></a></p>
+<p>現状は、2 GB 少し。</p>
+<p>では、これがどこまで増えるかというと、WSL の変遷によって変わってきた模様。<br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/ja-jp/windows/wsl/release-notes">Windows Subsystem for Linux のリリース ノート</a> に従えば</p>
+<ul>
+<li>Build 20175<ul>
+<li>VM の既定のメモリ割り当てを、ホスト メモリの 50% または 8 GB のどちらか少ない方になるように調整します [GH 4166]。</li>
+</ul>
+</li>
+<li>Build 19028<ul>
+<li>Linux VM に割り当てられた既定のメモリ容量を、ホスト メモリの80% に調整します</li>
+</ul>
+</li>
+</ul>
+<p>とある。</p>
+<p>なので、少なくとも、100% 使い切ることは、まぁ当然ないことはわかった。</p>
+<h2 id="最大メモリを調節したい"><a href="#最大メモリを調節したい" class="headerlink" title="最大メモリを調節したい"></a>最大メモリを調節したい</h2><p>既定のメモリ割り当ての意味が正直よくわからないが、vmmem を見る限り、いきなり上の値に従ったメモリを割り当てるわけではないもよう。<br>最大量ということだろうか。VHD の動的割り当てみたいな。</p>
+<p>逆に言えば、Build 20175 の場合、たくさん WSL2 に割り当てたい場合は 8 GB が最大になるし、Build 19028 の場合は、80% まで無制限に食いつくす。<br>なので、最大量を指定することで対処。</p>
+<p>ちなみに、Linux シェルからメモリ量を確認したところ</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ free -h</span><br><span class="line">              total        used        free      shared  buff/cache   available</span><br><span class="line">Mem:            50G        464M         48G        363M        964M         48G</span><br><span class="line">Swap:           13G          0B         13G</span><br></pre></td></tr></table></figure>
+
+<p>となっていた。<br>マシンのメモリは 64 GB なので、 <code>64 * 0.8 = 51.2</code> なので、まぁ正しいと思える。</p>
+<p>WSL2 の使用メモリを制御するには、</p>
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/microsoft/WSL/issues/4166#issuecomment-526725261" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://opengraph.githubassets.com/e7eb91d0c3929413a2708b1f40a5ededf4cf240022f6ff870856cee6f7b44a1c/microsoft/WSL/issues/4166"></img></div><div class="hbc-text"><div class="hbc-title">WSL 2 consumes massive amounts of RAM and doesn&#39;t return it · Issue #4166 · microsoft/WSL</div><div class="hbc-url">https://github.com/microsoft/WSL/issues/4166#issuecomment-526725261</div><div class="hbc-description">Your Windows build number: 18917 What&amp;#39;s wrong / what should be happening instead: WSL 2 starts using huge amounts of RAM after a while, …</div></div></div></div></a></div></div>
+
+<p>によれば、</p>
+<p><strong>%USERPROFILE%¥.wslconfig</strong> (存在しないならテキストとして作成) に下記のように記載することで対処できると。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[wsl2]</span><br><span class="line">memory=1GB</span><br></pre></td></tr></table></figure>
+
+<p>サポートされている記述は <a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/wsl/release-notes#build-18945">Build 18945</a> を参考。</p>
+<p>現状、50 GB を最大量として動いているので、1 GB を指定すれば、vmmem と <code>free -h</code> の値が変化するはず。</p>
+<p>記載後、管理者権限のコマンドプロンプトから</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; wsl --shutdown</span><br></pre></td></tr></table></figure>
+
+<p>または、管理者権限の Powershell から</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ Get-Service LxssManager | Restart-Service</span><br></pre></td></tr></table></figure>
+
+<p>を実行して、WSL2 を再起動。<br>(実行すると、起動している <strong>Linux シェル</strong> が勝手に終了するので注意)</p>
+<p>その後、<strong>Linux シェル</strong> を開き、メモリを確認すると</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ free -h</span><br><span class="line">              total        used        free      shared  buff/cache   available</span><br><span class="line">Mem:           977M         64M        828M         76K         84M        791M</span><br><span class="line">Swap:          1.0G          0B        1.0G</span><br></pre></td></tr></table></figure>
+
+<p>意図した値になっていた。<br>vmmem も</p>
+<p><a href="../../../../public/2022/05/21/4422/002.png"><img src="../../../../public/2022/05/21/4422/002.png" alt="vmmem" title="vmmem"></a></p>
+<p>と 1 GB に近似した値になっていることが確認できた。</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2022-05-21</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Microsoft/" title="Microsoft">Microsoft </a><a class="tag" href="/categories/Windows/" title="Windows">Windows </a><a class="tag" href="/categories/WSL/" title="WSL">WSL </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2022/05/21/4422/,A certain engineer &quot;COMPLEX&quot;,開発メモ その263 WSL2 のメモリ使用量を確認及び変更する,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2022/05/21/4421/" title="開発メモ その262 WSL2 に移行する">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2022/05/03/4420/" title="開発メモ その261 Windows 11 を古いマシンにインストールする">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
