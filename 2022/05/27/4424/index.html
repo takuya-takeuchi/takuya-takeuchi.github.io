@@ -1,0 +1,149 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>開発メモ その265 ARM の種別 · A certain engineer "COMPLEX"</title><meta name="description" content="Introduction備忘録。タイトルのまま。aarch64 だの armv7 だの、種類が多いので整理。
+Resolution色々情報源はあるが…下記がわかりやすかった。
+揮発性のメモ２ Debian ARM 略語対応表 - 揮発性のメモ２https://iww.hateblo.jp/entry"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その265 ARM の種別</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>備忘録。<br>タイトルのまま。<br>aarch64 だの armv7 だの、種類が多いので整理。</p>
+<h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><p>色々情報源はあるが…<br>下記がわかりやすかった。</p>
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://iww.hateblo.jp/entry/20180525/cpu" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=iww.hateblo.jp"></img><div class="hbc-site-name">揮発性のメモ２</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B071CNRZZC&Format=_SL160_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=iwwmemo-22"></img></div><div class="hbc-text"><div class="hbc-title"> Debian ARM 略語対応表 - 揮発性のメモ２</div><div class="hbc-url">https://iww.hateblo.jp/entry/20180525/cpu</div><div class="hbc-description">unameで見た dpkgで見た 分類 gcc 概要 armv8l arm64 64bitのARM armv7l armhf Hard Float略してHF arm-linux-gnueabihf-gcc ハードウェアFPUがあるARMBBB, RPi2, RPi3*1 armv…</div></div></div></div></a></div></div>
+
+<p>一部追記している (aarch64がない)。</p>
+<h2 id="Abbreviation"><a href="#Abbreviation" class="headerlink" title="Abbreviation"></a>Abbreviation</h2><p>aarch64 や armhf とかは Linux のディストリビューションから見た種別</p>
+<table>
+<thead>
+<tr>
+<th>uname</th>
+<th>dpkg</th>
+<th>classification</th>
+<th>gcc</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>aarch64</td>
+<td>arm64</td>
+<td></td>
+<td>aarch64-linux-gnu-gcc</td>
+<td>64bit</td>
+</tr>
+<tr>
+<td>armv8l</td>
+<td>arm64</td>
+<td></td>
+<td></td>
+<td>64bit kernel on 32-bit mode</td>
+</tr>
+<tr>
+<td>armv7l</td>
+<td>armhf</td>
+<td>hf は Hard Float の略</td>
+<td>arm-linux-gnueabihf-gcc</td>
+<td></td>
+</tr>
+<tr>
+<td>armv6l</td>
+<td>armel</td>
+<td>ARM EABI<br>つまりARM eabi little-endian</td>
+<td>arm-linux-gnueabi-gcc</td>
+<td>legacy</td>
+</tr>
+<tr>
+<td></td>
+<td>arm</td>
+<td>ARM Legacy ABI<br>または OABI (Old ABI)</td>
+<td>arm-linux-gcc</td>
+<td>too legacy</td>
+</tr>
+</tbody></table>
+<ul>
+<li>末尾の <code>l</code> は <code>little-endian</code></li>
+<li>ARM は big-endian もサポートしている。</li>
+<li>Hard Float は チップ上で浮動小数点演算。つまり FPU (Floating Point Unit) を使用<ul>
+<li>Soft Float は浮動小数点をソフトウェアでエミューレート<ul>
+<li>当然 Hard Float のが高速</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="ABI"><a href="#ABI" class="headerlink" title="ABI"></a>ABI</h2><p>Application Binary Interface</p>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>full name</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OABI</td>
+<td>Old Application Binary Interface</td>
+<td></td>
+</tr>
+<tr>
+<td>EABI</td>
+<td>Embedded Application Binary Interface</td>
+<td>legacy</td>
+</tr>
+</tbody></table>
+<h2 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h2><p>armv-v7a とか。</p>
+<table>
+<thead>
+<tr>
+<th>profile</th>
+<th>target</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>v7-A</td>
+<td>アプリケーション プロセッサ。Application</td>
+</tr>
+<tr>
+<td>v7-R</td>
+<td>組み込みプロセッサ。Real-time</td>
+</tr>
+<tr>
+<td>v7-M</td>
+<td>コントローラ プロセッサ。Microcontroller</td>
+</tr>
+</tbody></table>
+<h2 id="Family"><a href="#Family" class="headerlink" title="Family"></a>Family</h2><p>Cortex とか。</p>
+<table>
+<thead>
+<tr>
+<th>family name</th>
+<th>manifacture</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ARM</td>
+<td>Arm</td>
+</tr>
+<tr>
+<td>Cortex</td>
+<td>Arm</td>
+</tr>
+<tr>
+<td>Snapdragon</td>
+<td>Qualcomm</td>
+</tr>
+<tr>
+<td>Apple Ax</td>
+<td>Apple</td>
+</tr>
+<tr>
+<td>Apple M1</td>
+<td>Apple</td>
+</tr>
+<tr>
+<td>Tegra K1</td>
+<td>NVIDIA</td>
+</tr>
+<tr>
+<td>ARMADA</td>
+<td>Marvell</td>
+</tr>
+<tr>
+<td>Tegra K1</td>
+<td>MediaTek</td>
+</tr>
+</tbody></table>
+<p>これでもう迷わない。</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2022-05-27</span><i class="fa fa-tag"></i><a class="tag" href="/categories/ARM/" title="ARM">ARM </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2022/05/27/4424/,A certain engineer &quot;COMPLEX&quot;,開発メモ その265 ARM の種別,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2022/06/04/4425/" title="開発メモ その266 Windows 10 の OCR を試してみる">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2022/05/21/4423/" title="開発メモ その264 Sentry を味見してみる">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
