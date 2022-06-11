@@ -1,0 +1,130 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>開発メモ その270 SkiaSharp と System.Drawing · A certain engineer "COMPLEX"</title><meta name="description" content="IntroductionSystem.Drawing といえば、 WinForms の時代からお世話になっている馴染みのある名前空間だ。SoftwareBitmap? 知らんなぁ。
+.NET 6 になってから、System.Drawing.Common が Windows でしかサポートされない の"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その270 SkiaSharp と System.Drawing</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p><strong>System.Drawing</strong> といえば、 <strong>WinForms</strong> の時代からお世話になっている馴染みのある名前空間だ。<br>SoftwareBitmap? 知らんなぁ。</p>
+<p>.NET 6 になってから、<a target="_blank" rel="noopener" href="https://docs.microsoft.com/ja-jp/dotnet/core/compatibility/core-libraries/6.0/system-drawing-common-windows-only">System.Drawing.Common が Windows でしかサポートされない</a> のように警告が出るようになったが、System.Drawing はロックの問題を除けば今でも最高のパフォーマンスを叩き出してくれる。</p>
+<p>とはいえ、そろそろ次の API について学習しないと取り残されるのは明白。<br>少なくとも、 <strong>MAUI</strong> では <strong>System.Drawing</strong> は使えないわけで。</p>
+<p>というわけで、良く取り上げられる <a target="_blank" rel="noopener" href="https://github.com/mono/SkiaSharp">SkiaSharp</a> を使ってみることにした。</p>
+<p>なお、性能については下記を参照。</p>
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://www.jitbit.com/alexblog/300-systemdrawing-vs-skiasharp-benchmark/" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=www.jitbit.com"></img><div class="hbc-site-name">jitbit.com</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://imgen.jitbit.com/?txt=System.Drawing+vs+SkiaSharp+benchmark&bg=https%3a%2f%2fi.imgur.com%2fU2UTVEw.jpg&logo=https%3A%2F%2Fwww.jitbit.com%2Fimages%2Femaillogo.png"></img></div><div class="hbc-text"><div class="hbc-title">System.Drawing vs SkiaSharp benchmark</div><div class="hbc-url">https://www.jitbit.com/alexblog/300-systemdrawing-vs-skiasharp-benchmark/</div><div class="hbc-description">System.Drawing vs SkiaSharp benchmark - Thursday, April 15, 2021 - Founder&#39;s blog</div></div></div></div></a></div></div>
+
+<h1 id="How-to-use"><a href="#How-to-use" class="headerlink" title="How to use"></a>How to use</h1><p>幸いなことに、使ってみると System.Drawing と似た設計の API であることに気づく。<br><br>思った機能を実現するための API が見つからないストレスは、コンポーネント移行の宿命として諦めるとして、これは嬉しい。</p>
+<p>具体的な対応は下記。<br>最低限、これだけわかっていれば、大抵のケースはどうとでもなる。</p>
+<h3 id="クラス"><a href="#クラス" class="headerlink" title="クラス"></a>クラス</h3><table>
+<thead>
+<tr>
+<th>System.Drawing</th>
+<th>SkiaSharp</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>System.Drawing.Bitmap</td>
+<td>SkiaSharp.SKBitmap</td>
+</tr>
+<tr>
+<td>System.Drawing.Graphics</td>
+<td>SkiaSharp.SKCanvas</td>
+</tr>
+<tr>
+<td>-</td>
+<td>SkiaSharp.SKPaint</td>
+</tr>
+</tbody></table>
+<p>SkPaint は　矩形を描画する際に使用する色などの情報を保持するクラスである。<br><br>System.Drawing では、DrawLine 等に直接色などを指定したが、SkiaSharp ではこの SKPaint に設定する。</p>
+<p>下記の System.Drawing のソースは</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> bitmap = <span class="keyword">new</span> System.Drawing.Bitmap(<span class="number">200</span>, <span class="number">200</span>);</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> graphics = System.Drawing.Graphics.FromImage(bitmap);</span><br></pre></td></tr></table></figure>
+
+<p>下記の SkiaSharp のソースと意味的に同等である。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> bitmap = <span class="keyword">new</span> SkiaSharp.SKBitmap(<span class="number">200</span>, <span class="number">200</span>);</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> canvas = <span class="keyword">new</span> SkiaSharp.SKCanvas(bitmap);</span><br></pre></td></tr></table></figure>
+
+<h3 id="メソッド-プロパティ"><a href="#メソッド-プロパティ" class="headerlink" title="メソッド/プロパティ"></a>メソッド/プロパティ</h3><h4 id="ファイルの読み書き"><a href="#ファイルの読み書き" class="headerlink" title="ファイルの読み書き"></a>ファイルの読み書き</h4><table>
+<thead>
+<tr>
+<th>System.Drawing</th>
+<th>SkiaSharp</th>
+<th>補足</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>System.Drawing.Bitmap.FromFile(string filename)</td>
+<td>SkiaSharp.SKBitmap.Decode(byte[] buffer)</td>
+<td>System.IO.File.ReadAllBytes(string path) でも使えば意味は同じ。<br>Stream を受け取るコンストラクタもあるので同等。</td>
+</tr>
+<tr>
+<td>System.Drawing.Bitmap.Save(Stream stream, ImageFormat format)</td>
+<td>SkiaSharp.SKBitmap.Encode(Stream stream, SKEncodedImageFormat format)</td>
+<td>FileStream を指定すればファイルに、MemoryStream を指定すればメモリにエンコードされる</td>
+</tr>
+</tbody></table>
+<h4 id="矩形の描画"><a href="#矩形の描画" class="headerlink" title="矩形の描画"></a>矩形の描画</h4><table>
+<thead>
+<tr>
+<th>System.Drawing</th>
+<th>SkiaSharp</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>System.Drawing.Graphics.DrawRectangle</td>
+<td>SkiaSharp.SKCanvas.DrawRect</td>
+</tr>
+</tbody></table>
+<p>下記の System.Drawing のソースは</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> bitmap = <span class="keyword">new</span> System.Drawing.Bitmap(<span class="number">200</span>, <span class="number">200</span>);</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> graphics = System.Drawing.Graphics.FromImage(bitmap);</span><br><span class="line">graphics.DrawRectangle(System.Drawing.Pens.Red, <span class="keyword">new</span> System.Drawing.Rectangle(x, y, width, right));</span><br></pre></td></tr></table></figure>
+
+<p>下記の SkiaSharp のソースと意味的に同等である。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> paint = <span class="keyword">new</span> SkiaSharp.SKPaint();</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> bitmap = <span class="keyword">new</span> SkiaSharp.SKBitmap(<span class="number">200</span>, <span class="number">200</span>);</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> canvas = <span class="keyword">new</span> SkiaSharp.SKCanvas(bitmap);</span><br><span class="line">paint.Color = <span class="keyword">new</span> SkiaSharp.SKColor(<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">paint.Style = SkiaSharp.SKPaintStyle.Stroke;</span><br><span class="line">skCanvas.DrawRect(<span class="keyword">new</span> SkiaSharp.SKRect(left, top, right, bottom), paint);</span><br></pre></td></tr></table></figure>
+
+<h4 id="文字の描画"><a href="#文字の描画" class="headerlink" title="文字の描画"></a>文字の描画</h4><table>
+<thead>
+<tr>
+<th>System.Drawing</th>
+<th>SkiaSharp</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>System.Drawing.Graphics.DrawString</td>
+<td>SkiaSharp.SKCanvas.DrawText</td>
+</tr>
+</tbody></table>
+<p>下記の System.Drawing のソースは</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> bitmap = <span class="keyword">new</span> System.Drawing.Bitmap(<span class="number">200</span>, <span class="number">200</span>);</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> graphics = System.Drawing.Graphics.FromImage(bitmap);</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> font = <span class="keyword">new</span> System.Drawing.Font(<span class="string">&quot;Calibri&quot;</span>, <span class="number">16</span>);</span><br><span class="line">graphics.DrawString(<span class="string">&quot;test&quot;</span>, font, System.Drawing.Brushes.Red, x, y);</span><br></pre></td></tr></table></figure>
+
+<p>下記の SkiaSharp のソースと意味的に同等である。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> paint = <span class="keyword">new</span> SkiaSharp.SKPaint();</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> bitmap = <span class="keyword">new</span> SkiaSharp.SKBitmap(<span class="number">200</span>, <span class="number">200</span>);</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> canvas = <span class="keyword">new</span> SkiaSharp.SKCanvas(bitmap);</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> font = SkiaSharp.SKTypeface.FromFamilyName(<span class="string">&quot;Calibri&quot;</span>);</span><br><span class="line">paint.Color = <span class="keyword">new</span> SkiaSharp.SKColor(<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">paint.Typeface = font;</span><br><span class="line">paint.TextSize = <span class="number">16</span>;</span><br><span class="line">skCanvas.DrawText(<span class="string">&quot;test&quot;</span>, x, y, paint);</span><br></pre></td></tr></table></figure>
+
+<h4 id="文字のサイズ計測"><a href="#文字のサイズ計測" class="headerlink" title="文字のサイズ計測"></a>文字のサイズ計測</h4><p>そこまで利用することはないが…</p>
+<table>
+<thead>
+<tr>
+<th>System.Drawing</th>
+<th>SkiaSharp</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>System.Drawing.Graphics.MeasureString</td>
+<td>SkiaSharp.SKCanvas.MeasureText</td>
+</tr>
+</tbody></table>
+<p>下記の System.Drawing のソースは</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> bitmap = <span class="keyword">new</span> System.Drawing.Bitmap(<span class="number">200</span>, <span class="number">200</span>);</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> graphics = System.Drawing.Graphics.FromImage(bitmap);</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> font = <span class="keyword">new</span> System.Drawing.Font(<span class="string">&quot;Calibri&quot;</span>, <span class="number">16</span>);</span><br><span class="line">System.Drawing.SizeF size = graphics.MeasureString(<span class="string">&quot;test&quot;</span>, font);</span><br></pre></td></tr></table></figure>
+
+<p>下記の SkiaSharp のソースと意味的に同等である。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> paint = <span class="keyword">new</span> SkiaSharp.SKPaint();</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> bitmap = <span class="keyword">new</span> SkiaSharp.SKBitmap(<span class="number">200</span>, <span class="number">200</span>);</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> canvas = <span class="keyword">new</span> SkiaSharp.SKCanvas(bitmap);</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> font = SkiaSharp.SKTypeface.FromFamilyName(<span class="string">&quot;Calibri&quot;</span>);</span><br><span class="line">paint.Typeface = font;</span><br><span class="line">paint.TextSize = <span class="number">16</span>;</span><br><span class="line"><span class="keyword">var</span> textBounds = <span class="keyword">new</span> SkiaSharp.SKRect();</span><br><span class="line">skCanvas.MeasureText(<span class="string">&quot;test&quot;</span>, <span class="keyword">ref</span> textBounds);</span><br></pre></td></tr></table></figure>
+
+<p>取得できる値がサイズと矩形だが、おおよその意味は同じ。<br><br>ただし、矩形の左上座標は　0, 0 とは限らない点に注意。</p>
+<h4 id="ピクセルへのポインタ"><a href="#ピクセルへのポインタ" class="headerlink" title="ピクセルへのポインタ"></a>ピクセルへのポインタ</h4><p>画素値への高速アクセスにポインタは欠かせない。</p>
+<table>
+<thead>
+<tr>
+<th>System.Drawing</th>
+<th>SkiaSharp</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>System.Drawing.Imaging.BitmapData.Scan0</td>
+<td>SkiaSharp.SKBitmap.GetPixels()</td>
+</tr>
+</tbody></table>
+<p>下記の System.Drawing のソースは</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> bitmap = <span class="keyword">new</span> System.Drawing.Bitmap(<span class="number">200</span>, <span class="number">200</span>);</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> graphics = System.Drawing.Graphics.FromImage(bitmap);</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> font = <span class="keyword">new</span> System.Drawing.Font(<span class="string">&quot;Calibri&quot;</span>, <span class="number">16</span>);</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> bitmap = <span class="keyword">new</span> Bitmap(<span class="number">200</span>, <span class="number">200</span>);</span><br><span class="line">System.Drawing.Imaging.BitmapData data = bitmap.LockBits(<span class="keyword">new</span> System.Drawing.Rectangle(<span class="number">0</span>, <span class="number">0</span>, <span class="number">200</span>, <span class="number">200</span>), System.Drawing.Imaging.ImageLockMode.ReadOnly, bitmap.PixelFormat);</span><br><span class="line"><span class="keyword">var</span> poiner = data.Scan0;</span><br><span class="line">bitmap.UnlockBits(data);</span><br></pre></td></tr></table></figure>
+
+<p>下記の SkiaSharp のソースと意味的に同等である。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">var</span> bitmap = <span class="keyword">new</span> SkiaSharp.SKBitmap(<span class="number">200</span>, <span class="number">200</span>);</span><br><span class="line">IntPtr poiner = bitmap.GetPixels();</span><br></pre></td></tr></table></figure></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2022-06-11</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Microsoft/" title="Microsoft">Microsoft </a><a class="tag" href="/categories/NET/" title=".NET">.NET </a><a class="tag" href="/categories/SkiaSharp/" title="SkiaSharp">SkiaSharp </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2022/06/11/4429/,A certain engineer &quot;COMPLEX&quot;,開発メモ その270 SkiaSharp と System.Drawing,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="next pagbuttons"><a class="btn" role="navigation" href="/2022/06/05/4428/" title="開発メモ その269 新しい OS を設定した Android Virtual Device が起動しない">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
