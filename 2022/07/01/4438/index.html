@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>開発メモ その279 Oculus Integration を組み込む · A certain engineer "COMPLEX"</title><meta name="description" content="Introduction備忘録。なんというか、忘れやすいし面倒くさい。
+ここでは Unity 2021.3.5f1 で説明する。
+How to?方法は下記。
+developer.oculus.comOculus統合パッケージのインポート | Oculus開発者https://developer.oc"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その279 Oculus Integration を組み込む</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>備忘録。<br>なんというか、忘れやすいし面倒くさい。</p>
+<p>ここでは <strong>Unity 2021.3.5f1</strong> で説明する。</p>
+<h1 id="How-to"><a href="#How-to" class="headerlink" title="How to?"></a>How to?</h1><p>方法は下記。</p>
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" target="_blank" rel="noopener" href="https://developer.oculus.com/documentation/unity/unity-import/?locale=ja_JP#download-latest-sdk"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=developer.oculus.com"></img><div class="hbc-site-name">developer.oculus.com</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">Oculus統合パッケージのインポート | Oculus開発者</div><div class="hbc-url">https://developer.oculus.com/documentation/unity/unity-import/?locale=ja_JP#download-latest-sdk</div><div class="hbc-description">UnityアセットストアからOculus統合パッケージをインポートします。</div></div></div></div></a></div></div>
+
+<p>なのだが、Oculus Integration のインストールだけだとビルドが通らなくなるので注意。</p>
+<h2 id="Oculus-Integration-のインストール"><a href="#Oculus-Integration-のインストール" class="headerlink" title="Oculus Integration のインストール"></a>Oculus Integration のインストール</h2><ol>
+<li>新規に 3D プロジェクトを作成する (逆に言えば、プロジェクト作成時に最初にやれ、ということか？)</li>
+<li><a target="_blank" rel="noopener" href="https://www.oculus.com/lynx/?u=https://assetstore.unity.com/packages/tools/integration/oculus-integration-82022&e=AT2kD3IlZHHTHjsYR61qGLvjKkvZNBbn18Xnzacg_vdT0Y2V_2M56apWlKkrz_gcGkE1aW3DfmS8VNMeXVQbpJjaZC3OF9iKvWaKQQ3YVStTlZNpA6qhEL4R9qg-O2tF2dYFm2Es35_l7O08pJnav84aCX3JKSG6DwqkYw">Unityアセットストア</a> に移動し、ログイン後、右上の <strong>Open in Unity</strong> をクリック</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4438/001.png"><img src="../../../../public/2022/07/01/4438/001.png" alt="AssetStore" title="AssetStore"></a></p>
+<p><strong>Unity Editor</strong> で開く</p>
+<p><a href="../../../../public/2022/07/01/4438/002.png"><img src="../../../../public/2022/07/01/4438/002.png" alt="AssetStore" title="AssetStore"></a></p>
+<ol start="3">
+<li>Package Manager が表示されるので、<strong>Import</strong> を実行</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4438/003.png"><img src="../../../../public/2022/07/01/4438/003.png" alt="PackageManager" title="PackageManager"></a></p>
+<p><a href="../../../../public/2022/07/01/4438/004.png"><img src="../../../../public/2022/07/01/4438/004.png" alt="PackageManager" title="PackageManager"></a></p>
+<ol start="4">
+<li>とりあえず <strong>All</strong> を選択し、<strong>Import</strong> を実行</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4438/005.png"><img src="../../../../public/2022/07/01/4438/005.png" alt="PackageManager" title="PackageManager"></a></p>
+<p><a href="../../../../public/2022/07/01/4438/006.png"><img src="../../../../public/2022/07/01/4438/006.png" alt="PackageManager" title="PackageManager"></a></p>
+<ol start="5">
+<li>プラグインの更新。<strong>Yes</strong> を実行</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4438/007.png"><img src="../../../../public/2022/07/01/4438/007.png" alt="PackageManager" title="PackageManager"></a></p>
+<ol start="6">
+<li>OpenXR をバックエンドに使うかどうか。<strong>Use OpenXR</strong> を実行</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4438/008.png"><img src="../../../../public/2022/07/01/4438/008.png" alt="PackageManager" title="PackageManager"></a></p>
+<p><a href="../../../../public/2022/07/01/4438/009.png"><img src="../../../../public/2022/07/01/4438/009.png" alt="PackageManager" title="PackageManager"></a></p>
+<ol start="7">
+<li><strong>Restart</strong> を実行</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4438/010.png"><img src="../../../../public/2022/07/01/4438/010.png" alt="PackageManager" title="PackageManager"></a></p>
+<ol start="8">
+<li><strong>Upgrade</strong> を実行</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4438/011.png"><img src="../../../../public/2022/07/01/4438/011.png" alt="PackageManager" title="PackageManager"></a></p>
+<ol start="9">
+<li><strong>Restart</strong> を実行。Unity Editor が再起動する。</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4438/012.png"><img src="../../../../public/2022/07/01/4438/012.png" alt="PackageManager" title="PackageManager"></a></p>
+<ol start="10">
+<li><strong>Package Manager</strong> が開くが、インストールが完了しているので閉じる。</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4438/013.png"><img src="../../../../public/2022/07/01/4438/013.png" alt="PackageManager" title="PackageManager"></a></p>
+<ol start="11">
+<li>必要なら <strong>Build Settings</strong> から Android へ <strong>Switch Platform</strong> する</li>
+</ol>
+<h2 id="XR-Plugin-Management-のインストール"><a href="#XR-Plugin-Management-のインストール" class="headerlink" title="XR Plugin Management のインストール"></a>XR Plugin Management のインストール</h2><p>Oculus Integration インストール直後の状態でビルドを実行すると、おそらく下記のエラーが出る</p>
+<p><strong>Oculus Utilties Plugin with OpenXR only supports XR Plug-in Management with Oculus XR Plugin</strong></p>
+<p><a href="../../../../public/2022/07/01/4438/014.png"><img src="../../../../public/2022/07/01/4438/014.png" alt="ProjectSettings" title="ProjectSettings"></a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.oculus.com/documentation/unity/unity-conf-settings">Unity設定を構成する</a> にも書いてあることだが、設定が必要。</p>
+<ol>
+<li><strong>Project Settings</strong> の <strong>XR Plugin Management</strong> を開き、<strong>Install XR Plugin Management</strong> を実行</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4438/015.png"><img src="../../../../public/2022/07/01/4438/015.png" alt="Error" title="Error"></a></p>
+<ol start="2">
+<li>暫くすると表示が変化するので、Android タブ内の <strong>Oculus</strong> のチェックボックスを有効にする</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4438/016.png"><img src="../../../../public/2022/07/01/4438/016.png" alt="ProjectSettings" title="ProjectSettings"></a></p>
+<h2 id="Color-Space-の変更"><a href="#Color-Space-の変更" class="headerlink" title="Color Space の変更"></a>Color Space の変更</h2><p>XR Plugin Management をインストールしたにも関わらずまだビルドエラーが出る時がある。</p>
+<p><strong>Oculus Utilties Plugin with OpenXR only supports linear lighting</strong></p>
+<p><a href="../../../../public/2022/07/01/4438/017.png"><img src="../../../../public/2022/07/01/4438/017.png" alt="Error" title="Error"></a></p>
+<p>これも <a target="_blank" rel="noopener" href="https://developer.oculus.com/documentation/unity/unity-conf-settings">Unity設定を構成する</a> にも書いてあることだが、設定が必要。</p>
+<ol>
+<li><strong>Project Settings</strong> の <strong>Player</strong> を開き、Android タブの <strong>Other Settings</strong> 配下 <strong>Rendering</strong> を表示。<strong>Color Space</strong> を <strong>Linear</strong> に変更</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4438/018.png"><img src="../../../../public/2022/07/01/4438/018.png" alt="ProjectSettings" title="ProjectSettings"></a></p>
+<ol start="2">
+<li><strong>Change to Linear</strong> を実行</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4438/019.png"><img src="../../../../public/2022/07/01/4438/019.png" alt="ProjectSettings" title="ProjectSettings"></a></p>
+<h2 id="実行"><a href="#実行" class="headerlink" title="実行"></a>実行</h2><p>Build して実行すると、<a target="_blank" rel="noopener" href="https://taktak.jp/2022/06/25/4435/">以前のサンプル</a> とは違い、没入型のアプリになっていることがわかる。</p>
+<p><a href="../../../../public/2022/07/01/4438/020.jpg"><img src="../../../../public/2022/07/01/4438/020.jpg" alt="Immersive" title="Immersive"></a></p>
+<p>これが、VR か。</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2022-07-01</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Unity/" title="Unity">Unity </a><a class="tag" href="/categories/Oculus/" title="Oculus">Oculus </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2022/07/01/4438/,A certain engineer &quot;COMPLEX&quot;,開発メモ その279 Oculus Integration を組み込む,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2022/07/01/4439/" title="開発メモ その280 コントローラーを表示する">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2022/06/29/4437/" title="開発メモ その278 Windows 11 を Hyper-V にインストールする">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>

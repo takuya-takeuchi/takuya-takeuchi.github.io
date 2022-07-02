@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>開発メモ その280 コントローラーを表示する · A certain engineer "COMPLEX"</title><meta name="description" content="Introduction前回の記事 で表示されたサンプルアプリは、没入型のせいか、コントローラーすらも表示されず何もできなかったし、視点の変更もできなかったので、これらを改善していく。
+ここでは Unity 2021.3.5f1 で説明する。前提として Oculus Integration が既にイ"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その280 コントローラーを表示する</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p><a target="_blank" rel="noopener" href="https://taktak.jp/2022/06/25/4438/">前回の記事</a> で表示されたサンプルアプリは、没入型のせいか、コントローラーすらも表示されず何もできなかったし、視点の変更もできなかったので、これらを改善していく。</p>
+<p>ここでは <strong>Unity 2021.3.5f1</strong> で説明する。<br>前提として Oculus Integration が既にインストール済みであること。</p>
+<h1 id="How-to-resolve"><a href="#How-to-resolve" class="headerlink" title="How to resolve?"></a>How to resolve?</h1><p>改善点は 2 つ</p>
+<ul>
+<li>視点の変更ができなかった</li>
+<li>コントローラーが表示できない</li>
+</ul>
+<h2 id="視点の変更"><a href="#視点の変更" class="headerlink" title="視点の変更"></a>視点の変更</h2><p>原因はこれ。</p>
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://developer.oculus.com/documentation/unity/unity-add-camera-rig/?locale=ja_JP" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=developer.oculus.com"></img><div class="hbc-site-name">developer.oculus.com</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">OVRCameraRigを使用してカメラリグを追加する | Oculus開発者</div><div class="hbc-url">https://developer.oculus.com/documentation/unity/unity-add-camera-rig/?locale=ja_JP</div><div class="hbc-description">このトピックでは、UnityでOculus仮想カメラを追加する方法について説明します。</div></div></div></div></a></div></div>
+
+<blockquote>
+<p>UnityでVRのサポートを有効にすると、自動的にヘッドセットにより、頭と位置トラッキングの参照がUnityに渡されます。それによりカメラの位置と向きが、現実世界でのユーザーの位置および向きとぴったり一致するようになります。トラッキング対象のヘッドポーズの値により、カメラの変換値がオーバーライドされるため、カメラの位置は、常にプレイヤーオブジェクトを基準とした相対位置になります。</p>
+</blockquote>
+<p>また</p>
+<blockquote>
+<p>アプリのデザインに応じて、プレーヤーオブジェクトを参照するスクリプトを作成し、そのスクリプトをOVRCameraRigにアタッチするとよいでしょう。</p>
+</blockquote>
+<p>とあるので、カメラを変更します。</p>
+<p>幸い、上の記述の直後、<a target="_blank" rel="noopener" href="https://developer.oculus.com/documentation/unity/unity-add-camera-rig/?locale=ja_JP#add-ovrcamerarig-in-the-scene">シーンにOVRCameraRigを追加する</a> というセクションでカメラの交換手順が記載されているのでそれに従う。</p>
+<ol>
+<li><strong>Hierarchy</strong> から Main Camera を削除</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4439/001.png"><img src="../../../../public/2022/07/01/4439/001.png" alt="Delete" title="Delete"></a></p>
+<ol start="2">
+<li><strong>Project</strong> から <strong>Asset</strong> -&gt; <strong>Oculus</strong> -&gt; <strong>VR</strong> -&gt; <strong>Prefabs</strong> を選択して、その中の <strong>OVRCameraRig</strong> をシーンにドラッグアンドドロップ</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4439/002.png"><img src="../../../../public/2022/07/01/4439/002.png" alt="OVRCameraRig" title="OVRCameraRig"></a></p>
+<p><a href="../../../../public/2022/07/01/4439/003.png"><img src="../../../../public/2022/07/01/4439/003.png" alt="OVRCameraRig" title="OVRCameraRig"></a></p>
+<p>カメラの Position は適当だが、これで Build して実行すると、今度は視点を動かすことができた。</p>
+<h2 id="コントローラーの表示"><a href="#コントローラーの表示" class="headerlink" title="コントローラーの表示"></a>コントローラーの表示</h2><p>これは下記のページを参考にさせていただいた。</p>
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://chiritsumo-blog.com/quest-unity-controller" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=chiritsumo-blog.com"></img><div class="hbc-site-name">ちりつもぶろぐ</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://chiritsumo-blog.com/wp-content/uploads/2020/03/vr-experience.png"></img></div><div class="hbc-text"><div class="hbc-title">【Oculus Quest】UnityでOculus Touchコントローラーの表示と入力取得</div><div class="hbc-url">https://chiritsumo-blog.com/quest-unity-controller</div><div class="hbc-description">UnityでOculus Quest（オキュラス クエスト）のコントローラをアプリ内に表示する方法とコントローラー入力を取得する方法についてご紹介します。Oculus Touchコントローラーはタッチセンサーが搭載されているのでボタン押下以外にもタッチしたときのイベントも取得でき…</div></div></div></div></a></div></div>
+
+<ol>
+<li><strong>Project</strong> から <strong>Asset</strong> -&gt; <strong>Oculus</strong> -&gt; <strong>VR</strong> -&gt; <strong>Prefabs</strong> を選択して、その中の <strong>OVRControllerPrefab</strong> を</li>
+</ol>
+<ul>
+<li>OVRCameraRig -&gt; TrackingSpace -&gt; LeftHandAnchor -&gt; LeftControllerAnchor</li>
+<li>OVRCameraRig -&gt; TrackingSpace -&gt; RightHandAnchor -&gt; RightControllerAnchor</li>
+</ul>
+<p>の配下にドラッグアンドドロップ</p>
+<p><a href="../../../../public/2022/07/01/4439/004.png"><img src="../../../../public/2022/07/01/4439/004.png" alt="Controller" title="Controller"></a></p>
+<ol start="2">
+<li>LeftControllerAnchor 配下の OVRControllerPrefab の Controller を <strong>L Touch</strong> に変更</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4439/005.png"><img src="../../../../public/2022/07/01/4439/005.png" alt="Controller" title="Controller"></a></p>
+<ol start="2">
+<li>RightControllerAnchor 配下の OVRControllerPrefab の Controller を <strong>R Touch</strong> に変更</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4439/006.png"><img src="../../../../public/2022/07/01/4439/006.png" alt="Controller" title="Controller"></a></p>
+<p>これで Build して実行すると、コントローラーが表示されるようになった。</p>
+<p><a href="../../../../public/2022/07/01/4439/007.jpg"><img src="../../../../public/2022/07/01/4439/007.jpg" alt="Controller" title="Controller"></a></p>
+<p>でも、トリガーを押下してもレーザーが出ない…</p>
+<h2 id="レーザーを出す"><a href="#レーザーを出す" class="headerlink" title="レーザーを出す"></a>レーザーを出す</h2><p>これは下記のページを参考にさせていただいた。</p>
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://rikoubou.hatenablog.com/entry/2018/06/04/193607" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=rikoubou.hatenablog.com"></img><div class="hbc-site-name">ソースに絡まるエスカルゴ</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/r/rikoubou/20180603/20180603202718.png"></img></div><div class="hbc-text"><div class="hbc-title">【Unity / Oculus Go】Oculus Goコントローラー表示方法とボタン取得方法 - ソースに絡まるエスカルゴ</div><div class="hbc-url">https://rikoubou.hatenablog.com/entry/2018/06/04/193607</div><div class="hbc-description">rikoubou.hatenablog.com 前回の記事でOculus Go向けのビルドはできるようになりました。 今回は前回のプロジェクト（と言ってもCubeやSphereを置いただけですが）にOculus Goコントローラーを追加していきます。 １：必要なアセットのインポー…</div></div></div></div></a></div></div>
+
+<p>レーザーもシーンの中に登場するオブジェクトだから作れ、ということらしい。<br>没入型では何かもが手作りなのか…</p>
+<p>ただし、上の記事が古いためか、Unity のバージョンが新しいのか、元のコードではコントローラーを取得できなかったので、かなり手直しをした。</p>
+<ol>
+<li>Project 配下の Assets の下に Scripts フォルダを作り、Scripts フォルダを選択した状態で右クリックし、<strong>Create</strong> -&gt; <strong>C# Script</strong> から <strong>LaserPointerBehaviour</strong> というスクリプトを作成 (LaserPointer という名前のクラスは名前衝突で作れない)</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4439/008.png"><img src="../../../../public/2022/07/01/4439/008.png" alt="Laser" title="Laser"></a></p>
+<p>中身は下記。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">LaserPointerBehaviour</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">region</span> SerializeFields</span></span><br><span class="line"></span><br><span class="line">    [<span class="meta">SerializeField</span>]</span><br><span class="line">    <span class="keyword">private</span> Transform _HandAnchor;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">SerializeField</span>]</span><br><span class="line">    <span class="keyword">private</span> OVRInput.Controller _TargetController;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">SerializeField</span>]</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">float</span> _MaxDistance = <span class="number">100.0f</span>;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">SerializeField</span>]</span><br><span class="line">    <span class="keyword">private</span> LineRenderer _LaserPointerRenderer;</span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endregion</span></span></span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">region</span> Methods</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">region</span> Magic Methods</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">var</span> connected = OVRInput.IsControllerConnected(<span class="keyword">this</span>._TargetController);</span><br><span class="line">        <span class="keyword">if</span> (!connected)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Cast ray from controller</span></span><br><span class="line">        <span class="keyword">var</span> pointerRay = <span class="keyword">new</span> Ray(<span class="keyword">this</span>._HandAnchor.position, <span class="keyword">this</span>._HandAnchor.forward);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 0 is start point</span></span><br><span class="line">        <span class="keyword">this</span>._LaserPointerRenderer.SetPosition(<span class="number">0</span>, pointerRay.origin);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (Physics.Raycast(pointerRay, <span class="keyword">out</span> <span class="keyword">var</span> hitInfo, <span class="keyword">this</span>._MaxDistance))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// Set end point to hit position if ray intersects with a collider</span></span><br><span class="line">            _LaserPointerRenderer.SetPosition(<span class="number">1</span>, hitInfo.point);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// Extend MaxDistance in the direction if ray does not intersect with a collider</span></span><br><span class="line">            _LaserPointerRenderer.SetPosition(<span class="number">1</span>, pointerRay.origin + pointerRay.direction * <span class="keyword">this</span>._MaxDistance);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endregion</span></span></span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endregion</span></span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>色々ポイントがあるが、まずはこれで。</p>
+<ol start="2">
+<li>シーンの何もないところを右クリックし、<strong>Create Emtpy</strong> を 2 回実行</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4439/009.png"><img src="../../../../public/2022/07/01/4439/009.png" alt="Laser" title="Laser"></a></p>
+<ol start="3">
+<li>作成されたそれぞれのオブジェクトの名前を <strong>LeftLaserPointer</strong>、<strong>RightLaserPointer</strong> に変更</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4439/010.png"><img src="../../../../public/2022/07/01/4439/010.png" alt="Laser" title="Laser"></a></p>
+<ol start="4">
+<li><strong>LaserPointerBehaviour</strong> スクリプトを <strong>LeftLaserPointer</strong>、<strong>RightLaserPointer</strong> にドラッグアンドドロップ</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4439/011.png"><img src="../../../../public/2022/07/01/4439/011.png" alt="Laser" title="Laser"></a></p>
+<p><a href="../../../../public/2022/07/01/4439/012.png"><img src="../../../../public/2022/07/01/4439/012.png" alt="Laser" title="Laser"></a></p>
+<ol start="5">
+<li><strong>LeftLaserPointer</strong>、<strong>RightLaserPointer</strong> それぞれの Inspector に追加表示された Hand Anchor、Target Controller の中身を下記のようにマッピングする</li>
+</ol>
+<ul>
+<li>LeftLaserPointer<ul>
+<li>Hand Anchor<ul>
+<li>OVRCameraRig -&gt; TrackingSpace -&gt; LeftHandAnchor</li>
+</ul>
+</li>
+<li>Target Controller<ul>
+<li>L Touch</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>RightLaserPointer<ul>
+<li>Hand Anchor<ul>
+<li>OVRCameraRig -&gt; TrackingSpace -&gt; RightHandAnchor</li>
+</ul>
+</li>
+<li>Target Controller<ul>
+<li>R Touch</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ol start="6">
+<li><strong>LeftLaserPointer</strong>、<strong>RightLaserPointer</strong> それぞれに対し、<strong>Add Component</strong> をクリックし、その中の <strong>Line Renderer</strong> を選択</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4439/013.png"><img src="../../../../public/2022/07/01/4439/013.png" alt="Laser" title="Laser"></a></p>
+<ol start="7">
+<li>Color を赤色、Width に 0.010、Material の Element 0 には <strong>Sprites Default</strong> を選択</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4439/014.png"><img src="../../../../public/2022/07/01/4439/014.png" alt="Laser" title="Laser"></a></p>
+<ol start="8">
+<li>作った Line Renderer を スクリプトの属性として表示された <strong>Laser Poiner Renderer</strong> にドラッグアンドドロップ</li>
+</ol>
+<p><a href="../../../../public/2022/07/01/4439/015.png"><img src="../../../../public/2022/07/01/4439/015.png" alt="Laser" title="Laser"></a></p>
+<p>これで Build して実行すると、コントローラーとレーザーが表示されるようになった。</p>
+<p><a href="../../../../public/2022/07/01/4439/016.jpg"><img src="../../../../public/2022/07/01/4439/016.jpg" alt="Controller" title="Controller"></a></p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2022-07-01</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Unity/" title="Unity">Unity </a><a class="tag" href="/categories/Oculus/" title="Oculus">Oculus </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2022/07/01/4439/,A certain engineer &quot;COMPLEX&quot;,開発メモ その280 コントローラーを表示する,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="next pagbuttons"><a class="btn" role="navigation" href="/2022/07/01/4438/" title="開発メモ その279 Oculus Integration を組み込む">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>

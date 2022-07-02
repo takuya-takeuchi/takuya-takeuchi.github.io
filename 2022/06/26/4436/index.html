@@ -3,4 +3,61 @@ What is this?プロジェクトの形式フォルダとファイルの集まり�
 Build Setting はどこに保存されるのか？Library\EditorUs"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その277 Unity のメモ書き</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>いつも通りの備忘録。<br><br>ここは更新されていく記事？</p>
 <h1 id="What-is-this"><a href="#What-is-this" class="headerlink" title="What is this?"></a>What is this?</h1><h2 id="プロジェクトの形式"><a href="#プロジェクトの形式" class="headerlink" title="プロジェクトの形式"></a>プロジェクトの形式</h2><p>フォルダとファイルの集まり。<br><br>Visual Studio のような <strong>.sln</strong> ファイルは存在しない。</p>
 <h2 id="Build-Setting-はどこに保存されるのか？"><a href="#Build-Setting-はどこに保存されるのか？" class="headerlink" title="Build Setting はどこに保存されるのか？"></a>Build Setting はどこに保存されるのか？</h2><p><strong>Library\EditorUserBuildSettings.asset</strong> らしい。<br><br>変更後、別のプロジェクトで上書きしたら、設定が変わっていたので間違いないと思われる。</p>
+<h2 id="MonoBehaviour-って何？"><a href="#MonoBehaviour-って何？" class="headerlink" title="MonoBehaviour って何？"></a>MonoBehaviour って何？</h2><p>Unityプログラミングにおいて用いられる、全てのクラスの基底クラスとなるクラス。<br>下記の継承関係を持つ。<br></p>
+<p>UnityEngine.Object → UnityEngine.Component → UnityEngine.Behaviour → UnityEngine.MonoBehaviour</p>
+<p>この Object は <strong>System.Object</strong> ではない点に注意。</p>
+<h2 id="何で-Start-Update-Awake-は-private-なの？"><a href="#何で-Start-Update-Awake-は-private-なの？" class="headerlink" title="何で Start/Update/Awake は private なの？"></a>何で Start/Update/Awake は private なの？</h2><p>別に public でも動く。</p>
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://stackoverflow.com/questions/42325033/how-do-the-unity-private-awake-update-and-start-methods-work" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=stackoverflow.com"></img><div class="hbc-site-name">Stack Overflow</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded"></img></div><div class="hbc-text"><div class="hbc-title">How do the Unity private awake update and start methods work?</div><div class="hbc-url">https://stackoverflow.com/questions/42325033/how-do-the-unity-private-awake-update-and-start-methods-work</div><div class="hbc-description">How does Unity call the Awake, Update, and Start methods behind the scene?  That they have no access modifier to me indicates they are priva…</div></div></div></div></a></div></div>
+
+<p>上記の Stackoverflow から辿れる、Unity の公式ブログによれば、</p>
+<ul>
+<li>マジックメソッドを呼び出すのにリフレクションは使ってない<ul>
+<li>マジックメソッドとは MonoBehaviour に元々備わっているメソッド (というよりイベント関数)<ul>
+<li>ここでいう、Start/Update/Awake</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>あるタイプのMonoBehaviourが初めてアクセスされたとき、そのスクリプトはスクリプトランタイム (Mono または IL2CPP) を通し、マジックメソッドが定義されているかどうかを調べ、この情報はキャッシュされる</li>
+</ul>
+<h2 id="Start-Update-Awake-の役割は？"><a href="#Start-Update-Awake-の役割は？" class="headerlink" title="Start/Update/Awake の役割は？"></a>Start/Update/Awake の役割は？</h2><p>スクリプトのライフサイクルが詳しい。</p>
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://docs.unity3d.com/ja/2022.1/Manual/ExecutionOrder.html" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=docs.unity3d.com"></img><div class="hbc-site-name">docs.unity3d.com</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://docs.unity3d.com/ja/2022.1/uploads/Main/monobehaviour_flowchart.svg"></img></div><div class="hbc-text"><div class="hbc-title">イベント関数の実行順序 - Unity マニュアル</div><div class="hbc-url">https://docs.unity3d.com/ja/2022.1/Manual/ExecutionOrder.html</div><div class="hbc-description">Unity スクリプトを実行すると、既定の順序で多くのイベント関数が実行されます。このページでは、これらのイベント関数について説明し、それらがどのように実行シーケンスに収まるかを説明します。</div></div></div></div></a></div></div>
+
+<ul>
+<li>最初のシーンのロード<ul>
+<li>Awake<ul>
+<li>この関数は常に Start 関数の前およびプレハブのインスタンス化直後に呼び出されます。<ul>
+<li>もしゲームオブジェクトがスタートアップ時に無効である場合、有効になるまで Awake は呼び出されません。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>最初のフレームを更新する前<ul>
+<li>Start<ul>
+<li>スクリプトのインスタンスが有効な場合にのみ、最初のフレームのアップデート前に Start が呼び出されます。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>アップデートの順番<ul>
+<li>Update<ul>
+<li>Update は、 1 フレームにつき 1 度呼び出されます。これは、フレームのアップデートの主となる関数です。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Awake → Start と続いていき、Update は必要に応じて何度も呼ばれる感じか？<br>WinForm でいう、Invalidate からの Update みたい？</p>
+<p>描画処理は Update に書けばいいって感じか。</p>
+<h2 id="どうやって高速に描画しているのか？"><a href="#どうやって高速に描画しているのか？" class="headerlink" title="どうやって高速に描画しているのか？"></a>どうやって高速に描画しているのか？</h2><p>下記を読め！</p>
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://blog.unity.com/ja/technology/1k-update-calls" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=blog.unity.com"></img><div class="hbc-site-name">Unity Blog</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://blog-api.unity.com/sites/default/files/styles/social_media/public/2015/12/table11.png.jpg?itok=gCsonKYq"></img></div><div class="hbc-text"><div class="hbc-title">Update()を10000回呼ぶ | Unity Blog</div><div class="hbc-url">https://blog.unity.com/ja/technology/1k-update-calls</div><div class="hbc-description">void Update() {
+    transform.Translate(0, 0, Time.deltaTime);
+}しかし、経験豊富な開発者からすれば、このコードはちょっとモヤモヤします。
+
+このメソッドは具体的にどのようにして呼び出されているかが明確でない。
+シーン…</div></div></div></div></a></div></div>
+
+<p>マジックメソッドのインテリセンスが効かないなんて問題はパフォーマンスの前には些末なこと。</p>
 </div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2022-06-26</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Unity/" title="Unity">Unity </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2022/06/26/4436/,A certain engineer &quot;COMPLEX&quot;,開発メモ その277 Unity のメモ書き,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2022/06/29/4437/" title="開発メモ その278 Windows 11 を Hyper-V にインストールする">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2022/06/25/4435/" title="開発メモ その276 Oculus で Unity のサンプルプロジェクトを Windows から動かすまで">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
