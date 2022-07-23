@@ -6,7 +6,7 @@
 <li>Windows 10</li>
 <li>VT-x または AMD-v が有効な CPU かつ BIOS で有効になっていること</li>
 </ul>
-<h1 id="How-to-get-started"><a href="#How-to-get-started" class="headerlink" title="How to get started?"></a>How to get started?</h1><h2 id="Hyper-V-と-Hypervisor-の有効化"><a href="#Hyper-V-と-Hypervisor-の有効化" class="headerlink" title="Hyper-V と Hypervisor の有効化"></a>Hyper-V と Hypervisor の有効化</h2><p>既に有効ならスキップ。<br>管理者権限で起動した Powershell から下記を入力。Y</p>
+<h1 id="How-to-get-started"><a href="#How-to-get-started" class="headerlink" title="How to get started?"></a>How to get started?</h1><h2 id="Hyper-V-と-Hypervisor-の有効化"><a href="#Hyper-V-と-Hypervisor-の有効化" class="headerlink" title="Hyper-V と Hypervisor の有効化"></a>Hyper-V と Hypervisor の有効化</h2><p>既に有効ならスキップ。<br>管理者権限で起動した Powershell から下記を入力。</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> <span class="built_in">Enable-WindowsOptionalFeature</span> <span class="literal">-Online</span> <span class="literal">-FeatureName</span> Microsoft<span class="literal">-Hyper</span><span class="literal">-V</span> <span class="literal">-All</span></span><br><span class="line"><span class="variable">$</span> <span class="built_in">Enable-WindowsOptionalFeature</span> <span class="literal">-Online</span> <span class="literal">-FeatureName</span> HypervisorPlatform</span><br></pre></td></tr></table></figure>
 
 <p>それぞれインストール完了後、再起動を問われますが、全部終わったら再起動でいいと思います。<br>一度再起動。</p>
