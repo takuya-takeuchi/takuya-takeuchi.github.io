@@ -1,0 +1,195 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>開発メモ その298 Ubuntu 22.04.1 で Android Emulator を動かし GUI 表示する · A certain engineer "COMPLEX"</title><meta name="description" content="IntroductionAndroid のアプリをデモして自由に触らせたいという要望があった。まんま 独自のクラウド エミュレータを作成する の内容なんだけど、これは Google Compute Engine (GCE) で、コンソールを通じて提供される代物。だけど要望は、**Amazon Web"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その298 Ubuntu 22.04.1 で Android Emulator を動かし GUI 表示する</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>Android のアプリをデモして自由に触らせたいという要望があった。<br>まんま <a target="_blank" rel="noopener" href="https://source.android.com/docs/devices/automotive/start/avd/cloud_emulator?hl=ja">独自のクラウド エミュレータを作成する</a> の内容なんだけど、これは <strong>Google Compute Engine (GCE)</strong> で、コンソールを通じて提供される代物。<br>だけど要望は、**Amazon Web Services (AWS)**。<br>なので、GCE で使われている仕組みを手組する必要がある。</p>
+<p>幸い、これらは <a target="_blank" rel="noopener" href="https://github.com/google/android-emulator-container-scripts">https://github.com/google/android-emulator-container-scripts</a> として提供されている。</p>
+<p>が、調べたところ、日本語の記事は <a target="_blank" rel="noopener" href="https://qiita.com/ntsk/items/7e068812db4cd654d914">Android Emulator Container Scriptsを使ってDocker上でAndroidエミュレータを動かす</a> くらい。</p>
+<p>で、上の指示通りにやればできそうな気がするんだけど、なんか順番というか、途中で「ん？このファイル、どのタイミングで作られるの？」って感じで躓いた。<br>結局、自分は英語の別記事を参考にして環境を構築したので、自分なりの備忘録として残す。</p>
+<h1 id="How-to-use"><a href="#How-to-use" class="headerlink" title="How to use?"></a>How to use?</h1><h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><ul>
+<li>Ubuntu 22.04<ul>
+<li>Minimal Install で構築した環境を使用</li>
+</ul>
+</li>
+<li>docker<ul>
+<li>最新版を使うべきだと思う。<ul>
+<li>参考: <a target="_blank" rel="noopener" href="https://taktak.jp/2022/08/27/4456/">開発メモ その297 Ubuntu 22.04.1で最新のdockerを使う</a><br>　*　非rootユーザで実行できること。下記のコマンドで設定。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo groupadd docker</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo usermod -aG docker <span class="variable">$USER</span></span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>docker-compose </li>
+<li>KVM<ul>
+<li>クラウドで実行する場合<ul>
+<li>Azure の場合、ネストされた仮想化 (Nested Virtualization) が有効であること</li>
+<li>AWS の場合、ベアメタルインスタンスを使用<ul>
+<li>むしろ、AWS だけがこのような制約。他の クラウドプラットフォームは Azure と同様。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>Python を使用し、依存パッケージの状態によっては、バージョンアップによって、動かなくなる時があるので適宜対処が必要</p>
+<h2 id="ツールのインストール"><a href="#ツールのインストール" class="headerlink" title="ツールのインストール"></a>ツールのインストール</h2><p><strong>Android SDK</strong>、<strong>Python 3.10 venv</strong>、<strong>NodeJS</strong>、<strong>npm</strong> をインストール。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo apt-get install -y android-sdk python3.10-venv nodejs npm</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="android-adbkey-の作成"><a href="#android-adbkey-の作成" class="headerlink" title="~/.android/adbkey の作成"></a>~/.android/adbkey の作成</h2><p>Android SDK をインストール後、</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> adb devices</span><br><span class="line">* daemon not running; starting now at tcp:5037</span><br><span class="line">* daemon started successfully</span><br><span class="line">List of devices attached</span><br></pre></td></tr></table></figure>
+
+<h2 id="ソースの取得"><a href="#ソースの取得" class="headerlink" title="ソースの取得"></a>ソースの取得</h2><p>特定のコミットのソースをクローン。最新版でも構わないが、動いたのこれなので、メモとして残しておいた。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mkdir android-emulator-container-scripts</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> android-emulator-container-scripts</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">clone</span> https://github.com/google/android-emulator-container-scripts .</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git checkout 94592e7dbb46d28ec46497c0bdd00c3a95afe1cc</span></span><br></pre></td></tr></table></figure>
+
+<p>以後は、このフォルダで作業を行う。</p>
+<h2 id="仮想環境の構築"><a href="#仮想環境の構築" class="headerlink" title="仮想環境の構築"></a>仮想環境の構築</h2><p>android-emulator-container-scripts 直下にあるスクリプトを <code>source</code> で実行。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">source</span> ./configure.sh</span></span><br><span class="line">Using python 3</span><br><span class="line">Requirement already satisfied: pip in ./venv/lib/python3.10/site-packages (22.0.2)</span><br><span class="line">Collecting pip</span><br><span class="line">  Downloading pip-22.2.2-py3-none-any.whl (2.0 MB)</span><br><span class="line">     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 7.9 MB/s eta 0:00:00</span><br><span class="line">Installing collected packages: pip</span><br><span class="line"></span><br><span class="line">(略)</span><br><span class="line"></span><br><span class="line">Processing textwrap3-0.9.2-py2.py3-none-any.whl</span><br><span class="line">Installing textwrap3-0.9.2-py2.py3-none-any.whl to /home/user/work/android-emulator-container-scripts/venv/lib/python3.10/site-packages</span><br><span class="line">Adding textwrap3 0.9.2 to easy-install.pth file</span><br><span class="line"></span><br><span class="line">Installed /home/user/work/android-emulator-container-scripts/venv/lib/python3.10/site-packages/textwrap3-0.9.2-py3.10.egg</span><br><span class="line">Finished processing dependencies for emu-docker==0+untagged.301.g94592e7</span><br><span class="line">Ready to run emu-docker!</span><br></pre></td></tr></table></figure>
+
+<p>実行が終わると、仮想環境に切り替わる。</p>
+<h3 id="注意-1"><a href="#注意-1" class="headerlink" title="注意"></a>注意</h3><p>ここで、<code>emu-docker</code> コマンドが使えるかどうかを試すこと。<br>実行すると</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> emu-docker</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;/home/t-takeuchi/work/android-emulator-container-scripts2/venv/bin/emu-docker&quot;, line 33, in &lt;module&gt;</span><br><span class="line">    sys.exit(load_entry_point(&#x27;emu-docker&#x27;, &#x27;console_scripts&#x27;, &#x27;emu-docker&#x27;)())</span><br><span class="line">  File &quot;/home/t-takeuchi/work/android-emulator-container-scripts2/venv/bin/emu-docker&quot;, line 25, in importlib_load_entry_point</span><br><span class="line">    return next(matches).load()</span><br><span class="line">  File &quot;/usr/lib/python3.10/importlib/metadata/__init__.py&quot;, line 171, in load</span><br><span class="line"></span><br><span class="line">(略)</span><br><span class="line"></span><br><span class="line">ImportError: cannot import name &#x27;soft_unicode&#x27; from &#x27;markupsafe&#x27; (/home/user/work/android-emulator-container-scripts/venv/lib/python3.10/site-packages/MarkupSafe-2.1.1-py3.10-linux-x86_64.egg/markupsafe/__init__.py)</span><br><span class="line"></span><br><span class="line">(venv) user@TERMINAL:~/work/android-emulator-container-scripts$ python -m pip install markupsafe==2.0.1</span><br></pre></td></tr></table></figure>
+
+<p>となる時がある。<br>Python の依存パッケージのバージョンアップしており、API が壊れている。<br>そのため、強制的にインストールしなおす。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> python -m pip install markupsafe==2.0.1</span></span><br></pre></td></tr></table></figure>
+
+<p>再度実行すると、下記のように無事に動くはず。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> emu-docker</span></span><br><span class="line">usage: emu-docker [-h] [-v] &#123;list,licenses,create,interactive,cloud-build&#125; ...</span><br><span class="line"></span><br><span class="line">List and create emulator docker containers (0+untagged.301.g94592e7).</span><br><span class="line"></span><br><span class="line">positional arguments:</span><br><span class="line">  &#123;list,licenses,create,interactive,cloud-build&#125;</span><br><span class="line">    list                list all the available the publicly available emulators and system images.</span><br><span class="line">    licenses            Lists all licenses and gives you a chance to accept or reject them.</span><br><span class="line">    create              Given an emulator and system image zip file, generates a Docker image comprising complete environment in which the Android Emulator runs. After the Docker image is started up, interaction with the emulator is</span><br><span class="line">                        made possible via port forwarding and ADB, or gRPC and WebRTC.</span><br><span class="line">    interactive         Interactively select which system image and emulator binary to use when creating a docker container</span><br><span class="line">    cloud-build         Create a cloud builder distribution. This will create a distribution for publishing container images to a GCE repository.This is likely only useful if you are within Google.</span><br><span class="line"></span><br><span class="line">options:</span><br><span class="line">  -h, --help            show this help message and exit</span><br><span class="line">  -v, --verbose         Set verbose logging (default: False)</span><br></pre></td></tr></table></figure>
+
+<h2 id="実行したいエミュレータを調べる"><a href="#実行したいエミュレータを調べる" class="headerlink" title="実行したいエミュレータを調べる"></a>実行したいエミュレータを調べる</h2><p><code>emu-docker list</code> を実行すると、実行可能なエミュレータとイメージの一覧を取得できる。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> emu-docker list</span></span><br><span class="line">SYSIMG K android x86 19 https://dl.google.com/android/repository/sys-img/android/x86-19_r06.zip</span><br><span class="line">SYSIMG K google_apis x86 19 https://dl.google.com/android/repository/sys-img/google_apis/x86-19_r40.zip</span><br><span class="line">SYSIMG L android x86 21 https://dl.google.com/android/repository/sys-img/android/x86-21_r05.zip</span><br><span class="line">SYSIMG L android-tv x86 21 https://dl.google.com/android/repository/sys-img/android-tv/x86-21_r03.zip</span><br><span class="line"></span><br><span class="line">(略)</span><br><span class="line"></span><br><span class="line">SYSIMG Tiramisu android-tv x86 32 https://dl.google.com/android/repository/sys-img/android-tv/x86-Tiramisu_r03.zip</span><br><span class="line">SYSIMG S google_apis x86_64 32 https://dl.google.com/android/repository/sys-img/google_apis/x86_64-32_r03.zip</span><br><span class="line">SYSIMG S google_apis_playstore x86_64 32 https://dl.google.com/android/repository/sys-img/google_apis_playstore/x86_64-32_r03-linux.zip</span><br><span class="line">SYSIMG TiramisuPrivacySandbox google_apis_playstore x86_64 33 https://dl.google.com/android/repository/sys-img/google_apis_playstore/x86_64-TiramisuPrivacySandbox_r06.zip</span><br><span class="line">EMU canary 31.3.8 macosx https://dl.google.com/android/repository/emulator-darwin_x64-8598121.zip</span><br><span class="line">EMU canary 31.3.8 linux https://dl.google.com/android/repository/emulator-linux_x64-8598121.zip</span><br><span class="line">EMU canary 31.3.8 windows https://dl.google.com/android/repository/emulator-windows_x64-8598121.zip</span><br><span class="line">EMU beta 31.3.10 macosx https://dl.google.com/android/repository/emulator-darwin_x64-8807927.zip</span><br><span class="line">EMU beta 31.3.10 linux https://dl.google.com/android/repository/emulator-linux_x64-8807927.zip</span><br><span class="line">EMU beta 31.3.10 windows https://dl.google.com/android/repository/emulator-windows_x64-8807927.zip</span><br><span class="line">EMU stable 31.3.10 linux https://dl.google.com/android/repository/emulator-linux_x64-8807927.zip</span><br><span class="line">EMU stable 31.3.10 windows https://dl.google.com/android/repository/emulator-windows_x64-8807927.zip</span><br><span class="line">EMU stable 31.3.10 macosx https://dl.google.com/android/repository/emulator-darwin_x64-8807927.zip</span><br></pre></td></tr></table></figure>
+
+<p>例えば。Android R が欲しいなら、grep で絞り込める。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> emu-docker list | grep R</span></span><br><span class="line">SYSIMG R android x86_64 30 https://dl.google.com/android/repository/sys-img/android/x86_64-30_r10.zip</span><br><span class="line">SYSIMG R android-tv x86 30 https://dl.google.com/android/repository/sys-img/android-tv/x86-30_r03.zip</span><br><span class="line">SYSIMG R google_apis x86_64 30 https://dl.google.com/android/repository/sys-img/google_apis/x86_64-30_r11.zip</span><br><span class="line">SYSIMG R google_apis x86 30 https://dl.google.com/android/repository/sys-img/google_apis/x86-30_r10.zip</span><br><span class="line">SYSIMG R google_apis_playstore x86_64 30 https://dl.google.com/android/repository/sys-img/google_apis_playstore/x86_64-30_r10-linux.zip</span><br><span class="line">SYSIMG R google_apis_playstore x86 30 https://dl.google.com/android/repository/sys-img/google_apis_playstore/x86-30_r09-linux.zip</span><br></pre></td></tr></table></figure>
+
+<p>Android R の場合、下記のようなイメージが利用できる。</p>
+<table>
+<thead>
+<tr>
+<th align="left">種別</th>
+<th align="left">アーキテクチャ</th>
+<th align="left">名称</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Android</td>
+<td align="left">x86_64</td>
+<td align="left">android</td>
+</tr>
+<tr>
+<td align="left">Android TV</td>
+<td align="left">x86</td>
+<td align="left">android-tv</td>
+</tr>
+<tr>
+<td align="left">Android (Google API 付き)</td>
+<td align="left">x86_64</td>
+<td align="left">google_apis</td>
+</tr>
+<tr>
+<td align="left">Android (Google API 付き)</td>
+<td align="left">x86</td>
+<td align="left">google_apis</td>
+</tr>
+<tr>
+<td align="left">Android (Google API と Playstore 付き)</td>
+<td align="left">x86_64</td>
+<td align="left">google_apis_playstore</td>
+</tr>
+<tr>
+<td align="left">Android (Google API と Playstore 付き)</td>
+<td align="left">x86</td>
+<td align="left">google_apis_playstore</td>
+</tr>
+</tbody></table>
+<p>がある。</p>
+<p>また、エミュレータは、各ホスト OS に対応するものが提供されている。</p>
+<table>
+<thead>
+<tr>
+<th align="left">リリースチャネル</th>
+<th align="left">OS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">canary</td>
+<td align="left">macosx</td>
+</tr>
+<tr>
+<td align="left">canary</td>
+<td align="left">linux</td>
+</tr>
+<tr>
+<td align="left">canary</td>
+<td align="left">windows</td>
+</tr>
+<tr>
+<td align="left">beta</td>
+<td align="left">macosx</td>
+</tr>
+<tr>
+<td align="left">beta</td>
+<td align="left">linux</td>
+</tr>
+<tr>
+<td align="left">beta</td>
+<td align="left">windows</td>
+</tr>
+<tr>
+<td align="left">stable</td>
+<td align="left">macosx</td>
+</tr>
+<tr>
+<td align="left">stable</td>
+<td align="left">linux</td>
+</tr>
+<tr>
+<td align="left">stable</td>
+<td align="left">windows</td>
+</tr>
+</tbody></table>
+<p>がある。</p>
+<h2 id="エミュレータの-docker-イメージ作成"><a href="#エミュレータの-docker-イメージ作成" class="headerlink" title="エミュレータの docker イメージ作成"></a>エミュレータの docker イメージ作成</h2><p>例えば、emulator は <code>stable</code>、Android のイメージはバニラなバイナリを使いたい場合は、下記のように指定する。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> emu-docker create stable <span class="string">&quot;R android x86_64&quot;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>または、直接 zip をダウンロードして、指定する方法もある。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> curl -O <span class="string">&#x27;https://dl.google.com/android/repository/emulator-linux_x64-8807927.zip&#x27;</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> curl -O <span class="string">&#x27;https://dl.google.com/android/repository/sys-img/android/x86_64-30_r10.zip&#x27;</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> emu-docker create emulator-linux_x64-8807927.zip x86_64-30_r10.zip</span></span><br></pre></td></tr></table></figure>
+
+<p>上記のどちらかを実行すると、docker イメージのビルドが始まる。<br>Google API 付きイメージを指定した場合は、ライセンスへの同意が求められるので適宜対応。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">WARNING:Please opt in or out of metrics collection.</span><br><span class="line">You will receive this warning until an option is selected.</span><br><span class="line">To opt in or out pass the --metrics or --no-metrics flag</span><br><span class="line">Note, that metrics will only be collected if you opt in.</span><br><span class="line">Downloading platform tools to /home/user/work/android-emulator-container-scripts/platform-tools-</span><br><span class="line"><span class="meta">100%</span><span class="bash">|█████████████████████████████████████████████████████████████████████████████████████████████████</span></span><br><span class="line">docker build /home/user/work/android-emulator-container-scripts/src -t us-docker.pkg.dev/android</span><br><span class="line">Step 1/14 : FROM alpine:3.3 AS unzipper</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> a6fc1dbfa81a</span></span><br><span class="line">Step 2/14 : RUN apk add --update unzip</span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> Running <span class="keyword">in</span> 7fbb84a724c6</span></span><br><span class="line">fetch http://dl-cdn.alpinelinux.org/alpine/v3.3/main/x86_64/APKINDEX.tar.gz</span><br><span class="line">fetch http://dl-cdn.alpinelinux.org/alpine/v3.3/community/x86_64/APKINDEX.tar.gz</span><br><span class="line">(1/1) Installing unzip (6.0-r1)</span><br><span class="line">Executing busybox-1.24.2-r2.trigger</span><br><span class="line">OK: 5 MiB in 12 packages</span><br><span class="line">Removing intermediate container 7fbb84a724c6</span><br><span class="line"></span><br><span class="line">(略)</span><br><span class="line"></span><br><span class="line"><span class="meta"> ---&gt;</span><span class="bash"> 88ceedcefc7b</span></span><br><span class="line">Successfully built 88ceedcefc7b</span><br><span class="line">Successfully tagged us-docker.pkg.dev/android-emulator-268719/images/30-aosp-x64-no-metrics:8807927</span><br></pre></td></tr></table></figure>
+
+<h2 id="Web-アクセスインターフェースの構築"><a href="#Web-アクセスインターフェースの構築" class="headerlink" title="Web アクセスインターフェースの構築"></a>Web アクセスインターフェースの構築</h2><p>docker-compose によって提供される Web インターフェースを動かすための docker イメージを作成。</p>
+<p><code>create_web_container.sh</code> を使用する。<br>引数には <code>&lt;username&gt;,&lt;password&gt;</code> と、Web インターフェースにログインするユーザ情報を指定する。複数指定可能。</p>
+<p>下記は user1 と user2 を指定した例。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./create_web_container.sh -p user1,password1,user2,password2</span></span><br><span class="line">make: Entering directory &#x27;/home/user/work/android-emulator-container-scripts/js&#x27;</span><br><span class="line"></span><br><span class="line">up to date, audited 1632 packages in 17s</span><br><span class="line"></span><br><span class="line">82 packages are looking for funding</span><br><span class="line">  run `npm fund` for details</span><br><span class="line"></span><br><span class="line">(略)</span><br><span class="line"></span><br><span class="line">Successfully built be471d032521</span><br><span class="line">Successfully tagged emulator_nginx:latest</span><br><span class="line">Created container, you can launch it as follows:</span><br><span class="line">docker-compose -f js/docker/docker-compose-build.yaml up</span><br></pre></td></tr></table></figure>
+
+<p>エミュレータとブラウザは下記の図に従ってやり取りされる模様。</p>
+<p><a href="../../../../public/2022/08/27/4457/004.png"><img src="../../../../public/2022/08/27/4457/004.png" alt="web" title="web"></a><br>(引用:<a target="_blank" rel="noopener" href="https://source.android.com/static/docs/devices/automotive/images/avd_cloud_01.png?hl=ja">https://source.android.com/static/docs/devices/automotive/images/avd_cloud_01.png?hl=ja</a>)</p>
+<h3 id="注意-2"><a href="#注意-2" class="headerlink" title="注意"></a>注意</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ERROR: pip&#39;s dependency resolver does not currently take into account all the packages that are instal</span><br><span class="line">led. This behaviour is the source of the following dependency conflicts.</span><br><span class="line">emu-docker 0+untagged.301.g94592e7.dirty requires jinja2&#x3D;&#x3D;2.11.1, but you have jinja2 3.1.2 which is i</span><br><span class="line">ncompatible.</span><br></pre></td></tr></table></figure>
+
+<p>となる時がある。</p>
+<p><code>setup.py</code> に明示的に <code>jinja2</code> のバージョンが指定されているためである。<br>そのため、手動で下記のように書き換え、</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">-       &quot;jinja2==2.11.1&quot;,</span></span><br><span class="line"><span class="addition">+       &quot;jinja2&quot;,</span></span><br></pre></td></tr></table></figure>
+
+<p>仮想環境に入りなおし、<code>jinja2</code> をインストールしなおすことで対処する。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source ./configure.sh</span><br><span class="line">python -m pip install jinja2==3.1.2</span><br></pre></td></tr></table></figure>
+
+<h2 id="コンテナの起動・停止"><a href="#コンテナの起動・停止" class="headerlink" title="コンテナの起動・停止"></a>コンテナの起動・停止</h2><h3 id="ADB-を使わない場合"><a href="#ADB-を使わない場合" class="headerlink" title="ADB を使わない場合"></a>ADB を使わない場合</h3><h4 id="起動"><a href="#起動" class="headerlink" title="起動"></a>起動</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker-compose -f js/docker/docker-compose.yaml up -d</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="停止"><a href="#停止" class="headerlink" title="停止"></a>停止</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker-compose -f js/docker/docker-compose.yaml down</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="ADB-を使う場合"><a href="#ADB-を使う場合" class="headerlink" title="ADB を使う場合"></a>ADB を使う場合</h3><h4 id="起動-1"><a href="#起動-1" class="headerlink" title="起動"></a>起動</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker-compose -f js/docker/docker-compose.yaml -f js/docker/development.yaml up -d</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="停止-1"><a href="#停止-1" class="headerlink" title="停止"></a>停止</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker-compose -f js/docker/docker-compose.yaml -f js/docker/development.yaml down</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ブラウザからのアクセス"><a href="#ブラウザからのアクセス" class="headerlink" title="ブラウザからのアクセス"></a>ブラウザからのアクセス</h2><p>80 ポートで待機しているので、アクセスしてみる。</p>
+<p><a href="../../../../public/2022/08/27/4457/001.png"><img src="../../../../public/2022/08/27/4457/001.png" alt="web" title="web"></a></p>
+<p><code>create_web_container.sh</code> 実行時に指定したユーザ名とパスワードを使用してログインする。</p>
+<p><a href="../../../../public/2022/08/27/4457/002.png"><img src="../../../../public/2022/08/27/4457/002.png" alt="web" title="web"></a></p>
+<p>真っ黒な画面が出るが、右上の赤枠のアイコンを押下するとエミュレータ側の描画が始まる。</p>
+<p><a href="../../../../public/2022/08/27/4457/003.png"><img src="../../../../public/2022/08/27/4457/003.png" alt="web" title="web"></a></p>
+<p>ちなみに、全ての処理は共有しているので、別ユーザでログインしているかどうかで、画面が異なることは無い。<br>別ユーザが操作した内容はそのまま、自分の画面に適用される。</p>
+<h2 id="アプリのインストール"><a href="#アプリのインストール" class="headerlink" title="アプリのインストール"></a>アプリのインストール</h2><p>ADB を使って起動している場合、 *<strong>.apk</strong> をインストールできる。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> adb emu <span class="built_in">kill</span> &amp;&amp; adb <span class="built_in">kill</span>-server &amp;&amp; adb install &lt;apk ファイルのパス&gt;</span></span><br><span class="line">* daemon not running; starting now at tcp:5037</span><br><span class="line">* daemon started successfully</span><br><span class="line">Performing Streamed Install</span><br><span class="line">Success</span><br></pre></td></tr></table></figure>
+
+<p>前の二つは起動済みの adb を停止している。<br>多重起動はできないので、上のコマンドをセットで覚えておくと面倒が少ない。</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2022-08-27</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Linux/" title="Linux">Linux </a><a class="tag" href="/categories/Android/" title="Android">Android </a><a class="tag" href="/categories/docker/" title="docker">docker </a><a class="tag" href="/categories/Ubuntu/" title="Ubuntu">Ubuntu </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2022/08/27/4457/,A certain engineer &quot;COMPLEX&quot;,開発メモ その298 Ubuntu 22.04.1 で Android Emulator を動かし GUI 表示する,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2022/08/27/4456/" title="開発メモ その297 Ubuntu 22.04.1で最新のdockerを使う">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2022/08/27/4455/" title="開発メモ その296 Ubuntu 22.04.1でXRDPを使う">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
