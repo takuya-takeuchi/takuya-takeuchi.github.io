@@ -3,7 +3,7 @@
 <p>が、調べたところ、日本語の記事は <a target="_blank" rel="noopener" href="https://qiita.com/ntsk/items/7e068812db4cd654d914">Android Emulator Container Scriptsを使ってDocker上でAndroidエミュレータを動かす</a> くらい。</p>
 <p>で、上の指示通りにやればできそうな気がするんだけど、なんか順番というか、途中で「ん？このファイル、どのタイミングで作られるの？」って感じで躓いた。<br>結局、自分は英語の別記事を参考にして環境を構築したので、自分なりの備忘録として残す。</p>
 <h1 id="How-to-use"><a href="#How-to-use" class="headerlink" title="How to use?"></a>How to use?</h1><h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><ul>
-<li>Ubuntu 22.04<ul>
+<li>Ubuntu 22.04 or 20.04<ul>
 <li>Minimal Install で構築した環境を使用</li>
 </ul>
 </li>
@@ -32,8 +32,11 @@
 </li>
 </ul>
 <h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>Python を使用し、依存パッケージの状態によっては、バージョンアップによって、動かなくなる時があるので適宜対処が必要</p>
-<h2 id="ツールのインストール"><a href="#ツールのインストール" class="headerlink" title="ツールのインストール"></a>ツールのインストール</h2><p><strong>Android SDK</strong>、<strong>Python 3.10 venv</strong>、<strong>NodeJS</strong>、<strong>npm</strong> をインストール。</p>
+<h2 id="ツールのインストール"><a href="#ツールのインストール" class="headerlink" title="ツールのインストール"></a>ツールのインストール</h2><h3 id="22-04"><a href="#22-04" class="headerlink" title="22.04"></a>22.04</h3><p><strong>Android SDK</strong>、<strong>Python 3.10 venv</strong>、<strong>NodeJS</strong>、<strong>npm</strong> をインストール。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo apt-get install -y android-sdk python3.10-venv nodejs npm</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="20-04"><a href="#20-04" class="headerlink" title="20.04"></a>20.04</h3><p><strong>Android SDK</strong>、<strong>Python 3 venv</strong>、<strong>NodeJS</strong>、<strong>npm</strong> をインストール。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo apt-get install -y android-sdk python3-venv nodejs npm</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="android-adbkey-の作成"><a href="#android-adbkey-の作成" class="headerlink" title="~/.android/adbkey の作成"></a>~/.android/adbkey の作成</h2><p>Android SDK をインストール後、</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> adb devices</span><br><span class="line">* daemon not running; starting now at tcp:5037</span><br><span class="line">* daemon started successfully</span><br><span class="line">List of devices attached</span><br></pre></td></tr></table></figure>
@@ -189,7 +192,14 @@
 <p><a href="../../../../public/2022/08/27/4457/003.png"><img src="../../../../public/2022/08/27/4457/003.png" alt="web" title="web"></a></p>
 <p>ちなみに、全ての処理は共有しているので、別ユーザでログインしているかどうかで、画面が異なることは無い。<br>別ユーザが操作した内容はそのまま、自分の画面に適用される。</p>
 <h2 id="アプリのインストール"><a href="#アプリのインストール" class="headerlink" title="アプリのインストール"></a>アプリのインストール</h2><p>ADB を使って起動している場合、 *<strong>.apk</strong> をインストールできる。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> adb emu <span class="built_in">kill</span> &amp;&amp; adb <span class="built_in">kill</span>-server &amp;&amp; adb install &lt;apk ファイルのパス&gt;</span></span><br><span class="line">* daemon not running; starting now at tcp:5037</span><br><span class="line">* daemon started successfully</span><br><span class="line">Performing Streamed Install</span><br><span class="line">Success</span><br></pre></td></tr></table></figure>
+<p>まず adb から起動している adb サーバーに接続。接続後、デバイスの認識を確認。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> adb connect localhost:5555</span></span><br><span class="line">connected to localhost:5555</span><br><span class="line"><span class="meta">$</span><span class="bash"> adb devices</span></span><br><span class="line">List of devices attached</span><br><span class="line">localhost:5555  device</span><br></pre></td></tr></table></figure>
 
-<p>前の二つは起動済みの adb を停止している。<br>多重起動はできないので、上のコマンドをセットで覚えておくと面倒が少ない。</p>
+<p>接続確認後、下記でインストールが可能。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> adb install &lt;apk ファイルのパス&gt;</span></span><br><span class="line">* daemon not running; starting now at tcp:5037</span><br><span class="line">* daemon started successfully</span><br><span class="line">Performing Streamed Install</span><br><span class="line">Success</span><br></pre></td></tr></table></figure>
+
+<p>多重起動しているエラーが出たら</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> adb emu <span class="built_in">kill</span> </span></span><br><span class="line"><span class="meta">$</span><span class="bash"> adb <span class="built_in">kill</span>-server</span></span><br></pre></td></tr></table></figure>
+
+<p>で対処。</p>
 </div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2022-08-27</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Linux/" title="Linux">Linux </a><a class="tag" href="/categories/Android/" title="Android">Android </a><a class="tag" href="/categories/docker/" title="docker">docker </a><a class="tag" href="/categories/Ubuntu/" title="Ubuntu">Ubuntu </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2022/08/27/4457/,A certain engineer &quot;COMPLEX&quot;,開発メモ その298 Ubuntu 22.04.1 で Android Emulator を動かし GUI 表示する,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2022/09/03/4458/" title="開発メモ その299 Windows Hello の PIN 設定ができない">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2022/08/27/4456/" title="開発メモ その297 Ubuntu 22.04.1で最新のdockerを使う">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
