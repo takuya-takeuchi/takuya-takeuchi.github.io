@@ -8,7 +8,7 @@ WinFormsの時は、OnPaint を駆使して、ListView"><meta name="keywords"><m
 </ul>
 <p>の2点です。<br>なので、MVVMを使っていきます。</p>
 <p>サンプルソースは下記になります。</p>
-
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/takuya-takeuchi/Demo/tree/master/WPF/08_WPF1" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://opengraph.githubassets.com/9aeafac47f3fc4cfc9e9b39337471ed5ef48574743902625b74bf46157f0bddb/takuya-takeuchi/Demo"></img></div><div class="hbc-text"><div class="hbc-title">Demo/WPF/08_WPF1 at master · takuya-takeuchi/Demo</div><div class="hbc-url">https://github.com/takuya-takeuchi/Demo/tree/master/WPF/08_WPF1</div><div class="hbc-description">Sample source code for Demonstration, Experiment and Test - Demo/WPF/08_WPF1 at master · takuya-takeuchi/Demo</div></div></div></div></a></div></div>
 
 <h1 id="OnRender"><a href="#OnRender" class="headerlink" title="OnRender"></a>OnRender</h1><p><strong>WinForms</strong>では Control.OnPaint メソッドをオーバーライドすることで、コントロールに独自の描画を実施することができます。<br>が、WPFの場合はControlTemplateがあるので、そういうことはしないでしょう。<br>では、どういうときに自前で描画するか、というと、パフォーマンスの追求ではないでしょうか?</p>
 <p>例えば、数百数千の円を表示するようなグラフのようなコントロールの場合、<strong>Ellipse</strong> を大量に配置するのはものすごく重くなります。<br>Shapeオブジェクトは重いのです。ましてや、そのような用途の場合、全オブジェクトに依存関係があることは当然でしょう。さらに重いこと受けあいです。</p>
