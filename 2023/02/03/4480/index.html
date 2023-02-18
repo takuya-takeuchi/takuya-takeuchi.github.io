@@ -20,7 +20,7 @@ Windows だと何も考えずにカメラを使えるが、Linux ではそうも
 <h1 id="How-to-resolve"><a href="#How-to-resolve" class="headerlink" title="How to resolve?"></a>How to resolve?</h1><p>今回は <code>video</code> グループに追加する。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo usermod -aG video <span class="variable">$USER</span></span></span><br></pre></td></tr></table></figure>
 
-<p>ちなみにグループに追加後は再度ログインしなおす必要があるので、リモートならつなぎなおす等する。<br>だが、<strong>Visual Studio Code</strong> のリモート接続を使用している場合、つなぎなおしても、セッションが維持されているか反映されない。</p>
+<p>ちなみにグループに追加後は再度ログインしなおす必要があるので、リモートならつなぎなおす等する。<br>だが、<strong>Visual Studio Code</strong> のリモート接続を使用している場合、つなぎなおしても、セッションが維持されているのか反映されない。</p>
 <p><code>video</code> グループに追加後</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./camera </span></span><br><span class="line">BackendName: V4L2</span><br><span class="line">w: 640, h: 480</span><br><span class="line">w: 640, h: 480</span><br><span class="line">w: 640, h: 480</span><br><span class="line">w: 640, h: 480</span><br><span class="line">w: 640, h: 480</span><br><span class="line">w: 640, h: 480</span><br><span class="line">w: 640, h: 480</span><br></pre></td></tr></table></figure>
 

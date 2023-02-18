@@ -9,6 +9,22 @@
 
 
     <url>
+        <loc>https://takuya-takeuchi.github.io/2023/02/18/4481/</loc>
+        <lastmod>2023-02-18T12:20:32.546Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://takuya-takeuchi.github.io/2023/02/03/4480/</loc>
+        <lastmod>2023-02-04T08:57:19.009Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://takuya-takeuchi.github.io/2023/02/04/4480/</loc>
         <lastmod>2023-02-04T08:48:22.884Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -154,14 +170,6 @@
 
     <url>
         <loc>https://takuya-takeuchi.github.io/2017/04/06/1981/</loc>
-        <lastmod>2023-02-04T06:35:56.472Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://takuya-takeuchi.github.io/2023/02/03/4480/</loc>
         <lastmod>2023-02-04T06:35:56.472Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
