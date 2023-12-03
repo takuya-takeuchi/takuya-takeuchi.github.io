@@ -9,7 +9,7 @@
 <p>を使ってプロジェクトファイルを作って活用することにしてみた。</p>
 <p>そして遭遇したのが表題。</p>
 <h1 id="What-does-it-mean"><a href="#What-does-it-mean" class="headerlink" title="What does it mean?"></a>What does it mean?</h1><p>結論から言えば、<strong>JDK 14</strong>のせい。</p>
-
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/gradle/gradle/issues/10248" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://opengraph.githubassets.com/339aefb2b0d0a40fc3862064990268bc11d3af2b27cd387ca6552622dbd3b5d7/gradle/gradle/issues/10248"></img></div><div class="hbc-text"><div class="hbc-title">JDK 14 support · Issue #10248 · gradle/gradle</div><div class="hbc-url">https://github.com/gradle/gradle/issues/10248</div><div class="hbc-description">Expected Behavior gradle should run with the latest JDK 14 ea. Current Behavior gradle -version works, but running any gradle task, includin…</div></div></div></div></a></div></div>
 
 <p>既に報告されている。<br>解決策として、利用するGradleのバージョンを6.3にすることで対応できるというのが、この記事の2日前(2020/03/31)に報告されていた。</p>
 <p>修正は、<strong>gradle\wrapper\gradle-wrapper.properties</strong> を下記のように修正してビルドし直す。</p>

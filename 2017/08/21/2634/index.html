@@ -15,7 +15,7 @@
 <p>ソースはシンプルです。</p>
 <h3 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h3><p>使用している関数の説明です。</p>
 <h4 id="Py-Initialize"><a href="#Py-Initialize" class="headerlink" title="Py_Initialize"></a>Py_Initialize</h4><p>Python インタプリタを初期化。Python の埋め込みを行うアプリケーションでは、一番最初にこの関数を呼ぶ必要がある。</p>
-
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://docs.python.jp/2/c-api/init.html#c.Py_Initialize" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=docs.python.jp"></img><div class="hbc-site-name">docs.python.jp</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">初期化 (initialization)、終了処理 (finalization)、スレッド — Python 2.7.18 ドキュメント</div><div class="hbc-url">https://docs.python.jp/2/c-api/init.html#c.Py_Initialize</div></div></div></div></a></div></div>
 
 <h4 id="boost-python-import"><a href="#boost-python-import" class="headerlink" title="boost::python::import"></a>boost::python::import</h4><p>指定した名前のモジュールをインポートします。<br>また、attr関数は指定した名前の属性を取得します。<br><strong>__dict</strong>は特殊な属性で、クラスに対して使用した場合は、クラスに属するクラス変数やメソッドのオブジェクトが保存されており、クラスのインスタンスに対して使用した場合は、インスタンス変数の辞書が保存されている。<br>このあたりはお約束的なコードになる。</p>
 <h4 id="boost-python-exec-file"><a href="#boost-python-exec-file" class="headerlink" title="boost::python::exec_file"></a>boost::python::exec_file</h4><p>指定したファイル名のPythonスクリプトを実行します。<br>ただ、実行するといっても、この時点では何か実行されるわけではないです。<br>似た関数として、<strong>boost::python::exec</strong>もあるが、こちらはPythonスクリプトの中身の文字列そのものを読み込む。<br>意味的には、第2引数、第3引数に指定した変数にデータを読み込んでいる感じ。</p>
