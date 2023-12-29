@@ -17,21 +17,11 @@
 </ul>
 <p>他多数。</p>
 <p>根本の原因は、ビルドプロセスが SSH のセッション上でキーチェーンにアクセスできないことが原因らしい。</p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://superuser.com/questions/270095/when-i-ssh-into-os-x-i-dont-have-my-keychain-when-i-use-terminal-i-do/363840" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=superuser.com"></img><div class="hbc-site-name">Super User</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://cdn.sstatic.net/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439"></img></div><div class="hbc-text"><div class="hbc-title">When I SSH into OS X, I don&#39;t have my keychain. When I use Terminal, I do</div><div class="hbc-url">https://superuser.com/questions/270095/when-i-ssh-into-os-x-i-dont-have-my-keychain-when-i-use-terminal-i-do/363840</div><div class="hbc-description">Steps
-Open PuTTY on my Windows desktop.
-SSH into my MacBook Pro.
-cd to a github clone
-$ git push
-Expected
 
-Everything up-to-date
-Actual
-
-…</div></div></div></div></a></div></div>
 
 <p>キーチェーンにアクセスできないから署名鍵にアクセスできずアプリの署名に失敗というわけ。</p>
 <p>対策は SSH コンソールや VSCode のターミナルで下記を入力。</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ security unlock-keychain login.keychain</span><br><span class="line">password to unlock login.keychain: </span><br></pre></td></tr></table></figure>
 
 <p>パスワード (sudo の) を入力することでキーチェーンにアクセスできるようになり、同じシェルからの iPhone へのデプロイやデバッグが上手くいくようになる。</p>
-</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2023-08-15</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Apple/" title="Apple">Apple </a><a class="tag" href="/categories/iOS/" title="iOS">iOS </a><a class="tag" href="/categories/Mac/" title="Mac">Mac </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2023/08/15/4451/,A certain engineer &quot;COMPLEX&quot;,開発メモ その343 SSH 接続からの iPhone 実機デプロイに失敗する,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2023/08/19/4452/" title="開発メモ その344 コンパイル対象の関数 テンプレート インスタンス化">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2023/08/13/4450/" title="開発メモ その342 OSX で隠しファイルを表示する">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2023-08-15</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Apple/" title="Apple">Apple </a><a class="tag" href="/categories/Mac/" title="Mac">Mac </a><a class="tag" href="/categories/iOS/" title="iOS">iOS </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2023/08/15/4451/,A certain engineer &quot;COMPLEX&quot;,開発メモ その343 SSH 接続からの iPhone 実機デプロイに失敗する,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2023/08/19/4452/" title="開発メモ その344 コンパイル対象の関数 テンプレート インスタンス化">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2023/08/13/4450/" title="開発メモ その342 OSX で隠しファイルを表示する">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>

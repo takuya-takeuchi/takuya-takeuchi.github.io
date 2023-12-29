@@ -1,0 +1,484 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>開発メモ その354 LLM (Large language Models) を軽く触って整理する · A certain engineer "COMPLEX"</title><meta name="description" content="Introduction少し自分で触ってみて、どのくらい早いのか、どのくらいの精度なのかを肌で感じてみる。
+How to run?docker で簡単に動かせる。今回は Ollama を使って環境を構築。GPU 対応も簡単。
+実行環境
+
+
+Hardware
+説明
+
+
+
+OS
+Windows 10 P"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/tags">タグ</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その354 LLM (Large language Models) を軽く触って整理する</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>少し自分で触ってみて、どのくらい早いのか、どのくらいの精度なのかを肌で感じてみる。</p>
+<h1 id="How-to-run"><a href="#How-to-run" class="headerlink" title="How to run?"></a>How to run?</h1><p>docker で簡単に動かせる。<br>今回は <a target="_blank" rel="noopener" href="https://ollama.ai/blog/ollama-is-now-available-as-an-official-docker-image">Ollama</a> を使って環境を構築。<br>GPU 対応も簡単。</p>
+<h4 id="実行環境"><a href="#実行環境" class="headerlink" title="実行環境"></a>実行環境</h4><table>
+<thead>
+<tr>
+<th>Hardware</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OS</td>
+<td>Windows 10 Pro 22H (219045.3803)</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz</td>
+</tr>
+<tr>
+<td>RAM</td>
+<td>64.0 GB</td>
+</tr>
+<tr>
+<td>GPU</td>
+<td>NVIDIA GeForce GTX 1080 (8.0 GB)</td>
+</tr>
+</tbody></table>
+<p>実行するには、まず Ollama をコンテナで起動する。</p>
+<h5 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama</span><br></pre></td></tr></table></figure>
+
+<h5 id="GPU"><a href="#GPU" class="headerlink" title="GPU"></a>GPU</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama</span></span><br></pre></td></tr></table></figure>
+
+<p>続いて、先に起動したコンテナに対し、モデルを指定してプログラムを起動することで、チャットでの対話を開始する。<br>例えば、</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker <span class="built_in">exec</span> -it ollama ollama run openchat:7b-v3.5-1210</span></span><br><span class="line">pulling manifest</span><br><span class="line">pulling 1d1ba2ee13b8... 100% ▕████████████████████████████████████████████████████████▏ 4.1 GB</span><br><span class="line">pulling 43070e2d4e53... 100% ▕████████████████████████████████████████████████████████▏  11 KB</span><br><span class="line">pulling d68706c17530... 100% ▕████████████████████████████████████████████████████████▏   98 B</span><br><span class="line">pulling 415f0f6b43dd... 100% ▕████████████████████████████████████████████████████████▏   65 B</span><br><span class="line">pulling dcda96ad37ce... 100% ▕████████████████████████████████████████████████████████▏  483 B</span><br><span class="line">verifying sha256 digest</span><br><span class="line">writing manifest</span><br><span class="line">removing any unused layers</span><br><span class="line">success</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="モデル"><a href="#モデル" class="headerlink" title="モデル"></a>モデル</h3><p>試したのは下記。有名、ライセンス、商用利用可能、日本語での学習がされているものを主に。</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Tag</th>
+<th>Image Size</th>
+<th>Hash</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>llama2</td>
+<td>7b-chat-q4_0<br>(latest, 7b, 7b-chat, chat と同じ)</td>
+<td>3.8 GB</td>
+<td>78e26419b446</td>
+</tr>
+<tr>
+<td>openchat</td>
+<td>7b-v3.5-1210<br>(latest, 7b と同じ)</td>
+<td>4.1 GB</td>
+<td>aa6d10add428</td>
+</tr>
+<tr>
+<td>openchat</td>
+<td>7b-v3.5-1210-q5_K_M</td>
+<td>5.1 GB</td>
+<td>64e4cb9bb506</td>
+</tr>
+</tbody></table>
+<p>もっと大きなモデルもあるが、環境の都合もあって、これだけ。</p>
+<h3 id="ライセンス"><a href="#ライセンス" class="headerlink" title="ライセンス"></a>ライセンス</h3><table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Url</th>
+<th>License</th>
+<th>Commercial use</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>llama2</td>
+<td><a target="_blank" rel="noopener" href="https://ai.meta.com/llama">https://ai.meta.com/llama</a></td>
+<td>Llama 2 Community License Agreement</td>
+<td>可能</td>
+<td>月間アクティブユーザが 7 億を超える場合は Meta に申請が必要</td>
+</tr>
+<tr>
+<td>openchat</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/imoneoi/openchat">https://github.com/imoneoi/openchat</a></td>
+<td>Apache License 2.0</td>
+<td>可能</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="サイズ・量子化について"><a href="#サイズ・量子化について" class="headerlink" title="サイズ・量子化について"></a>サイズ・量子化について</h3><p>モデル名の後ろに続く文字列に含まれる用語。例えば <strong>7b-chat-q4_0</strong></p>
+<ul>
+<li>7b<ul>
+<li>パラメータ数。70億。13B や 70B といった大規模モデルも存在</li>
+</ul>
+</li>
+<li>v3.5<ul>
+<li>chatgpt のバージョン。</li>
+</ul>
+</li>
+<li>1210<ul>
+<li>openchat だけかもしれないが、3.5 の改良を意味</li>
+</ul>
+</li>
+<li>q4_0<ul>
+<li>量子化の手法。基本は数字が大きいほど大規模、高品質。後述。</li>
+</ul>
+</li>
+</ul>
+<p>下記は量子化の手法。<br>LLAMA のプログラムのヘルプに記載されているが、<a target="_blank" rel="noopener" href="https://github.com/ggerganov/llama.cpp/discussions/2094#discussioncomment-6351796">https://github.com/ggerganov/llama.cpp/discussions/2094#discussioncomment-6351796</a> を参考にすると</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Size</th>
+<th>Quality</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Q2_K</td>
+<td>smallest</td>
+<td>extreme quality loss</td>
+<td>not recommended</td>
+</tr>
+<tr>
+<td>Q3_K_L</td>
+<td>small</td>
+<td>substantial quality loss</td>
+<td></td>
+</tr>
+<tr>
+<td>Q3_K_M</td>
+<td>very small</td>
+<td>very high quality loss</td>
+<td></td>
+</tr>
+<tr>
+<td>Q3_K_S</td>
+<td>very small</td>
+<td>very high quality loss</td>
+<td></td>
+</tr>
+<tr>
+<td>Q3_K</td>
+<td>Q3_K_M と同じ</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Q4_0</td>
+<td>small</td>
+<td>very high quality loss</td>
+<td>legacy prefer using Q3_K_M</td>
+</tr>
+<tr>
+<td>Q4_1</td>
+<td>small</td>
+<td>substantial quality loss</td>
+<td>legacy prefer using Q3_K_L</td>
+</tr>
+<tr>
+<td>Q4_K_M</td>
+<td>medium</td>
+<td>balanced quality</td>
+<td>recommended</td>
+</tr>
+<tr>
+<td>Q4_K_S</td>
+<td>small</td>
+<td>significant quality loss</td>
+<td></td>
+</tr>
+<tr>
+<td>Q4_K</td>
+<td>Q4_K_M と同じ</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Q5_0</td>
+<td>medium</td>
+<td>balanced quality</td>
+<td>legacy</td>
+</tr>
+<tr>
+<td>Q5_1</td>
+<td>medium</td>
+<td>low quality loss</td>
+<td>legacy</td>
+</tr>
+<tr>
+<td>Q5_K_M</td>
+<td>large</td>
+<td>very low quality loss</td>
+<td>recommended</td>
+</tr>
+<tr>
+<td>Q5_K_S</td>
+<td>large</td>
+<td>low quality loss</td>
+<td>recommended</td>
+</tr>
+<tr>
+<td>Q5_K</td>
+<td>Q5_K_M と同じ</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Q6_K</td>
+<td>very large</td>
+<td>extremely low quality loss</td>
+<td></td>
+</tr>
+<tr>
+<td>Q8_0</td>
+<td>very large</td>
+<td>extremely low quality loss</td>
+<td>not recommended</td>
+</tr>
+<tr>
+<td>F16</td>
+<td>extremely large</td>
+<td>virtually no quality loss</td>
+<td>not recommended</td>
+</tr>
+<tr>
+<td>F32</td>
+<td>absolutely huge</td>
+<td>lossless</td>
+<td>not recommended</td>
+</tr>
+</tbody></table>
+<p>のようになる。</p>
+<h3 id="対話"><a href="#対話" class="headerlink" title="対話"></a>対話</h3><p>質問を入力して、返答が開始されるまでの時間、返答内容を評価。</p>
+<h4 id="質問1-あなたは誰ですか？"><a href="#質問1-あなたは誰ですか？" class="headerlink" title="質問1: あなたは誰ですか？"></a>質問1: あなたは誰ですか？</h4><table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Device</th>
+<th>Speed</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>llama2:7b-chat-q4_0</td>
+<td>CPU</td>
+<td>7 sec</td>
+</tr>
+<tr>
+<td>llama2:7b-chat-q4_0</td>
+<td>GPU</td>
+<td>0 sec</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210</td>
+<td>CPU</td>
+<td>7 sec</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210</td>
+<td>GPU</td>
+<td>0 sec</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210-q5_K_M</td>
+<td>CPU</td>
+<td>5 sec</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210-q5_K_M</td>
+<td>GPU</td>
+<td>0 sec</td>
+</tr>
+</tbody></table>
+<h5 id="回答"><a href="#回答" class="headerlink" title="回答"></a>回答</h5><p>なぜか llama2 が英語で返答。でも GPU は日本語で返している。</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Device</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>llama2:7b-chat-q4_0</td>
+<td>CPU</td>
+<td>Hello! I’m LLaMA, an AI assistant developed by Meta AI that can understand and respond to human input in a conversational manner. I’m here to help you with any questions or topics you’d like to discuss! Is there something specific you’d like to talk about or ask?</td>
+</tr>
+<tr>
+<td>llama2:7b-chat-q4_0</td>
+<td>GPU</td>
+<td>私は、人工知能です。名前はLLaMAです。私は、人間のように会話を行うことができ、さまざまな情報や問題に答えることができます。ただし、私は人間とは異なり、完全な思考や感情を持つことはできません。私は、学習していく中にあるプログラム私は、人工知能です。名前はLLaMAです。私は、人間のように会話を行うことができ、さまざまな情報や問題に答えることができます。ただし、私は人間とは異なり、完全な思考や感情を持つことはできません。私は、学習していく中にあるプログラムに基づいて行動します。</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210</td>
+<td>CPU</td>
+<td>私はGPT-4です。OpenAIが開発した人工知能言語モデルです。私は大量のテキスト情報を学習し、質問に対して適切な回答や関連情報を提供できます。</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210</td>
+<td>GPU</td>
+<td>私はGPT-4です。OpenAIが開発した人工知能（AI）モデルです。私は、さまざまなテーマやトピックについて情報を提供することができます。何か質問がありますか？</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210-q5_K_M</td>
+<td>CPU</td>
+<td>私は、OpenAIによって開発された言語モデルであり、GPT-4として知られています。人間のような自然な文章を生成することができ、さまざまなタスクに役立ちます。私は、説明やアドバイス、質問への答えなどを行うことができます。どのようなお手伝いができるか試してみてください！</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210-q5_K_M</td>
+<td>GPU</td>
+<td>私は、OpenAIによって開発された人工知能であるGPT-4という言語モデルです。2021年にリリースされました。大規模な文章生成モデルの一種であり、自然言語処理やチャット機能などを提供しており、ユーザーと対話することができます私は、OpenAIによって開発された人工知能であるGPT-4という言語モデルです。2021年にリリースされました。大規模な文章生成モデルの一種であり、自然言語処 理やチャット機能などを提供しており、ユーザーと対話することができます。私はさまざまなテーマについて情報提供や説明を行うことができます。また、問題解決やアイデア生成などの目的にも役立ちます。</td>
+</tr>
+</tbody></table>
+<h4 id="質問2-日本語で会話はできますか？"><a href="#質問2-日本語で会話はできますか？" class="headerlink" title="質問2: 日本語で会話はできますか？"></a>質問2: 日本語で会話はできますか？</h4><table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Device</th>
+<th>Speed</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>llama2:7b-chat-q4_0</td>
+<td>CPU</td>
+<td>17 sec</td>
+</tr>
+<tr>
+<td>llama2:7b-chat-q4_0</td>
+<td>GPU</td>
+<td>0 sec</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210</td>
+<td>CPU</td>
+<td>20 sec</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210</td>
+<td>GPU</td>
+<td>1 sec</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210-q5_K_M</td>
+<td>CPU</td>
+<td>30 sec</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210-q5_K_M</td>
+<td>GPU</td>
+<td>1.6 sec</td>
+</tr>
+</tbody></table>
+<h5 id="回答-1"><a href="#回答-1" class="headerlink" title="回答"></a>回答</h5><p>なぜか llama2 が英語で返答。前の質問と異なり、GPU でも英語で返答。</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Device</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>llama2:7b-chat-q4_0</td>
+<td>CPU</td>
+<td>Yes, I can have a conversation in Japanese! 🇯 🇵  I was trained on a wide range of texts and can understand and respond to Japanese language inputs. Please feel free to ask me anything in Japanese, and I’ll do my best to help!</td>
+</tr>
+<tr>
+<td>llama2:7b-chat-q4_0</td>
+<td>GPU</td>
+<td>Yes, I can have a conversation in Japanese. I have been trained on a large corpus of text data, including Japanese texts, and can understand and generate text in Japanese. However, please keep in mind that I’m just an AI and my proficiency in Japanese may not be as high as a native speaker, and there may be some errors or limitations in my understanding or generation of Japanese language.</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210</td>
+<td>CPU</td>
+<td>はい、日本語で会話ができます。お気軽に質問してください。</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210</td>
+<td>GPU</td>
+<td>はい、日本語で会話ができます。どのような質問やお手伝いが必要でしょうか？質問をしてください。</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210-q5_K_M</td>
+<td>CPU</td>
+<td>はい、私は日本語で会話することができます。それから何かお手伝いしたいものがありましょうか？</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210-q5_K_M</td>
+<td>GPU</td>
+<td>はい、私は日本語で会話することができます。それでもっと役立ててください！どのような質問やご相談について、お手伝いしたいかどうかご連絡ください。</td>
+</tr>
+</tbody></table>
+<h4 id="質問3-相対性理論について教えてください"><a href="#質問3-相対性理論について教えてください" class="headerlink" title="質問3: 相対性理論について教えてください"></a>質問3: 相対性理論について教えてください</h4><table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Device</th>
+<th>Speed</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>llama2:7b-chat-q4_0</td>
+<td>CPU</td>
+<td>32 sec</td>
+</tr>
+<tr>
+<td>llama2:7b-chat-q4_0</td>
+<td>GPU</td>
+<td>2 sec</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210</td>
+<td>CPU</td>
+<td>32 sec</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210</td>
+<td>GPU</td>
+<td>1.4 sec</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210-q5_K_M</td>
+<td>CPU</td>
+<td>42 sec</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210-q5_K_M</td>
+<td>GPU</td>
+<td>2.3 sec</td>
+</tr>
+</tbody></table>
+<h5 id="回答-2"><a href="#回答-2" class="headerlink" title="回答"></a>回答</h5><p>正直、相対性理論について理解できていないので評価はできないが、アインシュタインの名前がぶれているのは中々面白い。</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Device</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>llama2:7b-chat-q4_0</td>
+<td>CPU</td>
+<td>Certainly! 😊 The relativity theory, proposed by Albert Einstein in 1905, is a fundamental concept in modern physics that describes how space and time are intertwined.<br>Here’s a brief overview:<br><br>1. Time dilation: According to the theory of relativity, the passage of time is not absolute, but rather depends on the observer’s frame of reference. The faster an observer is moving relative to a stationary observer, the slower time passes for the moving observer.<br>2. Length contraction: The theory also states that objects appear shorter to an observer when they are in motion relative to the observer. This means that the length of an object does not remain constant, but can be different depending on the observer’s frame of reference.<br>3. Equivalence of mass and energy: Einstein’s famous equation E=mc^2 shows that mass and energy are equivalent and can be converted into each other. This idea challenged the traditional concept of mass as an absolute quantity and introduced the concept of mass-energy equivalence.<br>4. Gravitational time dilation: The theory of relativity also predicts that the gravitational field of a massive object will cause time to pass slower near the object than it does at a distance. This effect, known as gravitational time dilation, has been observed in the real world and supports the validity of Einstein’s theory.<br>5. Black holes: The theory of relativity also predicts the existence of black holes, which are regions of spacetime where the gravitational pull is so strong that not even light can escape. The discovery of black holes has confirmed a key prediction of Einstein’s theory.<br><br>These are some of the key concepts related to the theory of relativity. Do you have any specific questions about it?</td>
+</tr>
+<tr>
+<td>llama2:7b-chat-q4_0</td>
+<td>GPU</td>
+<td>相対性理論（Relativity Theory）は、時間や空間の本質について提案された科学的仮説です。この理論では、時間や空間は個々の観測者の見方によって異なる方法で描かれます。<br><br>最も有名な相対性理論はアルBERト・エINSTEINの相対性時間説です。この理論では、時間はその観測者の乗っている物体の速度によって描かれます。例えば、同じ時間中に二つの人が乗った場合、彼らの時計は異なるタイムゾーンにあるはずですTheory）は、時間や空間の本質について提案された科学的仮説です。この理論では、時間や空間は個々の観測者の見方によって異なる方法で描かれます。最も有名な相対性理論はアルBERト・エINSTEINの相対性時間説です。この理論では、時間はその観測者の乗っている物体の速度によって描かれます。例えば、同じ時間中に二つの人が乗った場合、彼らの時計は異なるタイムゾーンにあるはずです。<br><br>また、相対性理論は、空間も同様に描くことができます。例えば、二つの人が乗った場合、彼らの目線が異なる位置にあるはずです。<br><br>相対性理論は、科学史において重要な貢献を果たしました。例えば、相対性時間説が提案されたことで、時計のタイムゾーンの概念が生まれ、時間の概念をより深く理解することができました。<br><br>相対性理論は現在も科学の領域で重要な研究テーマとなっています。例えば、ロケットや宇宙船を使用して他の星系に到達することができるかどうかを示すためには、相対性理論を使用する必要があります。<br><br>これらの理論は、科学者や研究者が様々な実験や観測結果を分析し、知見を深める上で重要な役割を果たしています。</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210</td>
+<td>CPU</td>
+<td>相対性理論は、20世紀初頭の物理学者であるアルバート・エインシュテインが提起した物理学の理論です。この理論は、電磁気と重力の力を同じように見なすことで、時間と空間が相対的なもので あることを主張しています。<br><br>相対性理論の基本的な考え方は以下の通りです。<br><br>1. 物体は信号の速度でなく、それによって決定される距離で移動します。これを「光速法則」というものです。<br>2. 物体が光速で移動しない限り、相対的な速度に関係なく、その物体が見る世界は正確に同じであることを主張しています。<br>3. 時間や空間は、物体の相対的な状態によって異なるものであること（「時間の相対性」）を示します。<br>4. 重力は地球の形状や地球周りの単一の重力フィールドだけでなく、物体に対する重力が存在することを主張しています（「相対性理論の重力」）。<br><br>相対性理論は、多くの物理学者によって認められ、現代の物理学の基礎となりました。これにより、エネルギーの相互変換（例えば、物体の速度が高くなると、その物体の軽さが下がること）や量子力学の概念（波関数や粒子のsuperposition）が理解できました。<br><br>相対性理論は、物理学の一つ重要な基礎であり、現代の科学技術革新に大きく影響を与えています。例えば、GPS技術や高速電子通信技術は相対性理論の考察におよぶっています</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210</td>
+<td>GPU</td>
+<td>相対性理論は、20世紀初頭の物理学者であるアルバン・エインシュタインが提案した物理学的理論です。この理論は、時間と空間に四向きの対称性を持つ「相対性」を基本的な物理法則として採用し、前に存在した絶対時間と空間の概念から離れていま相対性理論は、20世紀初頭の物理学者であるアルバン・エインシュタインが提案した物理学的理論です。この理論は、時間と空間に四向きの対称性を持つ「相対性」を基本的な物理法則として採用し、前に存在した絶対時間と空間の概念から離れています。<br><br>これにより、物体が光速以上の速度で移動する状態（超光速）においても、既存の物理法則が保たれるという新しい視点が提供されました。相対性理論は、特殊相対性と一般相対性と二つの部分説明を持ちます。<br><br>1. 特殊相対性：物体が光速でも移動できる環境である四角形空間において、物体の速度が光速に近づくほど、時間が遅れる（時間の収束）という現象を特殊相対性が説明しています。<br>2. 一般相対性：物体が重力を感じる環境である単位面積の加速度によって変形される空間（曲面）空間において、物体の動きがどのようになるかを一般相対性が説明しています。<br><br>これらの理論は、多くの実験と観測によって確認されており、現代の物理学で基本的な役割を果たしています。相対性理論は、例えば原子核の分裂や光の波長の変化など、さまざまな分野においての革新的な発見にも関与しています。</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210-q5_K_M</td>
+<td>CPU</td>
+<td>相対性理論は、アリンブルト・エインシュティングが1905年に提唱した物理学の基本的な原理であり、スピードの絶対的な関係から特定の状態によって時間と距離が相対的に変化することを説明し ます。これは、ニュートンの単位時間単位長さで考える物理学から大きな革新的なステップであり、現代の物理学にとって基本的な考え方として重要な役割を果たしています。<br><br>これは3つの主な原理から成る：<br><br>1. 光速は定数であり、それを超越することはできません。<br>2. 物体が光速に近づくほど、時間が遅れる（長くなる）という現象が起こります。これは時空曲げとも呼ばれており、相対性理論の中で重要な概念です。<br>3. 相対的な速度によって物体の質量が変化し、非常に大きな速度で移動すると、その質量が増加することがあります。これをマサース・エフェクトと呼びます。<br><br>この理論は、時空の輝く例えによって表現され、時間と空間の関係性を変化させることで、様々な現象を解説します。例えば、単位時間あわせて同じ距離を走るのに必要なエネルギーが、速度の方向によらず常に同じという現象もこれによって説明されます。<br><br>相対性理論は、20世紀の物理学の基本的な原理として重要な役割を果たし、エレクトロマグネチックスやカウンティングアトム理論、クォータム-ゲイズ法の開発につながりました。また、これはエ インシュテイングの単一の宇宙におけるすべての物理学的現象を説明する通用理論として革新的な影響を与えました。</td>
+</tr>
+<tr>
+<td>openchat:7b-v3.5-1210-q5_K_M</td>
+<td>GPU</td>
+<td>相対性理論は、20世紀初頭の物理学者アリーナ・エインシュタインが提唱した物理学の基本的な概念で、これにより物理学の多くの現象が解明されました。<br><br>この理論は、空間と時間が相対性に基づいて変化することを主張しており、単純な新たなフレームワークである「相対性」を提示しました。この理論は、物体が空間内に存在するだけでなく、時間への関係も考慮している点で、古典的なニュートンの物理学相対性理論は、20世紀初頭の物理学者アリーナ・エインシュタインが提唱した物理学の基本的な概念で、これにより物理学の多くの現象が解明されました。この理論は、空間と時間が相対性に基づいて変化することを主張しており、単純な新たなフレームワークである「相対性」を提示しました。この理論は、物体が空間内に存在するだけでなく、時間への関係も考慮している点で、古典的なニュートンの物理学と大きく異なります。<br><br>アリーナ・エインシュタインが提唱した最初の相対性理論は、「特殊相対性」と呼ばれており、光が一定速度で移動することを主張します。これにより、エレクトマグネットズムの概念が形成され、電気と磁力が同じ基本的な理論フレームワーク内で導入さ大きく異なります。アリーナ・エインシュタインが提唱した最初の相対性理論は、「特殊相対性」と呼ばれており、光が一定速度で移動することを主張します。これにより、エレクトマグネットズムの概念が形成され、電気と磁力が同じ基本的な理論フレームワーク内で導入されました。<br><br>後から、エインシュタインは「一般相対性」と呼ばれる新しい理論を提唱しました。この理論は、物体の重量が空間によって変化することを主張し、グアストリン・バルカートやニール・ブールの観察を解釈するために必要な理論でありました。これによりました。後から、エインシュタインは「一般相対性」と呼ばれる新しい理論を提唱しました。この理論は、物体の重量が空間によって変化することを主張し、グアストリン・バルカートやニール・ブールの観察を解釈するために必要な理論でありました。これにより、物理学が幾何学と統合され、現代の一般相対性理論が形成されました。<br><br>相対性理論は、多くの物理学的現象を解明するために重要であり、例えば、地球回転による時間の絶対性の崩壊や、太陽系内の行き先の探求において重要な役割を果たしています。</td>
+</tr>
+</tbody></table>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2023-12-29</span><i class="fa fa-tag"></i><a class="tag" href="/categories/LLM/" title="LLM">LLM </a><a class="tag" href="/categories/Large-language-Models/" title="Large language Models">Large language Models </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2023/12/29/4462/,A certain engineer &quot;COMPLEX&quot;,開発メモ その354 LLM (Large language Models) を軽く触って整理する,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="next pagbuttons"><a class="btn" role="navigation" href="/2023/12/03/4461/" title="開発メモ その353 The Dart VM Service was not discovered after 30 seconds. This is taking much longer than expected...">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>

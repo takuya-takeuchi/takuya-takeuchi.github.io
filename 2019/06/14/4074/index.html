@@ -12,7 +12,7 @@ How to?用意するものjenkinsのディレクトリを用意します。これ
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo chown -R 1000 /volume1/docker/jenkins</span></span><br></pre></td></tr></table></figure>
 
 <h4 id="Jenkinsのダウンロード"><a href="#Jenkinsのダウンロード" class="headerlink" title="Jenkinsのダウンロード"></a>Jenkinsのダウンロード</h4><p>dockerの場合、コンテナ内のデータは破棄されてしまうため、Jenkins本体をマウントする形にすることでアップデートできるようにします。</p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://jenkins.io/download/" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=jenkins.io"></img><div class="hbc-site-name">Jenkins download and deployment</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="/images/logo-title-opengraph.png"></img></div><div class="hbc-text"><div class="hbc-title">Jenkins download and deployment</div><div class="hbc-url">https://jenkins.io/download/</div><div class="hbc-description">Jenkins – an open source automation server which enables developers around the world to reliably build, test, and deploy their software</div></div></div></div></a></div></div>
+
 
 <p><strong>Generic Java package (.war)**をダウンロードし、</strong>Jenkins.war<strong>を</strong>/docker/jenkins/share/jenkins**にコピーします。</p>
 <h4 id="キーストアの作成"><a href="#キーストアの作成" class="headerlink" title="キーストアの作成"></a>キーストアの作成</h4><p>HTTPSで接続するために作成します。既に<strong>Let’s Encrypt</strong>で証明書は発行済みであるものとします。<br>HTTPで良い場合は、必要ありません。</p>

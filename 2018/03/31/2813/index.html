@@ -16,9 +16,9 @@ diffie-hellman-"><meta name="keywords"><meta content="width=device-width, initia
 <li>diffie-hellman-group14-sha1: github.com へのSSHコネクションに適用</li>
 </ul>
 <p>による弱い暗号標準が削除されたためとのこと。</p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://blog.github.com/2018-02-23-weak-cryptographic-standards-removed/" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=blog.github.com"></img><div class="hbc-site-name">The GitHub Blog</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://github.blog/wp-content/uploads/2018/02/26907144-178243fc-4ba6-11e7-8f15-8985451b33c2.jpg?fit=1200%2C630"></img></div><div class="hbc-text"><div class="hbc-title">Weak cryptographic standards removed</div><div class="hbc-url">https://blog.github.com/2018-02-23-weak-cryptographic-standards-removed/</div><div class="hbc-description">Earlier today we permanently removed support for the following weak cryptographic standards on github.com and api.github.com: TLSv1/TLSv1.1:…</div></div></div></div></a></div></div> 
+ 
 
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://news.mynavi.jp/article/20180226-588372/" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=news.mynavi.jp"></img><div class="hbc-site-name">TECH+（テックプラス）</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://news.mynavi.jp/techplus/article/20180226-588372/index_images/index.jpg"></img></div><div class="hbc-text"><div class="hbc-title">GitHub、弱い暗号標準の利用を廃止</div><div class="hbc-url">https://news.mynavi.jp/article/20180226-588372/</div><div class="hbc-description">GitHubは2月23日、同日をもってgithub.comおよびapi.github.comから弱いとされる暗号標準の利用を廃止したと伝えた。これまでサポートしてきてこれらの暗号標準は今後利用することはできないとしている。</div></div></div></div></a></div></div>
+
 
 <p>ですが、Stackoverflowの記事による、Windowsパッチの適用は効果がありませんでした(既に適用済みのパッチであったため)。<br>次の修正ツールを適用し再起動したら直りました。</p>
 <p><a target="_blank" rel="noopener" href="https://support.microsoft.com/ja-jp/help/3140245/update-to-enable-tls-1-1-and-tls-1-2-as-a-default-secure-protocols-in#easy">WinHTTP が Windows での既定のセキュリティで保護されたプロトコルとして TLS 1.1 および TLS 1.2 を有効にする更新プログラム</a> </p>

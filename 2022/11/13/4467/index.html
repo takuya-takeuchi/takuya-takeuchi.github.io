@@ -6,7 +6,7 @@
 </blockquote>
 <p>みたいなエラーが出てしまった。</p>
 <p>結論から言えば、C++ 14 が必要であり、CentOS 7 でインストールできる gcc のバージョンが古かったのが原因。</p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://stackoverflow.com/questions/36222912/is-c17-stdshared-mutex-not-available-yet" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=stackoverflow.com"></img><div class="hbc-site-name">Stack Overflow</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded"></img></div><div class="hbc-text"><div class="hbc-title">Is C++17 std::shared_mutex not available yet?</div><div class="hbc-url">https://stackoverflow.com/questions/36222912/is-c17-stdshared-mutex-not-available-yet</div><div class="hbc-description">Looking at C++ compiler support, it appears that the untimed version of std::shared_mutex is available in GCC 5.0+. However, even with gcc v…</div></div></div></div></a></div></div>
+
 
 <p>gcc 5 をインストールすればいいよって話なんだが、ぐぐってみつかるのが</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> yum install -y centos-release-scl</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> yum install -y devtoolset-4</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> scl <span class="built_in">enable</span> devtoolset-4 bash</span></span><br></pre></td></tr></table></figure>

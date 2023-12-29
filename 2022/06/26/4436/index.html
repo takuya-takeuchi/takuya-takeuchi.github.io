@@ -7,7 +7,7 @@ Build Setting はどこに保存されるのか？Library\EditorUs"><meta name="
 <p>UnityEngine.Object → UnityEngine.Component → UnityEngine.Behaviour → UnityEngine.MonoBehaviour</p>
 <p>この Object は <strong>System.Object</strong> ではない点に注意。</p>
 <h2 id="何で-Start-Update-Awake-は-private-なの？"><a href="#何で-Start-Update-Awake-は-private-なの？" class="headerlink" title="何で Start/Update/Awake は private なの？"></a>何で Start/Update/Awake は private なの？</h2><p>別に public でも動く。</p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://stackoverflow.com/questions/42325033/how-do-the-unity-private-awake-update-and-start-methods-work" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=stackoverflow.com"></img><div class="hbc-site-name">Stack Overflow</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded"></img></div><div class="hbc-text"><div class="hbc-title">How do the Unity private awake update and start methods work?</div><div class="hbc-url">https://stackoverflow.com/questions/42325033/how-do-the-unity-private-awake-update-and-start-methods-work</div><div class="hbc-description">How does Unity call the Awake, Update, and Start methods behind the scene?  That they have no access modifier to me indicates they are priva…</div></div></div></div></a></div></div>
+
 
 <p>上記の Stackoverflow から辿れる、Unity の公式ブログによれば、</p>
 <ul>
@@ -21,7 +21,7 @@ Build Setting はどこに保存されるのか？Library\EditorUs"><meta name="
 <li>あるタイプのMonoBehaviourが初めてアクセスされたとき、そのスクリプトはスクリプトランタイム (Mono または IL2CPP) を通し、マジックメソッドが定義されているかどうかを調べ、この情報はキャッシュされる</li>
 </ul>
 <h2 id="Start-Update-Awake-の役割は？"><a href="#Start-Update-Awake-の役割は？" class="headerlink" title="Start/Update/Awake の役割は？"></a>Start/Update/Awake の役割は？</h2><p>スクリプトのライフサイクルが詳しい。</p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://docs.unity3d.com/ja/2022.1/Manual/ExecutionOrder.html" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=docs.unity3d.com"></img><div class="hbc-site-name">docs.unity3d.com</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://docs.unity3d.com/ja/2022.1/uploads/Main/monobehaviour_flowchart.svg"></img></div><div class="hbc-text"><div class="hbc-title">イベント関数の実行順序 - Unity マニュアル</div><div class="hbc-url">https://docs.unity3d.com/ja/2022.1/Manual/ExecutionOrder.html</div><div class="hbc-description">Unity スクリプトを実行すると、既定の順序で多くのイベント関数が実行されます。このページでは、これらのイベント関数について説明し、それらがどのように実行シーケンスに収まるかを説明します。</div></div></div></div></a></div></div>
+
 
 <ul>
 <li>最初のシーンのロード<ul>
@@ -52,12 +52,7 @@ Build Setting はどこに保存されるのか？Library\EditorUs"><meta name="
 <p>Awake → Start と続いていき、Update は必要に応じて何度も呼ばれる感じか？<br>WinForm でいう、Invalidate からの Update みたい？</p>
 <p>描画処理は Update に書けばいいって感じか。</p>
 <h2 id="どうやって高速に描画しているのか？"><a href="#どうやって高速に描画しているのか？" class="headerlink" title="どうやって高速に描画しているのか？"></a>どうやって高速に描画しているのか？</h2><p>下記を読め！</p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://blog.unity.com/ja/technology/1k-update-calls" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=blog.unity.com"></img><div class="hbc-site-name">Unity Blog</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://blog-api.unity.com/sites/default/files/styles/social_media/public/2015/12/table11.png.jpg?itok=gCsonKYq"></img></div><div class="hbc-text"><div class="hbc-title">Update()を10000回呼ぶ | Unity Blog</div><div class="hbc-url">https://blog.unity.com/ja/technology/1k-update-calls</div><div class="hbc-description">void Update() {
-    transform.Translate(0, 0, Time.deltaTime);
-}しかし、経験豊富な開発者からすれば、このコードはちょっとモヤモヤします。
 
-このメソッドは具体的にどのようにして呼び出されているかが明確でない。
-シーン…</div></div></div></div></a></div></div>
 
 <p>マジックメソッドのインテリセンスが効かないなんて問題はパフォーマンスの前には些末なこと。</p>
 </div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2022-06-26</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Unity/" title="Unity">Unity </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2022/06/26/4436/,A certain engineer &quot;COMPLEX&quot;,開発メモ その277 Unity のメモ書き,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2022/06/29/4437/" title="開発メモ その278 Windows 11 を Hyper-V にインストールする">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2022/06/25/4435/" title="開発メモ その276 Oculus で Unity のサンプルプロジェクトを Windows から動かすまで">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>

@@ -6,9 +6,7 @@ ProblemVisual Studio 2013起動中
 <h1 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h1><p>Visual Studio 2013起動中</p>
 <p><a href="../../../../public/2016/05/1-9.png"><img src="../../../../public/2016/05/1-9.png" alt="&#39;Microsoft.VisualStudio.Shell.Connected.ConnectedUser.ConnectedUserPackage&#39; パッケージは正しく読み込まれませんでした"></a><br>‘Microsoft.VisualStudio.Shell.Connected.ConnectedUser.ConnectedUserPackage’ パッケージは正しく読み込まれませんでした</p>
 <p>というメッセージが。しかもOKボタンでも閉じても、別のパッケージがないというメッセージが次から次へと。</p>
-<h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://social.msdn.microsoft.com/Forums/sqlserver/en-US/d068f530-f4ac-4ce5-bdfe-dcbfe5bf6e5c/visual-studio-2013-provider-package-failed-to-load?forum=visualstudiogeneral" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=social.msdn.microsoft.com"></img><div class="hbc-site-name">social.msdn.microsoft.com</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">
-    visual studio 2013 provider package failed to load
-</div><div class="hbc-url">https://social.msdn.microsoft.com/Forums/sqlserver/en-US/d068f530-f4ac-4ce5-bdfe-dcbfe5bf6e5c/visual-studio-2013-provider-package-failed-to-load?forum=visualstudiogeneral</div></div></div></div></a></div></div>
+<h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1>
 
 <p>にて解決策が。<br>**%USERPROFILE%\AppData\Local\Microsoft\VisualStudio\12.0\ComponentModelCache**を削除してから起動すると、直るとのこと。<br>事実、その通りにしたら無事に起動しました。</p>
 <h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>原因は不明。大量の拡張機能等がインストールされたりすると発生する予感。</p>
