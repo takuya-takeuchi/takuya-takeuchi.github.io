@@ -15,7 +15,14 @@ How to check if running as root in a bash script
 Resolution原因は不明だが、...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2022-04-29</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Microsoft/" title="Microsoft">Microsoft </a><a class="tag" href="/categories/Microsoft/Hyper-V/" title="Hyper-V">Hyper-V </a><span class="leancloud_visitors"></span></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2022/03/19/4414/">開発メモ その255 Windows App SDK ことはじめ 5 System.Runtime.InteropServices.COMException</a></h3></div><div class="post-content"><p>Introductionデバッグを開始すると突然落ちるようになったので備忘録。
 
 現象は
-GitHubBootstraping Windows App SDK 1.0 throws exception System.Runtime.InteropServices.COMException: &#39;There ...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2022-03-19</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Microsoft/" title="Microsoft">Microsoft </a><a class="tag" href="/categories/Microsoft/Windows-App-SDK/" title="Windows App SDK">Windows App SDK </a><span class="leancloud_visitors"></span></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2022/03/06/4413/">開発メモ その254 SSH接続で公開鍵認証をもっと簡単に使えるようにしたい</a></h3></div><div class="post-content"><p>IntroductionVisual Studio CodeでのSSH接続がそうなのだが、毎回自端末の公開鍵を
+
+
+まさにこれ。
+きっかけは、 Microsoft.WindowsAppSDK を 1.0.0 から 1.0.1 に上げると発生。
+
+例外を補足しないと、出力コンソールで
+
+プログラム ‘[24136] xxxx.exe’ ...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2022-03-19</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Microsoft/" title="Microsoft">Microsoft </a><a class="tag" href="/categories/Microsoft/Windows-App-SDK/" title="Windows App SDK">Windows App SDK </a><span class="leancloud_visitors"></span></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2022/03/06/4413/">開発メモ その254 SSH接続で公開鍵認証をもっと簡単に使えるようにしたい</a></h3></div><div class="post-content"><p>IntroductionVisual Studio CodeでのSSH接続がそうなのだが、毎回自端末の公開鍵を
 
 WinSCP で転送
 authorized_keys に登録

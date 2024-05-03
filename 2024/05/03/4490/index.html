@@ -49,7 +49,7 @@
 </ul>
 </li>
 </ul>
-<p><a href="../../../../public/2024/05/03/4490/iOS.gif"><img src="../../../../public/2024/05/03/4490/iOS.gif" alt="iOS"></a> <a href="../../../../public/2024/05/03/4490/Android.gif"><img src="../../../../public/2024/05/03/4490/Android.gif" alt="Android"></a></p>
+<p><a href="../../../../public/2024/05/03/4490/ios.gif"><img src="../../../../public/2024/05/03/4490/ios.gif" alt="iOS"></a> <a href="../../../../public/2024/05/03/4490/android.gif"><img src="../../../../public/2024/05/03/4490/android.gif" alt="Android"></a></p>
 <p>この通り、非ネイティブ実装は ATS や usesCleartextTraffic の影響を一切受けていない。</p>
 <h3 id="flutter-のバージョンの問題"><a href="#flutter-のバージョンの問題" class="headerlink" title="flutter のバージョンの問題"></a>flutter のバージョンの問題</h3><p>確認はしていないが、flutter の過去のバージョンで、ATS や usesCleartextTraffic のように、OS 側で強制的に非 HTTPS 通信を遮断していた時期があった模様。<br>それが、<a target="_blank" rel="noopener" href="https://docs.flutter.dev/release/breaking-changes/network-policy-ios-android">Insecure HTTP connections are disabled by default on iOS and Android</a>。</p>
 <p>結局、このページ書かれているように <a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/issues/72723">Non-secure connection to local IP refused #72723</a> で議論され、この実装は元に戻された。<br>下の方には</p>

@@ -73,7 +73,7 @@ iPhoneのTouchIDで急激に認知度が向上した気がします。特に日�
 <p>各フォルダ内にpngとtxtファイルが500個ずつ含まれています。<br>学習にはfigs_0からfigs_6の3500枚の画像を使います。テストにはfigs_7を使います。</p>
 <p>さて、データを見ていると指紋画像のサイズが512x512であることに気がつくと思います。<br>指紋認証の世界では512x512の500ppi (pixel per inch) が常識です。1000ppiもあります。<br>txtには、性別、紋様種別が含まれています。<br>このデータ群の紋様種別は、Whorls、Arch、Loops、Tented Arch、Right Loopの5種です。</p>
 <p>これらを使って、画像のデータベース作成、学習、テスト、分類を実行します。<br>これら一連の流れを自動化したバッチを用意しました。</p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/takuya-takeuchi/Demo/tree/master/MachineLearning/Caffe/Caffe1" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://opengraph.githubassets.com/18b1921a14930fc56f5881c0af9918d0ac2f365da8a8f079dffad754da88035a/takuya-takeuchi/Demo"></img></div><div class="hbc-text"><div class="hbc-title">Demo/MachineLearning/Caffe/Caffe1 at master · takuya-takeuchi/Demo</div><div class="hbc-url">https://github.com/takuya-takeuchi/Demo/tree/master/MachineLearning/Caffe/Caffe1</div><div class="hbc-description">Sample source code for Demonstration, Experiment and Test - takuya-takeuchi/Demo</div></div></div></div></a></div></div>
+
 
 <p>これらを、png_txtフォルダ直下に展開し、下記の2点を修正します。</p>
 <h2 id="0-SetEnv-bat"><a href="#0-SetEnv-bat" class="headerlink" title="0.SetEnv.bat"></a>0.SetEnv.bat</h2><p><strong>CAFFE_ROOT</strong>、<strong>MINICONDA</strong>、<strong>ROOTFOLDER</strong>を環境に応じて変更します。</p>
