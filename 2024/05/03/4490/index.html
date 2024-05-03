@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>開発メモ その382 非 HTTPS 通信の全てが遮断されるわけではない · A certain engineer "COMPLEX"</title><meta name="description" content="Introduction相互 TLS の検証作業をしている時、Android 側の検証が上手くいかなくて、network-security-config によってカスタムの CA を読み込ませようと思っていた。そうしたら、全然動かないから、本当に network-security-config の設"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/apps">Apps</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その382 非 HTTPS 通信の全てが遮断されるわけではない</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>相互 TLS の検証作業をしている時、Android 側の検証が上手くいかなくて、<code>network-security-config</code> によってカスタムの CA を読み込ませようと思っていた。<br>そうしたら、全然動かないから、本当に <code>network-security-config</code> の設定効いている？って思い、<code>usesCleartextTraffic=&quot;false&quot;</code> にしたところ、何事もなく動いて「はぁ？」と思ったのが発端。</p>
+<p>非 HTTPS の遮断について、各 OS の取り組みが下記</p>
+<ul>
+<li>iOS<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/foundation/nsurlsession#1776695">App Transport Security (ATS)</a><ul>
+<li>iOS 9.0 と macOS 10.11 以降、<code>NSURLSession</code> を使った全ての HTTP 通信に対して App Transport Security (ATS) を適用。</li>
+<li>2016年発表、2017年1月1日適用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Android<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.com/guide/topics/manifest/application-element?hl=ja#usesCleartextTraffic">usesCleartextTraffic</a><ul>
+<li>Android 9.0 (Pie) からデフォルトで無効 (つまり平文の HTTP は許可しない)</li>
+<li>デフォルト値は、API レベル 27 以前をターゲットとしているアプリの場合 <code>true</code>、API レベル 28 以降をターゲットとしているアプリの場合 <code>false</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>この挙動に振り回されてので忘備録。</p>
+<h1 id="What-happend"><a href="#What-happend" class="headerlink" title="What happend?"></a>What happend?</h1><p>結論は、使っている http 通信パッケージと flutter のバージョンの問題。</p>
+<h3 id="http-通信パッケージの問題"><a href="#http-通信パッケージの問題" class="headerlink" title="http 通信パッケージの問題"></a>http 通信パッケージの問題</h3><p>dart/Flutter では http 関係の通信パッケージは結構多くて、その中でも自分は</p>
+<ul>
+<li>dart:io (標準パッケージ)</li>
+<li>http (<a target="_blank" rel="noopener" href="https://pub.dev/packages/http">https://pub.dev/packages/http</a>)</li>
+</ul>
+<p>を使っている。</p>
+<p>で、この二つは dart で実装された非ネイティブなコードになっており、これが原因。<br>というのも、ATS にしても usesCleartextTraffic にしても、これらが作動するのはネイティブ API を使った場合。<br>上の ATS の説明にもあるように 「<code>NSURLSession</code> を使った」、とあるようにネイティブ実装ではない、上記の 2 パッケージはこの制約を受けない。</p>
+<p>試しに、ATS と usesCleartextTraffic を設定 (つまり非 HTTPS の強制遮断) し、非ネイティブ実装、ネイティブ実装 (といっても inter-op が考慮されており dart で扱える) で挙動を比べてみた。</p>
+
+
+<p>下記のパッケージを比較している。</p>
+<ul>
+<li>dart:io (標準パッケージ)<ul>
+<li>非ネイティブ実装</li>
+</ul>
+</li>
+<li>http (<a target="_blank" rel="noopener" href="https://pub.dev/packages/http">https://pub.dev/packages/http</a>)<ul>
+<li>非ネイティブ実装</li>
+</ul>
+</li>
+<li>cupertino_http (<a target="_blank" rel="noopener" href="https://pub.dev/packages/cupertino_http">https://pub.dev/packages/cupertino_http</a>)<ul>
+<li>iOS のネイティブ実装</li>
+</ul>
+</li>
+<li>cronet_http (<a target="_blank" rel="noopener" href="https://pub.dev/packages/cronet_http">https://pub.dev/packages/cronet_http</a>)<ul>
+<li>Android のネイティブ実装</li>
+</ul>
+</li>
+</ul>
+<p><a href="../../../../public/2024/05/03/4490/iOS.gif"><img src="../../../../public/2024/05/03/4490/iOS.gif" alt="iOS"></a> <a href="../../../../public/2024/05/03/4490/Android.gif"><img src="../../../../public/2024/05/03/4490/Android.gif" alt="Android"></a></p>
+<p>この通り、非ネイティブ実装は ATS や usesCleartextTraffic の影響を一切受けていない。</p>
+<h3 id="flutter-のバージョンの問題"><a href="#flutter-のバージョンの問題" class="headerlink" title="flutter のバージョンの問題"></a>flutter のバージョンの問題</h3><p>確認はしていないが、flutter の過去のバージョンで、ATS や usesCleartextTraffic のように、OS 側で強制的に非 HTTPS 通信を遮断していた時期があった模様。<br>それが、<a target="_blank" rel="noopener" href="https://docs.flutter.dev/release/breaking-changes/network-policy-ios-android">Insecure HTTP connections are disabled by default on iOS and Android</a>。</p>
+<p>結局、このページ書かれているように <a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/issues/72723">Non-secure connection to local IP refused #72723</a> で議論され、この実装は元に戻された。<br>下の方には</p>
+<ul>
+<li>Landed in version: 1.23</li>
+<li>In stable release: 2.0.0</li>
+<li>Reverted in version: 2.2.0 (proposed)</li>
+</ul>
+<p>とあり、Flutter 2.2.0 以降は、この問題は発生しないと思われる。<br>2.2.0 のリリースが Windows 版で 2021/5/19 なので、その辺りに書かれたブログなどで、HTTP の遮断についての話をしているなら、それはもう古い記事である。<br>これらとかね。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zuma-lab.com/posts/flutter-connect-to-the-localhost-api">FlutterでlocalhostのAPIサーバーに接続する</a></li>
+<li><a target="_blank" rel="noopener" href="https://minpro.net/insecure-http-is-not-allowed-by-platform">[Flutter]「Insecure HTTP is not allowed by platform」の対処法</a></li>
+<li><a target="_blank" rel="noopener" href="https://zenn.dev/pvcresin/articles/7cc9df5d4e23f5">Hydro-SDK で始める TypeScript を使った Flutter 開発</a></li>
+</ul>
+<p>少なくとも、http パッケージや dart:io パッケージなら、 <code>Bad state: Insecure HTTP is not allowed by platform</code> なんて表示されないのです。</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2024-05-03</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Flutter/" title="Flutter">Flutter </a><a class="tag" href="/categories/Flutter/iOS/" title="iOS">iOS </a><a class="tag" href="/categories/Flutter/iOS/Android/" title="Android">Android </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2024/05/03/4490/,A certain engineer &quot;COMPLEX&quot;,開発メモ その382 非 HTTPS 通信の全てが遮断されるわけではない,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="next pagbuttons"><a class="btn" role="navigation" href="/2024/04/27/4489/" title="開発メモ その381 WCF で「この原因としては、サービス エンドポイント バインドが HTTP プロトコルを使用していないことが考えられます」">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>

@@ -10,7 +10,7 @@
 </ol>
 <p>の2択。<br>静的にしても良かったのですが、CMakeで共有ライブラリを作って、クラスを呼んだことがないので、共有にしてみました。</p>
 <p>サンプルソースは下記になります </p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/takuya-takeuchi/Demo/tree/master/CMake/03_CMake3" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://opengraph.githubassets.com/851176906ee48df067dec3a2c2e134b843c3b8ef356ed967981d7eafde47074a/takuya-takeuchi/Demo"></img></div><div class="hbc-text"><div class="hbc-title">Demo/CMake/03_CMake3 at master · takuya-takeuchi/Demo</div><div class="hbc-url">https://github.com/takuya-takeuchi/Demo/tree/master/CMake/03_CMake3</div><div class="hbc-description">Sample source code for Demonstration, Experiment and Test - takuya-takeuchi/Demo</div></div></div></div></a></div></div>
+
 
 <h1 id="Answer"><a href="#Answer" class="headerlink" title="Answer"></a>Answer</h1><p>基本的に動的ライブラリを作るのは問題ありません。<br><strong>CMakeLists.txt</strong>に</p>
 <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(<span class="variable">$&#123;PROJ_NAME&#125;</span> SHARED <span class="variable">$&#123;SOURCES&#125;</span> <span class="variable">$&#123;HEADERS&#125;</span>)</span><br></pre></td></tr></table></figure>

@@ -33,7 +33,7 @@ Windows Subsystem for Linux 2 で Docker for Windows を動かしている。
 
 <p>となっていた。<br>マシンのメモリは 64 GB なので、 <code>64 * 0.8 = 51.2</code> なので、まぁ正しいと思える。</p>
 <p>WSL2 の使用メモリを制御するには、</p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/microsoft/WSL/issues/4166#issuecomment-526725261" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://opengraph.githubassets.com/081cd30a79169d38422d1e8dc88637803f8b7684070e926f993fc1247219e775/microsoft/WSL/issues/4166"></img></div><div class="hbc-text"><div class="hbc-title">WSL 2 consumes massive amounts of RAM and doesn&#39;t return it · Issue #4166 · microsoft/WSL</div><div class="hbc-url">https://github.com/microsoft/WSL/issues/4166#issuecomment-526725261</div><div class="hbc-description">Your Windows build number: 18917 What&#39;s wrong / what should be happening instead: WSL 2 starts using huge amounts of RAM after a while, just…</div></div></div></div></a></div></div>
+
 
 <p>によれば、</p>
 <p><strong>%USERPROFILE%¥.wslconfig</strong> (存在しないならテキストとして作成) に下記のように記載することで対処できると。</p>

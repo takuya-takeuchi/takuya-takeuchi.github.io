@@ -29,7 +29,7 @@ ResolutionDockerの自動起動恐らくデフォルトで自動起動になっ�
 <td align="left">終了ステータスを無視して再起動する</td>
 </tr>
 </tbody></table>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://docs.docker.com/engine/reference/run/#restart-policies---restart" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=docs.docker.com"></img><div class="hbc-site-name">Docker Documentation</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://docs.docker.com/assets/favicons/docs@2x.ico"></img></div><div class="hbc-text"><div class="hbc-title">Running containers</div><div class="hbc-url">https://docs.docker.com/engine/reference/run/#restart-policies---restart</div><div class="hbc-description">Running and configuring containers with the Docker CLI</div></div></div></div></a></div></div>
+
 
 <p>ただし、上記の場合は、runで指定する場合で、既に作成したコンテナには使えません。<br>作成済みコンテナのに対してrestartを設定するには下記。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker update --restart=always</span></span><br></pre></td></tr></table></figure>

@@ -13,13 +13,7 @@
 <p>等が提案されているが意味をなさない。</p>
 <p>さらに問題をややこしくしているのが、問題が起きるのが Linux 端末のみで、最近遭遇することが増えてきた印象。<br>Ubuntu のみで遭遇しているが、他のディストリビューションでは試していない。</p>
 <h1 id="How-to-resolve"><a href="#How-to-resolve" class="headerlink" title="How to resolve?"></a>How to resolve?</h1><p>遭遇している人は多く、これだと言う解決策がないが、私が試した限り、効果覿面だったのが下記。</p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://stackoverflow.com/a/52530617" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=stackoverflow.com"></img><div class="hbc-site-name">Stack Overflow</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded"></img></div><div class="hbc-text"><div class="hbc-title">GnuTLS recv error (-110): The TLS connection was non-properly terminated</div><div class="hbc-url">https://stackoverflow.com/a/52530617</div><div class="hbc-description">I&#39;m preparing to install vim plugin by  vundle, after I set the vimrc
 
-set nocompatible
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-
-call…</div></div></div></div></a></div></div>
 
 <p>docker 環境でもこの問題に遭遇していたため、困り果てていたのだが、本当に感謝。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install build-essential fakeroot dpkg-dev -y</span><br><span class="line">sudo apt-get build-dep git -y</span><br><span class="line">sudo apt-get install libcurl4-openssl-dev -y</span><br><span class="line">cd ~</span><br><span class="line">mkdir source-git</span><br><span class="line">cd source-git/</span><br><span class="line">apt-get source git</span><br><span class="line">cd git-2.*.*/</span><br><span class="line">sed -i -- &#x27;s/libcurl4-gnutls-dev/libcurl4-openssl-dev/&#x27; ./debian/control</span><br><span class="line">sed -i -- &#x27;/TEST\s*=\s*test/d&#x27; ./debian/rules</span><br><span class="line">dpkg-buildpackage -rfakeroot -b -uc -us</span><br><span class="line">sudo dpkg -i ../git_*ubuntu*.deb</span><br></pre></td></tr></table></figure>

@@ -65,9 +65,7 @@ Windows 11 発表時、インストールできるマシンの CPU や TPM (Trus
 <li>SSD 128 GB</li>
 </ul>
 <h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><p>というわけで、遊んでみたいだけなのにマシンを新しく調達するのはナンセンスなので、対応策をネットで調べる。<br>SNS で話題にもなっていましたが、今回は下記にお世話になりました。</p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://michlstechblog.info/blog/windows-11-on-vsphere-bypass-tpm-2-0-check/" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=michlstechblog.info"></img><div class="hbc-site-name">Michls Tech Blog</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://michlstechblog.info/blog/wp-content/uploads/2021/10/Windows-11-Install-Error.png"></img></div><div class="hbc-text"><div class="hbc-title">Windows 11 on vSphere: Bypass TPM 2.0 check</div><div class="hbc-url">https://michlstechblog.info/blog/windows-11-on-vsphere-bypass-tpm-2-0-check/</div><div class="hbc-description">Hi,
 
-without a vTPM virtual hardware on vSphere you cannot install Windows 11 within an virtual machine. This is due to new hardware require…</div></div></div></div></a></div></div>
 
 <p>対応策は、インストール時にレジストリを操作することで、要件チェックを迂回するという方法です。</p>
 <p>Windows 11 を DVD や USB から新規インストールする際、 <strong>この PC では Widows 11 を実行できません</strong> と表示されたら、一度前の画面に戻り、 <strong>Shift + F10</strong> でコマンドプロンプトを起動します。<br>VHD に OS をインストールする時や、パスワードを無理やり変更する時によく使うあれです。</p>
