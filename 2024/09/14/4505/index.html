@@ -9,7 +9,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt remove dotnet-sdk-6.0</span><br><span class="line">$ sudo apt remove dotnet6</span><br></pre></td></tr></table></figure>
 
 <p><code>/etc/apt/preference.d/99microsoft-dotnet.pref</code> を作成し、下記の内容を追記。</p>
-<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+ package: *</span><br><span class="line">+ Pin: origin &quot;package.microsoft.com&quot;</span><br><span class="line">+ Pin-Priority: 1001</span><br></pre></td></tr></table></figure>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="addition">+ package: *</span></span><br><span class="line"><span class="addition">+ Pin: origin &quot;package.microsoft.com&quot;</span></span><br><span class="line"><span class="addition">+ Pin-Priority: 1001</span></span><br></pre></td></tr></table></figure>
 
 <p>再度インストール。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt update</span><br><span class="line">$ sudo apt install dotnet-sdk-6.0</span><br></pre></td></tr></table></figure>
