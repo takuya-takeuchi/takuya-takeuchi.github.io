@@ -1,0 +1,272 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>開発メモ その400 SmartScreen の警告が表示されない · A certain engineer "COMPLEX"</title><meta name="description" content="Introduction最近の Windows では、実行ファイルを実行すると Microsoft Defender SmartScreen と呼ばれる、実行しようとしたアプリやファイルの危険性がないかどうかの確認を促す機能が動作する。基本的にはレピュテーション (インターネット経由で安全性の確認を"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/apps">Apps</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その400 SmartScreen の警告が表示されない</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>最近の Windows では、実行ファイルを実行すると <strong>Microsoft Defender SmartScreen</strong> と呼ばれる、実行しようとしたアプリやファイルの危険性がないかどうかの確認を促す機能が動作する。<br>基本的にはレピュテーション (インターネット経由で安全性の確認を行う ※) に従って、挙動を変化させる。<br>レピュテーションは Microsoft がデータベースか何かに収集した情報であるため、公開されたばかりのアプリなどはレピュテーションがないため、SmartScreen の表示が発生しやすい。</p>
+<p>今日遭遇したのは、プログラムの実行どころか SmartScreen も表示されない事態だった。</p>
+<p>※厳密には、*<strong>.smartscreen.microsoft.com</strong> 、 <strong>SmartScreen-sn3p.smartscreen.microsoft.com</strong> 、 <strong>unitedstates.smartscreen-prod.microsoft.com</strong> へのアクセスによって実現 (<a target="_blank" rel="noopener" href="https://learn.microsoft.com/ja-jp/windows/privacy/manage-windows-1809-endpoints#windows-defender">Windows 10 Enterprise Version 1809</a> 参照)。</p>
+<h1 id="What-happened"><a href="#What-happened" class="headerlink" title="What happened?"></a>What happened?</h1><p>通常、SmartSceen が動作すると、</p>
+<p><a href="../../../../public/2024/09/26/4508/SmartScreen.png"><img src="../../../../public/2024/09/26/4508/SmartScreen.png" alt="SmartScreen"></a></p>
+<p>という風に表示され、実行が阻害される。<br><strong>詳細情報</strong> を選ぶと <strong>実行</strong> ボタンが表示され、実行を再開できる。</p>
+<p>ところが、前述のようにレピュテーションを使用して判断するので、インターネットに繋がっていないと SmartScreen は上手く動作しない。</p>
+<p>だが、インターネットに繋がっていなくても警告が出ることはある。<br>それが、NTFS の代替データストリーム (Alternate Data Streams, ADS) に設定された Zone.Identifier による判定である。<br><strong>Mark of the Web (MoTW)</strong> とも言われ、最近この脆弱性を突いた攻撃が発見された。</p>
+<p>この Zone.Identifier は、ファイルがどのゾーンからダウンロードされたかを示すメタデータであり、Internet Explorer や Microsoft Edge 等のブラウザでダウンロードされたファイルに自動的に付加される。<br>Zone.Identifier の値は以下のような意味を持つ。</p>
+<table>
+<thead>
+<tr>
+<th>値</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>ローカルマシン (ローカルディスク上のファイル)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>内部ネットワーク (イントラネット)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>信頼済みサイト</td>
+</tr>
+<tr>
+<td>3</td>
+<td>インターネット (通常のインターネットサイトからダウンロードされたファイル)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>制限付きサイト (Restricted Sites、セキュリティリスクがあると見なされたサイトからのファイル)</td>
+</tr>
+</tbody></table>
+<p>Zone.Identifier が付与されるとファイルのプロパティの下部に警告が付与される。</p>
+<p><a href="../../../../public/2024/09/26/4508/ZoneIdentifier.png"><img src="../../../../public/2024/09/26/4508/ZoneIdentifier.png" alt="ZoneIdentifier"></a></p>
+<p>ちなみに、Zone.Identifier が 0 だろうが 4 だろうが、この警告の内容は変わらない。</p>
+<p>Zone.Identifier に <strong>3</strong> が付与されており、かつインターネットに繋がっていない時、かつ SmartScreen を <strong>警告</strong> 以上にしている時、SmartScreen が表示される。</p>
+<p><a href="../../../../public/2024/09/26/4508/ZoneIdentifier_3.png"><img src="../../../../public/2024/09/26/4508/ZoneIdentifier_3.png" alt="ZoneIdentifier_3"></a></p>
+<p>SmartScreen を <strong>ブロック</strong> にしていると下記のようになる。</p>
+<p><a href="../../../../public/2024/09/26/4508/AppBrowserControlBlock.png"><img src="../../../../public/2024/09/26/4508/AppBrowserControlBlock.png" alt="AppBrowserControl"></a></p>
+<p>インターネットに繋がっていると、レピュテーションによって、安全として判断されるのか、SmartScreen は表示されない。<br>Zone.Identifier が <strong>0</strong>、<strong>1</strong>、<strong>2</strong> だとインターネットに繋がっていなくても、SmartScreen は表示されない。</p>
+<p>だが、Zone.Identifier が何の因果か <strong>4</strong> になっていた時、冒頭の現象に見舞われる。<br>SmartScreen も出なければ、アプリの実行もできない。<br>SmartScreen を <strong>オフ</strong> にしていてもだ。<br>インターネットに繋がっていても関係ない。</p>
+<p>まとめるとこうなる。</p>
+<table>
+<thead>
+<tr>
+<th>Zone.Identifier</th>
+<th>SmartScreen の設定</th>
+<th>インターネットの接続</th>
+<th>SmartScreenの表示</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>ブロック</td>
+<td>あり</td>
+<td>表示されない</td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td>ブロック</td>
+<td>なし</td>
+<td>表示されない</td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td>警告</td>
+<td>あり</td>
+<td>表示されない</td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td>警告</td>
+<td>なし</td>
+<td>表示されない</td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td>オフ</td>
+<td>あり</td>
+<td>表示されない</td>
+<td></td>
+</tr>
+<tr>
+<td>0</td>
+<td>オフ</td>
+<td>なし</td>
+<td>表示されない</td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>ブロック</td>
+<td>あり</td>
+<td>表示されない</td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>ブロック</td>
+<td>なし</td>
+<td>表示されない</td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>警告</td>
+<td>あり</td>
+<td>表示されない</td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>警告</td>
+<td>なし</td>
+<td>表示されない</td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>オフ</td>
+<td>あり</td>
+<td>表示されない</td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>オフ</td>
+<td>なし</td>
+<td>表示されない</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>ブロック</td>
+<td>あり</td>
+<td>表示されない</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>ブロック</td>
+<td>なし</td>
+<td>表示されない</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>警告</td>
+<td>あり</td>
+<td>表示されない</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>警告</td>
+<td>なし</td>
+<td>表示されない</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>オフ</td>
+<td>あり</td>
+<td>表示されない</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>オフ</td>
+<td>なし</td>
+<td>表示されない</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>ブロック</td>
+<td>あり</td>
+<td>表示されない</td>
+<td>Zone.Identifier が解除される</td>
+</tr>
+<tr>
+<td>3</td>
+<td>ブロック</td>
+<td>なし</td>
+<td><strong>表示される (実行しない)</strong></td>
+<td>Zone.Identifier は解除されない</td>
+</tr>
+<tr>
+<td>3</td>
+<td>警告</td>
+<td>あり</td>
+<td>表示されない</td>
+<td>Zone.Identifier が解除される</td>
+</tr>
+<tr>
+<td>3</td>
+<td>警告</td>
+<td>なし</td>
+<td><strong>表示される (実行、実行しない)</strong></td>
+<td>Zone.Identifier は解除されない</td>
+</tr>
+<tr>
+<td>3</td>
+<td>オフ</td>
+<td>あり</td>
+<td>表示されない</td>
+<td>セキュリティの警告が表示される<br>Zone.Identifier は解除されない</td>
+</tr>
+<tr>
+<td>3</td>
+<td>オフ</td>
+<td>なし</td>
+<td>表示されない</td>
+<td>セキュリティの警告が表示される<br>Zone.Identifier は解除されない</td>
+</tr>
+<tr>
+<td>4</td>
+<td>ブロック</td>
+<td>あり</td>
+<td>表示されない</td>
+<td><span style="color: red; ">アプリが実行できない</span></td>
+</tr>
+<tr>
+<td>4</td>
+<td>ブロック</td>
+<td>なし</td>
+<td>表示されない</td>
+<td><span style="color: red; ">アプリが実行できない</span></td>
+</tr>
+<tr>
+<td>4</td>
+<td>警告</td>
+<td>あり</td>
+<td>表示されない</td>
+<td><span style="color: red; ">アプリが実行できない</span></td>
+</tr>
+<tr>
+<td>4</td>
+<td>警告</td>
+<td>なし</td>
+<td>表示されない</td>
+<td><span style="color: red; ">アプリが実行できない</span></td>
+</tr>
+<tr>
+<td>4</td>
+<td>オフ</td>
+<td>あり</td>
+<td>表示されない</td>
+<td><span style="color: red; ">アプリが実行できない</span></td>
+</tr>
+<tr>
+<td>4</td>
+<td>オフ</td>
+<td>なし</td>
+<td>表示されない</td>
+<td><span style="color: red; ">アプリが実行できない</span></td>
+</tr>
+</tbody></table>
+<h3 id="ログの有無"><a href="#ログの有無" class="headerlink" title="ログの有無"></a>ログの有無</h3><p>アプリが実行できないとき、何かイベントビューアに表示されていないかを見てみたが、 <strong>Windows ログ</strong> には何もなかった。</p>
+<p><a target="_blank" rel="noopener" href="https://emsroute.com/2022/12/14/defender-smartscreen-deep-dive-02/#more-smartscreen-related-settings">Microsoft Defender SmartScreen Deep Dive</a> によれば、管理者権限のコマンドプロンプトから <code>wevtutil sl Microsoft-Windows-SmartScreen/Debug /e:true</code> を実行することで、イベントビューアの <strong>アプリケーションとサービス ログ</strong> 配下の <strong>Micorost</strong> - <strong>Windows</strong> - <strong>SmartScreen</strong> - <strong>Debug</strong> にログが出力され鵜用になるとのことだが、アプリが実行されない事象に関してはここには表示されなかった。<br>他の SmartScreen が表示されるような事象ではログが出力されるには確認できた。</p>
+<h3 id="Appendix"><a href="#Appendix" class="headerlink" title="Appendix"></a>Appendix</h3><p>Zone.identifier はコマンドで付与、確認できる。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> <span class="built_in">Set-Content</span> <span class="literal">-path</span> .\file.exe <span class="literal">-stream</span> Zone.Identifier <span class="literal">-value</span> [<span class="type">ZoneTransfer</span>],ZoneId=<span class="number">4</span></span><br><span class="line"><span class="variable">$</span> <span class="built_in">cat</span>  <span class="literal">-Stream</span> Zone.Identifier .\file.exe</span><br><span class="line">[<span class="type">ZoneTransfer</span>]</span><br><span class="line">ZoneId=<span class="number">4</span></span><br></pre></td></tr></table></figure></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2024-09-26</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Windows/" title="Windows">Windows </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2024/09/26/4508/,A certain engineer &quot;COMPLEX&quot;,開発メモ その400 SmartScreen の警告が表示されない,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="next pagbuttons"><a class="btn" role="navigation" href="/2024/09/21/4507/" title="開発メモ その399 PostgreSQL でデータベースを初期化できない (Windows)">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
