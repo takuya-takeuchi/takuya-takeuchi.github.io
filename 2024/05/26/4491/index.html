@@ -5,7 +5,7 @@ xxxxx.lib(alloc.cpp.obj) : error LNK2038: ‘RuntimeLibrary’ の不一致が�
 <p>xxxxx.lib(alloc.cpp.obj) : error LNK2038: ‘RuntimeLibrary’ の不一致が検出されました。値 ‘MT_StaticRelease’ が MD_DynamicRelease の値 ‘main.obj’ と一致しません。</p>
 </blockquote>
 <p>のようなエラー。</p>
-<p>要するに、「main.obj (を生成したプロジェクト) が /MD でビルドされていて、/MT でビルドされている xxxx.lib と RuntimeLibrary が一致していないよ」ということ。<br>これ、いつも思うけど、どっちがどっちの設定になっているのか側凄い分かりにくい。げんなりする。</p>
+<p>要するに、「main.obj (を生成したプロジェクト) が /MD でビルドされていて、/MT でビルドされている xxxx.lib と RuntimeLibrary が一致していないよ」ということ。<br>これ、いつも思うけど、どっちがどっちの設定になっているのかとても分かりにくい。げんなりする。</p>
 <p>それはともかく、/MT とか /MD は下記の意味。本当に今更過ぎる。</p>
 <ul>
 <li>/MD<ul>
