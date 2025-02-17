@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>開発メモ その412 Alpine に Squid (と Webmin) をインストールする · A certain engineer "COMPLEX"</title><meta name="description" content="IntroductionFlutter の http 通信パッケージがプロキシを無視する挙動に苦しめられたある日の仕事後。自宅で proxy を無視するのかをきちんと確認しようと思ったが、プロキシサーバが自宅に無いことを気付いたので作ろうとした次第。
+How to install?Alpine にし"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/apps">Apps</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その412 Alpine に Squid (と Webmin) をインストールする</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>Flutter の http 通信パッケージがプロキシを無視する挙動に苦しめられたある日の仕事後。<br>自宅で proxy を無視するのかをきちんと確認しようと思ったが、プロキシサーバが自宅に無いことを気付いたので作ろうとした次第。</p>
+<h1 id="How-to-install"><a href="#How-to-install" class="headerlink" title="How to install?"></a>How to install?</h1><p><code>Alpine</code> にしたのは特に理由はない。<br>バージョンは <code>3.20.2</code>。</p>
+<h3 id="Squid-のインストール"><a href="#Squid-のインストール" class="headerlink" title="Squid のインストール"></a>Squid のインストール</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ su</span><br><span class="line">$ apk add squid</span><br><span class="line"><span class="comment"># 自動起動を有効化</span></span><br><span class="line">$ rc-update add squid</span><br></pre></td></tr></table></figure>
+
+<p><code>/etc/squid/squid.conf</code> を編集。<br>今回は http/https 通信をプロキシに通したいだけなので下記でよい。</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># For example, to allow access from your local networks, you may uncomment the</span><br><span class="line"># following rule (and/or add rules that match your definition of &quot;local&quot;):    </span><br><span class="line"><span class="deletion">- #http_access allow localnet</span></span><br><span class="line"><span class="addition">+ http_access allow localnet</span></span><br></pre></td></tr></table></figure>
+
+<p>Squid を起動</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ rc-service squid start</span><br><span class="line"><span class="comment"># 停止する場合</span></span><br><span class="line">$ rc-service squid stop</span><br></pre></td></tr></table></figure>
+
+<h3 id="Webmin-のインストール"><a href="#Webmin-のインストール" class="headerlink" title="Webmin のインストール"></a>Webmin のインストール</h3><p>正直、プロキシサーバを試すだけだから管理 GUI は不要だが、とりあえずインストール。<br>バージョンは <code>2.202</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ su</span><br><span class="line">$ apk add perl perl-net-ssleay</span><br><span class="line">$ <span class="built_in">cd</span> /opt</span><br><span class="line">$ wget -O - https://github.com/webmin/webmin/archive/refs/tags/2.202.tar.gz | tar -xzf -</span><br><span class="line">$ mv webmin-2.202 webmin</span><br><span class="line">$ <span class="built_in">cd</span> webmin</span><br><span class="line">$ ./setup.sh /usr/<span class="built_in">local</span>/webmin</span><br></pre></td></tr></table></figure>
+
+<p>Webmin はどうも Alpine にインストールされたことを正しく判定することができず、 Gentoo にインストールされたと判定するので、自動起動の設定が上手く行われないので手動で行う。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ su</span><br><span class="line">$ cat &lt;&lt; EOF &gt; /etc/init.d/webmin</span><br><span class="line"><span class="meta">#!/sbin/openrc-run</span></span><br><span class="line"><span class="function"><span class="title">start</span></span>() &#123; /etc/webmin/start; &#125;</span><br><span class="line"><span class="function"><span class="title">stop</span></span>() &#123; /etc/webmin/stop; &#125;</span><br><span class="line">EOF</span><br><span class="line">$ chmod a+x /etc/init.d/webmin</span><br><span class="line">$ rc-update add webmin boot</span><br></pre></td></tr></table></figure>
+
+<h3 id="Webmin-の設定"><a href="#Webmin-の設定" class="headerlink" title="Webmin の設定"></a>Webmin の設定</h3><p>Webmin にログインして Squid の設定を行う。</p>
+<p><a href="../../../../public/2025/02/09/4519/webmin-login.png"><img src="../../../../public/2025/02/09/4519/webmin-login.png" alt="Webmin"></a></p>
+<p><strong>Un-used Modules</strong> から <strong>Squid Proxy Server</strong> を選択。<br>Webmin が Squid を認識できていない、とのこと。<br>右側の <strong>module configuration</strong> のリンクをクリック。</p>
+<p><a href="../../../../public/2025/02/09/4519/webmin-unused.png"><img src="../../../../public/2025/02/09/4519/webmin-unused.png" alt="Webmin"></a></p>
+<p><strong>System configuration</strong> を選択。</p>
+<p><a href="../../../../public/2025/02/09/4519/webmin-system-configuration.png"><img src="../../../../public/2025/02/09/4519/webmin-system-configuration.png" alt="Webmin"></a></p>
+<p>次の表示に従って設定を変更。<br>ただ、最初の二つ以外は無視される気がする。</p>
+<table>
+<thead>
+<tr>
+<th>設定</th>
+<th>変更前</th>
+<th>変更後</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Full path to squid config file</td>
+<td>/usr/local/squid/etc/squid.conf</td>
+<td>/etc/squid/squid.conf</td>
+</tr>
+<tr>
+<td>Squid executable</td>
+<td>/usr/local/squid/bin/squid</td>
+<td>/usr/sbin/squid</td>
+</tr>
+<tr>
+<td>Full path to PID file</td>
+<td>/usr/local/squid/logs/squid.pid</td>
+<td>/etc/squid/logs/squid.pid</td>
+</tr>
+<tr>
+<td>Full path to squid cache directory</td>
+<td>/usr/local/squid/cache</td>
+<td>/etc/squid/cache</td>
+</tr>
+<tr>
+<td>Squid cachemgr.cgi executable</td>
+<td>/usr/local/squid/bin/cachemgr.cgi</td>
+<td>/usr/lib/squid/cachemgr.cgi</td>
+</tr>
+<tr>
+<td>Full path to squid log directory</td>
+<td>/usr/local/squid/logs</td>
+<td>/etc/squid/logs</td>
+</tr>
+</tbody></table>
+<p>設定変更後、Squid が認識されれば下記のように画面が変わる。</p>
+<p><a href="../../../../public/2025/02/09/4519/webmin-squid.png"><img src="../../../../public/2025/02/09/4519/webmin-squid.png" alt="Webmin"></a></p>
+<h3 id="Webmin-の-Theme-変更"><a href="#Webmin-の-Theme-変更" class="headerlink" title="Webmin の Theme 変更"></a>Webmin の Theme 変更</h3><p>おまけ。<br>Webmin の見た目が古臭いので、 OSS のテーマをインストール。<br><a target="_blank" rel="noopener" href="https://github.com/webmin/authentic-theme">authentic-theme</a> の　Release から最新の <code>*.wbt.gz</code> をダウンロード。</p>
+<p><strong>Webmin Configuration =&gt; Webmin Themes =&gt; Install themese</strong> 内の <strong>From uploaded file</strong> から上記のファイルを選択。</p>
+<p>テーマ反映後。</p>
+<p><a href="../../../../public/2025/02/09/4519/webmin-themed.png"><img src="../../../../public/2025/02/09/4519/webmin-themed.png" alt="Webmin"></a></p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2025-02-09</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Webmin/" title="Webmin">Webmin </a><a class="tag" href="/categories/Webmin/Squid/" title="Squid">Squid </a><a class="tag" href="/categories/Webmin/Squid/Alpine/" title="Alpine">Alpine </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2025/02/09/4519/,A certain engineer &quot;COMPLEX&quot;,開発メモ その412 Alpine に Squid (と Webmin) をインストールする,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2025/02/09/4520/" title="開発メモ その413 Flutter の http パッケージがプロキシを無視する">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2025/02/01/4518/" title="開発メモ その411 VNC Viewer におけるスクロール速度を改善する">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
