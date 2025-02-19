@@ -1,0 +1,115 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>開発メモ その415 最速で VPN Server を AWS に構築する · A certain engineer "COMPLEX"</title><meta name="description" content="Introduction仕事の案件で日本国外からのアクセスを拒否する AWS サーバの検証があった。サーバの構築は別チームが担当したのだが、結合試験として自チームが作成したアプリがサーバにアクセスした際、日本国外からアクセスした時の挙動をテストする必要に駆られたわけで。
+当然、テストのために海外出張"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/apps">Apps</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その415 最速で VPN Server を AWS に構築する</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>仕事の案件で日本国外からのアクセスを拒否する AWS サーバの検証があった。<br>サーバの構築は別チームが担当したのだが、結合試験として自チームが作成したアプリがサーバにアクセスした際、日本国外からアクセスした時の挙動をテストする必要に駆られたわけで。</p>
+<p>当然、テストのために海外出張なぞ出来るわけないので、VPN サーバを構築し、VPN 経由でアプリをサーバに接続することでテストすることにした。<br>その際、 VPN サーバを構築した際の手順をメモする。</p>
+<h1 id="How-to-use"><a href="#How-to-use" class="headerlink" title="How to use?"></a>How to use?</h1><p>最初は OSS の <strong>StrongSwan</strong> を使って構築しようとした、何をどうやっても駄目だった。<br>IKEv2 で構築を目指したのが駄目だったのかもしれない。</p>
+<p>吹っ切れて、docker で構築する手順を探していたら下記がビンゴ。</p>
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://www.mitsuru-takahashi.net/blog/docker-vpn/" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=www.mitsuru-takahashi.net"></img><div class="hbc-site-name">Mitsuru Takahashi Personal Site</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://images.ctfassets.net/iuhngnmppwjh/4iw6c3QnEtpJ485DdTEVJ8/ce65690e75a87226659a7821e8b6ec61/docker-vpn.png"></img></div><div class="hbc-text"><div class="hbc-title">Dockerを使って爆速でvpnサーバを立ち上げる | Mitsuru Takahashi Personal Site</div><div class="hbc-url">https://www.mitsuru-takahashi.net/blog/docker-vpn/</div><div class="hbc-description">VPNサーバ立ち上げの備忘録です。
+ルーターにVPN機能がない場合は自分でVPNサーバを立ち上げる必要があるので、dockerを使ってサクッと立ち上げます。
+VPN構成イメージ
+VPNサーバを使用した…</div></div></div></div></a></div></div>
+
+<p>この記事は AWS を想定しているわけはないが、特に問題なし。<br>使っている　VPN サーバは <strong>SoftEther</strong>。</p>
+<h3 id="1-インスタンスの立ち上げ"><a href="#1-インスタンスの立ち上げ" class="headerlink" title="1. インスタンスの立ち上げ"></a>1. インスタンスの立ち上げ</h3><p>最小構成で十分なので</p>
+<ul>
+<li>t2.micro</li>
+<li>Amazon Linux 2023 AMI</li>
+<li>x86_64</li>
+<li>8GB EBS</li>
+</ul>
+<p>を選択。</p>
+<p>リージョンは日本国外なら何でもいいので <strong>米国 (バージニア北部)</strong> を選択。</p>
+<p><a href="../../../../public/2025/02/20/4522/aws-instance.png"><img src="../../../../public/2025/02/20/4522/aws-instance.png" alt="instance"></a></p>
+<h3 id="2-セキュリティグループの設定"><a href="#2-セキュリティグループの設定" class="headerlink" title="2. セキュリティグループの設定"></a>2. セキュリティグループの設定</h3><p>VPN の通信に必要なポートの開放を行う</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>プロトコル</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>500</td>
+<td>UDP</td>
+<td>IKE</td>
+</tr>
+<tr>
+<td>450</td>
+<td>UDP</td>
+<td>IPSec</td>
+</tr>
+<tr>
+<td>1194</td>
+<td>UDP</td>
+<td>OpenVPN</td>
+</tr>
+<tr>
+<td>1701</td>
+<td>TCP</td>
+<td>L2TP</td>
+</tr>
+<tr>
+<td>5555</td>
+<td>TCP</td>
+<td>SoftEther</td>
+</tr>
+</tbody></table>
+<p><a href="../../../../public/2025/02/20/4522/aws-security.png"><img src="../../../../public/2025/02/20/4522/aws-security.png" alt="instance"></a></p>
+<h3 id="3-docker-のインストールと起動"><a href="#3-docker-のインストールと起動" class="headerlink" title="3. docker のインストールと起動"></a>3. docker のインストールと起動</h3><p><strong>EC2 Instance Connect</strong> からさくっとインスタンスに接続。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum update -y &amp;&amp; sudo yum -y install docker &amp;&amp; sudo systemctl start docker &amp;&amp; sudo systemctl <span class="built_in">enable</span> docker</span><br><span class="line">$ psk=vpnsecret</span><br><span class="line">$ user=vpnuser</span><br><span class="line">$ password=vpnpassword</span><br><span class="line">$ sudo docker run --privileged --name vpnserver \</span><br><span class="line">  -p 500:500/udp -p 4500:4500/udp -p 1701:1701/tcp -p 1194:1194/udp -p 5555:5555/tcp \</span><br><span class="line">  -e PSK=<span class="variable">$psk</span> \</span><br><span class="line">  -e USERS=<span class="variable">$user</span>:<span class="variable">$password</span> \</span><br><span class="line">  siomiz/softethervpn</span><br></pre></td></tr></table></figure>
+
+<p>以上。</p>
+<p>ユーザ名やパスワード、事前共有鍵 (Pre-Shared Key、PSK) は適宜変更する。</p>
+<h3 id="4-接続"><a href="#4-接続" class="headerlink" title="4. 接続"></a>4. 接続</h3><p>Windows でさくっと検証。<br>iPhone でも使えることは確認済み (仕事で)。</p>
+<p><strong>VPN 接続を追加する</strong> をクリック。</p>
+<p><a href="../../../../public/2025/02/20/4522/vpn-windows.png"><img src="../../../../public/2025/02/20/4522/vpn-windows.png" alt="instance"></a></p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>VPN プロバイダー</td>
+<td>Windows (ビルトイン)</td>
+</tr>
+<tr>
+<td>接続名</td>
+<td>任意の値</td>
+</tr>
+<tr>
+<td>サーバ名またはアドレス</td>
+<td>AWS のインスタンスの IP または取得した FQDN</td>
+</tr>
+<tr>
+<td>VPN の種類</td>
+<td>事前共有キーを使ったL2TP/IPSec</td>
+</tr>
+<tr>
+<td>事前共有キー</td>
+<td><strong>psk</strong> の値</td>
+</tr>
+<tr>
+<td>サインイン情報の種類</td>
+<td>ユーザ名とパスワード</td>
+</tr>
+<tr>
+<td>ユーザ名 (オプション)</td>
+<td><strong>user</strong> の値</td>
+</tr>
+<tr>
+<td>パスワード (オプション)</td>
+<td><strong>password</strong> の値</td>
+</tr>
+</tbody></table>
+<p>設定値を入力し、保存ボタンを押下。</p>
+<p><a href="../../../../public/2025/02/20/4522/vpn-windows2.png"><img src="../../../../public/2025/02/20/4522/vpn-windows2.png" alt="vpn-configure"></a></p>
+<p>追加した接続設定が表示される。</p>
+<p><a href="../../../../public/2025/02/20/4522/vpn-windows3.png"><img src="../../../../public/2025/02/20/4522/vpn-windows3.png" alt="vpn-start"></a></p>
+<p>接続ボタンを押下すると <strong>接続済み</strong> になる。</p>
+<p><a href="../../../../public/2025/02/20/4522/vpn-windows4.png"><img src="../../../../public/2025/02/20/4522/vpn-windows4.png" alt="vpn-finish"></a></p>
+<h3 id="5-状況の確認"><a href="#5-状況の確認" class="headerlink" title="5. 状況の確認"></a>5. 状況の確認</h3><p>VPN を経由していればアクセス先からみえる接続元の IP が変化している筈である。<br>下記のように接続元が北米に切り替わったことがわかる。</p>
+<h5 id="VPN-接続中"><a href="#VPN-接続中" class="headerlink" title="VPN 接続中"></a>VPN 接続中</h5><p><a href="../../../../public/2025/02/20/4522/ipgeolocation.io_vpnon.png"><img src="../../../../public/2025/02/20/4522/ipgeolocation.io_vpnon.png" alt="vpn-on"></a></p>
+<h5 id="VPN-切断中"><a href="#VPN-切断中" class="headerlink" title="VPN 切断中"></a>VPN 切断中</h5><p><a href="../../../../public/2025/02/20/4522/ipgeolocation.io_vpnoff.png"><img src="../../../../public/2025/02/20/4522/ipgeolocation.io_vpnoff.png" alt="vpn-off"></a></p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2025-02-20</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Amazon-Web-Services/" title="Amazon Web Services">Amazon Web Services </a><a class="tag" href="/categories/Amazon-Web-Services/AWS/" title="AWS">AWS </a><a class="tag" href="/categories/Amazon-Web-Services/AWS/VPN/" title="VPN">VPN </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2025/02/20/4522/,A certain engineer &quot;COMPLEX&quot;,開発メモ その415 最速で VPN Server を AWS に構築する,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="next pagbuttons"><a class="btn" role="navigation" href="/2025/02/16/4521/" title="開発メモ その414 Scrcpy で Android を操作する">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
