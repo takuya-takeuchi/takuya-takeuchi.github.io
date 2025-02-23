@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>開発メモ その422 mitmproxy で通信を閲覧・改ざんする · A certain engineer "COMPLEX"</title><meta name="description" content="Introductionmitmproxy を使って透過プロキシを実現した。
+
+開発メモ その416 mitmproxy で Wi-Fi 共有のクライアントの通信を透過プロキシで閲覧する (Mac)
+開発メモ その419 mitmproxy で Wi-Fi 共有のクライアントの通信を透過プロキシで閲"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/apps">Apps</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その422 mitmproxy で通信を閲覧・改ざんする</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p><code>mitmproxy</code> を使って透過プロキシを実現した。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://taktak.jp/2025/02/21/4523/">開発メモ その416 mitmproxy で Wi-Fi 共有のクライアントの通信を透過プロキシで閲覧する (Mac)</a></li>
+<li><a target="_blank" rel="noopener" href="https://taktak.jp/2025/02/22/4526/">開発メモ その419 mitmproxy で Wi-Fi 共有のクライアントの通信を透過プロキシで閲覧する (Ubuntu)</a></li>
+</ul>
+<p>今度は通信内容を覗き見て、リクエストとレスポンスを書き換えてみる。</p>
+<h1 id="How-to-do"><a href="#How-to-do" class="headerlink" title="How to do?"></a>How to do?</h1><p>その前に軽く mitmproxy のショートカットキーについて。<br>基本は <code>vi</code> みたいに使う。</p>
+<table>
+<thead>
+<tr>
+<th>コマンド</th>
+<th>キー</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>一つ上 (下) の Flow に移動</td>
+<td><code>↑</code> または <code>↓</code></td>
+</tr>
+<tr>
+<td>FLow の詳細画面へ移動</td>
+<td><code>enter</code></td>
+</tr>
+<tr>
+<td>左 (右) のタブに移動</td>
+<td><code>←</code> または <code>→</code></td>
+</tr>
+<tr>
+<td>今見ている View から戻る</td>
+<td><code>q</code></td>
+</tr>
+<tr>
+<td>表示する FLow をフィルタ</td>
+<td><code>f</code> を入力後、フィルタリングする文字列を入力</td>
+</tr>
+<tr>
+<td>FlowリストまたはEventLog を全部クリア</td>
+<td><code>z</code></td>
+</tr>
+<tr>
+<td>EventLog を見る</td>
+<td><code>:console.view.eventlog</code> or <code>E</code></td>
+</tr>
+</tbody></table>
+<p>なお EventLog のログレベルは <code>mitmproxy</code> を起動する際に、<code>--set console_eventlog_verbosity=debug</code> のように引数を指定することで変更できる。</p>
+<h3 id="通信内容の傍受"><a href="#通信内容の傍受" class="headerlink" title="通信内容の傍受"></a>通信内容の傍受</h3><p><code>mitmproxy</code> を起動すると、設定が正しくできていればクライアントからの通信を <code>mitmproxy</code> が中間者 (Man-in-the-middle) として通信を中継している。<br>なので、 Flow Details を見ると復号化された状態のリクエストやレスポンスを確認することができる。</p>
+<h3 id="通信内容の改ざん"><a href="#通信内容の改ざん" class="headerlink" title="通信内容の改ざん"></a>通信内容の改ざん</h3><p><code>mitmproxy</code> は python スクリプトを使うことで指定の条件を満たすリクエストやレスポンスを改ざんすることができる。</p>
+<p>サンプルソースは下記。</p>
+<ul>
+<li>レスポンスヘッダーに値を追加<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi/Demo/blob/master/Networking/mitmproxy/01_AddHeader">01_AddHeader</a></li>
+</ul>
+</li>
+<li>リクエストのパスを書き換える<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi/Demo/tree/master/Networking/mitmproxy/02_ReplacePath">02_ReplacePath</a></li>
+</ul>
+</li>
+</ul>
+<p>下記は <a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi/Demo/tree/master/Networking/mitmproxy/02_ReplacePath">02_ReplacePath</a> のサンプル。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> mitmproxy <span class="keyword">import</span> ctx</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Replacer</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">load</span>(<span class="params">self, loader</span>):</span></span><br><span class="line">        loader.add_option(</span><br><span class="line">            name=<span class="string">&quot;domain&quot;</span>,</span><br><span class="line">            typespec=str,</span><br><span class="line">            default=<span class="string">&quot;&quot;</span>,</span><br><span class="line">            help=<span class="string">&quot;target domain&quot;</span>,</span><br><span class="line">        )</span><br><span class="line">        loader.add_option(</span><br><span class="line">            name=<span class="string">&quot;old&quot;</span>,</span><br><span class="line">            typespec=str,</span><br><span class="line">            default=<span class="string">&quot;&quot;</span>,</span><br><span class="line">            help=<span class="string">&quot;old path to be replaced&quot;</span>,</span><br><span class="line">        )</span><br><span class="line">        loader.add_option(</span><br><span class="line">            name=<span class="string">&quot;new&quot;</span>,</span><br><span class="line">            typespec=str,</span><br><span class="line">            default=<span class="string">&quot;&quot;</span>,</span><br><span class="line">            help=<span class="string">&quot;new path&quot;</span>,</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">request</span>(<span class="params">self, flow</span>):</span></span><br><span class="line">        domain = ctx.options.domain</span><br><span class="line">        old_path = ctx.options.old</span><br><span class="line">        new_path = ctx.options.new</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Note: flow.request.url is ip address. why?</span></span><br><span class="line">        index = flow.client_conn.sni.find(domain)</span><br><span class="line">        <span class="keyword">if</span> index == <span class="number">-1</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> flow.request.path == old_path:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">    </span><br><span class="line">        flow.request.path = new_path</span><br><span class="line"></span><br><span class="line">addons = [Replacer()]</span><br></pre></td></tr></table></figure>
+
+<p><code>mitmproxy</code> は </p>
+<ul>
+<li><code>load</code> は <code>mitmproxy</code> からスクリプトが呼ばれたときに呼び出される関数</li>
+<li><code>request</code> はリクエストを受け取った際に <code>mitmproxy</code> から呼び出される関数</li>
+<li><code>response</code> はレスポンスを受け取った際に <code>mitmproxy</code> から呼び出される関数</li>
+</ul>
+<p>となる。<br>関数内で <code>flow</code> の内容を書き換えたりすることで最終的な結果を書き換えることができる。</p>
+<p>上記のサンプルは指定したドメインのとあるパスに対するリクエストを指定したパスに置換することで強制的に呼び出しを捻じ曲げる。</p>
+<p>まず、<code>mitmproxy</code> に対して、呼び出すスクリプ及びスクリプトに渡す引数を <code>--set</code> を渡して起動。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mitmproxy -s script.py --<span class="built_in">set</span> domain=httpbin.org --<span class="built_in">set</span> old=/get --<span class="built_in">set</span> new=/json</span><br></pre></td></tr></table></figure>
+
+<p>次に、クライアントから <code>mitmproxy</code> を起動しているサーバーをプロキシに指定して通信を実行する。<br>クライアントには事前に <code>mitmproxy</code> が発行した CA 証明をインストールしておくこと。<br>また、ファイヤーウォールやパケットフィルタは適宜設定しておくこと。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">$ curl -i -X GET https://httpbin.org/get -x http://&lt;proxyserver&gt;:8080</span><br><span class="line">HTTP/1.1 200 Connection established</span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Date: Sun, 23 Feb 2025 15:31:53 GMT</span><br><span class="line">Content-Type: application/json</span><br><span class="line">Content-Length: 429</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Server: gunicorn/19.9.0</span><br><span class="line">Access-Control-Allow-Origin: *</span><br><span class="line">Access-Control-Allow-Credentials: <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;slideshow&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;author&quot;</span>: <span class="string">&quot;Yours Truly&quot;</span>,</span><br><span class="line">    <span class="string">&quot;date&quot;</span>: <span class="string">&quot;date of publication&quot;</span>,</span><br><span class="line">    <span class="string">&quot;slides&quot;</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">&quot;title&quot;</span>: <span class="string">&quot;Wake up to WonderWidgets!&quot;</span>,</span><br><span class="line">        <span class="string">&quot;type&quot;</span>: <span class="string">&quot;all&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">&quot;items&quot;</span>: [</span><br><span class="line">          <span class="string">&quot;Why &lt;em&gt;WonderWidgets&lt;/em&gt; are great&quot;</span>,</span><br><span class="line">          <span class="string">&quot;Who &lt;em&gt;buys&lt;/em&gt; WonderWidgets&quot;</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="string">&quot;title&quot;</span>: <span class="string">&quot;Overview&quot;</span>,</span><br><span class="line">        <span class="string">&quot;type&quot;</span>: <span class="string">&quot;all&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&quot;title&quot;</span>: <span class="string">&quot;Sample Slide Show&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>https://httpbin.org/get</code> の通信を <code>https://httpbin.org/json</code> に改ざんされていることがわかる。<br><code>/get</code> 以外のリクエストや <code>httpbin.org</code> 以外への通信には影響がない。</p>
+<h1 id="Source-Code"><a href="#Source-Code" class="headerlink" title="Source Code"></a>Source Code</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi/Demo/blob/master/Networking/mitmproxy/01_AddHeader">https://github.com/takuya-takeuchi/Demo/blob/master/Networking/mitmproxy/01_AddHeader</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi/Demo/tree/master/Networking/mitmproxy/02_ReplacePath">https://github.com/takuya-takeuchi/Demo/tree/master/Networking/mitmproxy/02_ReplacePath</a></li>
+</ul>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2025-02-23</span><i class="fa fa-tag"></i><a class="tag" href="/categories/mitmproxy/" title="mitmproxy">mitmproxy </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2025/02/23/4529/,A certain engineer &quot;COMPLEX&quot;,開発メモ その422 mitmproxy で通信を閲覧・改ざんする,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2025/02/23/4527/" title="開発メモ その420 iPhone 実機だと再生できるけど iOS シミュレータや MacOS 上で再生できない動画">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2025/02/22/4526/" title="開発メモ その419 mitmproxy で Wi-Fi 共有のクライアントの通信を透過プロキシで閲覧する (Ubuntu)">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
