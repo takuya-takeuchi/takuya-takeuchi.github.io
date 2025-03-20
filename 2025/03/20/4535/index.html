@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>開発メモ その428 Wireshak で https 通信を傍受する · A certain engineer "COMPLEX"</title><meta name="description" content="Introduction備忘録。
+How to do?Wireshark で TLS の通信を復号する方法は 2 つある
+
+サーバの秘密鍵を登録する方法で復号
+Pre-Maser Secretを登録する方法で復号
+
+このうち、前者は非推奨の方法になっている。理由として
+
+鍵交換のアルゴリズムはDH系"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/apps">Apps</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その428 Wireshak で https 通信を傍受する</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>備忘録。</p>
+<h1 id="How-to-do"><a href="#How-to-do" class="headerlink" title="How to do?"></a>How to do?</h1><p>Wireshark で TLS の通信を復号する方法は 2 つある</p>
+<ul>
+<li>サーバの秘密鍵を登録する方法で復号</li>
+<li>Pre-Maser Secretを登録する方法で復号</li>
+</ul>
+<p>このうち、前者は非推奨の方法になっている。<br>理由として</p>
+<ul>
+<li>鍵交換のアルゴリズムはDH系 (DHEやECDH含む) ではないこと</li>
+<li>SSL3.0、(D)TLS1.0-1.2のみサポート</li>
+</ul>
+<p>等の理由があるため。<br>実際、目的のサーバの通信における鍵交換アルゴリズムを確認してみたら <strong>TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</strong> となっていた。</p>
+<p><a href="../../../../public/2025/03/20/4535/wireshark_cipher.png"><img src="../../../../public/2025/03/20/4535/wireshark_cipher.png" alt="wireshark_cipher_suite"></a></p>
+<p>暗号方式自体は RSA だが鍵交換アルゴリズムが ECDHE (Elliptic Curve Diffie-Hellman Ephemeral) であるためこの方式は使えない。</p>
+<p>なので、後者の方法で復号化を試す。</p>
+<p>手順としては</p>
+<ol>
+<li>Pre-Maser Secret の生成</li>
+<li>Pre-Maser Secret を使って Wireshark で通信をキャプチャ</li>
+</ol>
+<p>となる</p>
+<h3 id="Pre-Maser-Secret-の生成"><a href="#Pre-Maser-Secret-の生成" class="headerlink" title="Pre-Maser Secret の生成"></a>Pre-Maser Secret の生成</h3><p>Pre-Maser Secret は RFC 5246 (TLS 1.2) で定義されている TLS/SSLの安全なセッション鍵を作るための中間データとなる。<br>この Pre-Maser Secret を Wireshark でキャプチャする前にブラウザで目的のサーバと通信をすることでファイルに書き出す。</p>
+<p>下記のようにすれば生成が可能。<br>なお、以降の事例は全て自己署名証明書で実行している。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">set</span> SSLKEYLOGFILE=f:\tls_key.log</span><br><span class="line">$ <span class="built_in">taskkill</span> /f /im msedge.exe</span><br><span class="line">$ &quot;C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe&quot; https://<span class="number">192</span>.<span class="number">168</span>.<span class="number">11</span>.<span class="number">100</span></span><br></pre></td></tr></table></figure>
+
+<p>ポイントは、全てのブラウザのプロセスを終了しておくこと。<br>既にブラウザが立ち上がっている状態で <code>SSLKEYLOGFILE</code> を設定し、新しいインスタンスを起動しても意味がない。</p>
+<p><code>curl</code> でも問題なく使える (Windows の場合は組み込みのではなく、公式サイト <a target="_blank" rel="noopener" href="https://curl.se/windows/">curl </a> からダウンロードしたものを使うべき)。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">set</span> SSLKEYLOGFILE=f:\tls_key.log</span><br><span class="line">$ &quot;F:\curl-<span class="number">8</span>.<span class="number">12</span>.<span class="number">1</span>_4-win64-mingw\curl-<span class="number">8</span>.<span class="number">12</span>.<span class="number">1</span>_4-win64-mingw\bin\curl.exe&quot; -X &quot;GET&quot; &quot;https://<span class="number">192</span>.<span class="number">168</span>.<span class="number">11</span>.<span class="number">100</span>/api/getMessage&quot; -H &quot;accept: application/json&quot; --cacert ca.crt</span><br></pre></td></tr></table></figure>
+
+<p>どちらの点でも <code>SSLKEYLOGFILE</code> で指定したパスに Pre-Maser Secret が出力されている。<br>また、環境変数に設定するのではなく、シェル変数に設定したほうがセキュリティの面でも安心。</p>
+<h3 id="Pre-Maser-Secret-を使って-Wireshark-で通信をキャプチャ"><a href="#Pre-Maser-Secret-を使って-Wireshark-で通信をキャプチャ" class="headerlink" title="Pre-Maser Secret を使って Wireshark で通信をキャプチャ"></a>Pre-Maser Secret を使って Wireshark で通信をキャプチャ</h3><p>先程出力された Pre-Maser Secret を設定する。<br><strong>編集 -&gt; 設定</strong> から、左メニューの <strong>Protcol</strong> で <strong>TLS</strong> を選択。<br>**(Pre)-Master-Secret log filename** に先程の <code>SSLKEYLOGFILE</code> で指定したファイルを入力し OK を押下。</p>
+<p><a href="../../../../public/2025/03/20/4535/wireshark_setting_tls.png"><img src="../../../../public/2025/03/20/4535/wireshark_setting_tls.png" alt="wireshark_Setting"></a></p>
+<p>続いてキャプチャを開始する。<br>ブラウザでも curl でも、目的のサーバに対して通信を行う。</p>
+<p><a href="../../../../public/2025/03/20/4535/wireshark_decrypted.png"><img src="../../../../public/2025/03/20/4535/wireshark_decrypted.png" alt="wireshark_Setting"></a></p>
+<p>TSL の復号化が行われ、従来 Protocol が <strong>TLSv1.2</strong> だったりした箇所が、 <strong>HTTP2</strong> になっていることがわかる。<br>実際は、 HTTP2 になるかは環境次第だが (今回は ASP.NET で構築したサーバを使っている)。<br>詳細を見ると、通信内容が復号化されていることがわかる。</p>
+<p>下記は Pre-Maser Secret を設定していない  状態のキャプチャ内容。</p>
+<p><a href="../../../../public/2025/03/20/4535/wireshark_encrypted.png"><img src="../../../../public/2025/03/20/4535/wireshark_encrypted.png" alt="wireshark_Setting"></a></p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2025-03-20</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Wireshark/" title="Wireshark">Wireshark </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2025/03/20/4535/,A certain engineer &quot;COMPLEX&quot;,開発メモ その428 Wireshak で https 通信を傍受する,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="next pagbuttons"><a class="btn" role="navigation" href="/2025/03/20/4534/" title="開発メモ その427 iOS アプリを Xcode でビルドするとキーチェーンへのアクセスが何度も行われる">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
