@@ -7,7 +7,8 @@
             "namespace": "android_app",
             "package_name": "takuyatakeuchi.demo.applinkstarget",
             "sha256_cert_fingerprints": [
-                "73:41:E5:FA:67:F0:E0:59:EA:66:CB:05:B2:8A:34:29:08:26:B2:A9:2B:A7:36:07:0E:8B:25:2F:F2:D4:46:9C"
+                "73:41:E5:FA:67:F0:E0:59:EA:66:CB:05:B2:8A:34:29:08:26:B2:A9:2B:A7:36:07:0E:8B:25:2F:F2:D4:46:9C",
+                "D8:02:51:66:B9:55:71:BB:AD:29:E7:A9:77:2E:C7:79:2F:66:A3:F8:D7:24:5E:EA:CD:0C:6E:76:AD:23:30:A6"
             ]
         }
     }
