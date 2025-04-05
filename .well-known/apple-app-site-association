@@ -1,6 +1,9 @@
 {
     "appclips": {
-        "apps": [ "U27JXXX492.jp.taktak.demo.swift.ios.clip" ]
+        "apps": [
+            "U27JXXX492.jp.taktak.demo.swift.ios.clip",
+            "U27JXXX492.jp.taktak.demo.flutter.ios.clip"
+        ]
     },
    "applinks": {
       "details": [
