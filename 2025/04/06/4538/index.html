@@ -1,0 +1,139 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>開発メモ その431 Flutter で App Clip を使ってみる · A certain engineer "COMPLEX"</title><meta name="description" content="Introduction備忘録。
+前提として、Flutter (dart) を使って App Clip のアプリを作るのは推奨できない。何故なら
+
+App Clip アプリにはサイズの上限があり、Flutter と統合するとサイズが上限に到達してしまう
+iOS 17 以降 50MB (ただし、条件あ"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/apps">Apps</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その431 Flutter で App Clip を使ってみる</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>備忘録。</p>
+<p>前提として、Flutter (dart) を使って <strong>App Clip</strong> のアプリを作るのは推奨できない。<br>何故なら</p>
+<ul>
+<li>App Clip アプリにはサイズの上限があり、Flutter と統合するとサイズが上限に到達してしまう<ul>
+<li>iOS 17 以降 50MB (ただし、条件あり)</li>
+<li>iOS 16 15MB</li>
+<li>iOS 15 以前 10MB</li>
+</ul>
+</li>
+<li>Flutter 公式のサポートが薄い<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.flutter.dev/platform-integration/ios/ios-app-clip">Adding an iOS App Clip target</a> の説明における Xcode が古い</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/issues/71098">App Clip uncompressed size is larger than 10MB #71098</a> にあるように、何もカスタマイズしていない状態で 10MB を超える問題が Close されない</li>
+</ul>
+</li>
+</ul>
+<p>と前途多難。</p>
+<p>しかも、Anroid における App Clip の対となる <strong>Google Play Instant</strong> では、</p>
+<ul>
+<li>現時点でサイズの上限が 15MB</li>
+<li>Flutter 公式で一切言及がない</li>
+<li>NFC 等大部分の機能が使えない</li>
+</ul>
+<p>と致命的。</p>
+<p>それでも、仕事のネタなので試してみる。</p>
+<p>環境は</p>
+<ul>
+<li>macOS Sequoia 15.3</li>
+<li>Xcode 16.2</li>
+<li>Flutter 3.27.4</li>
+</ul>
+<p>とする。</p>
+<h1 id="How-to-do"><a href="#How-to-do" class="headerlink" title="How to do?"></a>How to do?</h1><h3 id="App-Clip-を作る"><a href="#App-Clip-を作る" class="headerlink" title="App Clip を作る"></a>App Clip を作る</h3><p>基本は <a target="_blank" rel="noopener" href="https://docs.flutter.dev/platform-integration/ios/ios-app-clip">Adding an iOS App Clip target</a> 従えば良い。</p>
+<ol>
+<li>Xcode から App Clip を追加 (Step 2 - Add an App Clip target に該当)<ul>
+<li>App Clip の BundleID は必ず、末尾が <code>.Clip</code> で終わること (大文字小文字を区別する)</li>
+</ul>
+</li>
+<li>ビルド設定を統合 (Step 4 - Share build configurations に該当)</li>
+<li>親アプリ、App Clip に対して、 <strong>Associated Domains</strong> 機能を追加し、 <strong>appclips:&lt;ドメイン&gt;</strong> を追加 (Step 6 - Add App Clip associated domains に該当)</li>
+<li>App Clip 用の Profile (Distribution等) を Apple Developer Program 上で作成し、Xcode 上で紐づける</li>
+<li>apple-app-site-association ファイルの設定</li>
+</ol>
+<p>を実施すれば、最低限の基盤はできる。<br>下記はスキップした</p>
+<ul>
+<li>Step 3 - Remove unneeded files<ul>
+<li>サイズ上限問題もあり、Flutter と統合しない道を選んだのと Swift で実装する覚悟を決めたため</li>
+</ul>
+</li>
+<li>Step 5 - Share code and assets<ul>
+<li>ここはオプション。親アプリと Storyboard とかを共有するか、という話だが自分はスキップ</li>
+</ul>
+</li>
+<li>Step 7 - Integrate Flutter、Step 8 - Integrate plugins<ul>
+<li>試してはいないが、Flutter で親アプリをビルドすると、App Clip 側もビルドする等の設定だと思うが、サイズの上限の問題もあるので実施しない</li>
+</ul>
+</li>
+</ul>
+<h3 id="apple-app-site-association-の設定"><a href="#apple-app-site-association-の設定" class="headerlink" title="apple-app-site-association の設定"></a>apple-app-site-association の設定</h3><p>下記のような <code>appclips</code> セクションを追加する。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;appclips&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;apps&quot;</span>: [</span><br><span class="line">            <span class="string">&quot;U27JXXX492.jp.taktak.demo.flutter.ios.Clip&quot;</span></span><br><span class="line">        ]</span><br><span class="line">    &#125;,</span><br><span class="line">   <span class="attr">&quot;applinks&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;details&quot;</span>: [</span><br></pre></td></tr></table></figure>
+
+<p>App Clip を起動するだけなら、 <code>applinks</code> 側の設定は不要。<br><code>appclips</code> 側に親アプリ側を加える必要もない。</p>
+<h3 id="高度なApp-Clip体験"><a href="#高度なApp-Clip体験" class="headerlink" title="高度なApp Clip体験"></a>高度なApp Clip体験</h3><p>App Clip カードに対して詳細な設定ができる。</p>
+<p><strong>高度な体験を編集</strong> をクリック</p>
+<p><a href="../../../../public/2025/04/06/4538/appclip_setting0.png"><img src="../../../../public/2025/04/06/4538/appclip_setting0.png" alt="appclip experience"></a></p>
+<p><strong>次へ</strong> をクリック</p>
+<p><a href="../../../../public/2025/04/06/4538/appclip_setting1.png"><img src="../../../../public/2025/04/06/4538/appclip_setting1.png" alt="appclip experience"></a></p>
+<p>apple-app-site-association を配置したサイトのドメインを入力し、App Clip のバンドル ID を選択。<br>ここで apple-app-site-association の設定が上手くいっていなかったり、Apple の CDN にキャッシュされていないと、エラーになる。</p>
+<p><a href="../../../../public/2025/04/06/4538/appclip_setting2.png"><img src="../../../../public/2025/04/06/4538/appclip_setting2.png" alt="appclip experience"></a></p>
+<p>ヘッダー画像を付与したりタイトルを入力する。<br>ここでの画像は <a target="_blank" rel="noopener" href="https://flutter.dev/">https://flutter.dev/</a> のヘッダー画像を使わせてもらった。</p>
+<p><a href="../../../../public/2025/04/06/4538/appclip_setting3.png"><img src="../../../../public/2025/04/06/4538/appclip_setting3.png" alt="appclip experience"></a></p>
+<p>どっちでもいいと思うので割愛。</p>
+<p><a href="../../../../public/2025/04/06/4538/appclip_setting4.png"><img src="../../../../public/2025/04/06/4538/appclip_setting4.png" alt="appclip experience"></a></p>
+<p>確認。</p>
+<p><a href="../../../../public/2025/04/06/4538/appclip_setting5.png"><img src="../../../../public/2025/04/06/4538/appclip_setting5.png" alt="appclip experience"></a></p>
+<p>戻ってくると、リストに先程作成した <strong>App Clip 体験</strong> が追加されている。</p>
+<p><a href="../../../../public/2025/04/06/4538/appclip_setting6.png"><img src="../../../../public/2025/04/06/4538/appclip_setting6.png" alt="appclip experience"></a></p>
+<p><strong>App Clip コードを取得する…</strong> を選択し、リストのチェックボックスをチェックをつける。<br><strong>続ける</strong> を選択。</p>
+<p><a href="../../../../public/2025/04/06/4538/appclip_setting7.png"><img src="../../../../public/2025/04/06/4538/appclip_setting7.png" alt="appclip experience"></a></p>
+<p>App Clip コードの作成処理に入る。<br>なお、別に App Clip コードでなくても、apple-app-site-association を配置したサイトの url を示す QR コードでも App Clip は起動する。</p>
+<p><a href="../../../../public/2025/04/06/4538/appclip_setting8.png"><img src="../../../../public/2025/04/06/4538/appclip_setting8.png" alt="appclip experience"></a></p>
+<p>複数生成する予定もないので、 <strong>いいえ</strong> を選択し、 <strong>次へ</strong>。</p>
+<p><a href="../../../../public/2025/04/06/4538/appclip_setting9.png"><img src="../../../../public/2025/04/06/4538/appclip_setting9.png" alt="appclip experience"></a></p>
+<p>お好みのカラーを選択し、 <strong>次へ</strong>。</p>
+<p><a href="../../../../public/2025/04/06/4538/appclip_setting10.png"><img src="../../../../public/2025/04/06/4538/appclip_setting10.png" alt="appclip experience"></a></p>
+<p>ユースケースを選択し、 <strong>次へ</strong>。</p>
+<p><a href="../../../../public/2025/04/06/4538/appclip_setting11.png"><img src="../../../../public/2025/04/06/4538/appclip_setting11.png" alt="appclip experience"></a></p>
+<p>App Clip ロゴを含めるかどうかを選択し、 <strong>次へ</strong>。</p>
+<p><a href="../../../../public/2025/04/06/4538/appclip_setting12.png"><img src="../../../../public/2025/04/06/4538/appclip_setting12.png" alt="appclip experience"></a></p>
+<p>作成完了。<br><strong>App Clip コードをダウンロードする</strong> を選択し、zip ファイルをダウンロード。<br><strong>完了</strong> を選択して終了。</p>
+<p><a href="../../../../public/2025/04/06/4538/appclip_setting13.png"><img src="../../../../public/2025/04/06/4538/appclip_setting13.png" alt="appclip experience"></a></p>
+<p>出来上がった zip ファイルの中には SVG 形式で App Clip コードが入っている。</p>
+<p><a href="../../../../public/2025/04/06/4538/appclip_code.png"><img src="../../../../public/2025/04/06/4538/appclip_code.png" alt="appclip code"></a></p>
+<p>なお、同じ内容を QR コードにすると下記になる。</p>
+<p><a href="../../../../public/2025/04/06/4538/qrcode.png"><img src="../../../../public/2025/04/06/4538/qrcode.png" alt="qr code"></a></p>
+<h3 id="TestFlight-で配信"><a href="#TestFlight-で配信" class="headerlink" title="TestFlight で配信"></a>TestFlight で配信</h3><p>ここまでくれば後は普通に TestFlight で配信できる。<br>従来のアプリの株に App Clip が出現し、<strong>開く</strong> から App Clip が起動する。</p>
+<p><a href="../../../../public/2025/04/06/4538/testflight.png"><img src="../../../../public/2025/04/06/4538/testflight.png" alt="appclip"></a></p>
+<h3 id="カメラから起動"><a href="#カメラから起動" class="headerlink" title="カメラから起動"></a>カメラから起動</h3><p><a href="../../../../public/2025/04/06/4538/camera.gif"><img src="../../../../public/2025/04/06/4538/camera.gif" alt="appclip"></a></p>
+<p>TestFlight が内部テストからなのか上手く起動しない。<br>とりあえずはここまで。</p>
+<h1 id="Trouble-shooting"><a href="#Trouble-shooting" class="headerlink" title="Trouble shooting"></a>Trouble shooting</h1><h3 id="App-Clip-のストアへの提出"><a href="#App-Clip-のストアへの提出" class="headerlink" title="App Clip のストアへの提出"></a>App Clip のストアへの提出</h3><p>個別に実施する必要はなくて、親アプリを App Store Connect にアップロードすれば自動的に App Clip がアップロードされる。</p>
+<h3 id="The-CFBundleShortVersionString-of-an-App-Clip-null-must-match-that-of-its-containing-parent-app"><a href="#The-CFBundleShortVersionString-of-an-App-Clip-null-must-match-that-of-its-containing-parent-app" class="headerlink" title="The CFBundleShortVersionString of an App Clip (null) must match that of its containing parent app"></a>The CFBundleShortVersionString of an App Clip (null) must match that of its containing parent app</h3><p>親アプリ (Flutter の場合 Runner) とバージョンが一致していない、というエラー。<br>この問題は Swift で 0 から作った場合は遭遇しなかった問題。</p>
+<p><a href="../../../../public/2025/04/06/4538/cfbundle_short_version_string.png"><img src="../../../../public/2025/04/06/4538/cfbundle_short_version_string.png" alt="appclip"></a></p>
+<p>単純に修正するだけなら、 App Clip 側のプロジェクトの General タブ配下の Identity - Version に値を設定するだけだが、固定の値を設定すると、親アプリのバージョンを変える度に手動での変更が必要になる。</p>
+<p>そのため、まず、上で述べたように固定値 (ここでは 1.0.0 とする) を入力しし、親アプリの project.pbxproj ファイル (Flutter なら Runner.xcodeproj/project.pbxproj) をテキストで開く。<br>そうすると <code>MARKETING_VERSION = &quot;1.0.0&quot;;</code> という記述があるので、それを <code>MARKETING_VERSION = &quot;$(FLUTTER_BUILD_NAME)&quot;;</code> で置換する。</p>
+<p>これで問題が解決する。</p>
+<h3 id="App-Clipのサイズを知りたい"><a href="#App-Clipのサイズを知りたい" class="headerlink" title="App Clipのサイズを知りたい"></a>App Clipのサイズを知りたい</h3><p>極端に言えば、App Store Connect にアップロードを実行し、失敗すればサイズ上限を超えたことになるが、流石にそれはあれだ。<br>App Store Connect でサイズを調べるには、 TestFlight タブに移動し、対象のバージョンのビルドを選択、ビルドのメタデータを選択し、アプリのファイルサイズを開くと、各デバイスにおけるインストールサイズを把握できる。<br>ダウンロードサイズは App Clip の上限ではない点に注意。</p>
+<p>では、App Store Connect へのアップロード前にアプリのサイズを調べるには、Ad Hoc でアプリをエクスポートし、ログを見ることで調べることになる。</p>
+<p>親アプリを Archive し、Distribute App を選択し、 <strong>Custom</strong> を選ぶ。</p>
+<p><a href="../../../../public/2025/04/06/4538/adhoc_1.png"><img src="../../../../public/2025/04/06/4538/adhoc_1.png" alt="appclip"></a></p>
+<p><strong>Release Testing</strong> を選択。</p>
+<p><a href="../../../../public/2025/04/06/4538/adhoc_2.png"><img src="../../../../public/2025/04/06/4538/adhoc_2.png" alt="appclip"></a></p>
+<p>App Clip 側を選択。</p>
+<p><a href="../../../../public/2025/04/06/4538/adhoc_3.png"><img src="../../../../public/2025/04/06/4538/adhoc_3.png" alt="appclip"></a></p>
+<p><strong>All compatible device variants</strong> を選択。</p>
+<p><a href="../../../../public/2025/04/06/4538/adhoc_4.png"><img src="../../../../public/2025/04/06/4538/adhoc_4.png" alt="appclip"></a></p>
+<p>AdHoc 対応したプロファイルを選択。</p>
+<p><a href="../../../../public/2025/04/06/4538/adhoc_5.png"><img src="../../../../public/2025/04/06/4538/adhoc_5.png" alt="appclip"></a></p>
+<p><strong>Export</strong> を選択。</p>
+<p><a href="../../../../public/2025/04/06/4538/adhoc_6.png"><img src="../../../../public/2025/04/06/4538/adhoc_6.png" alt="appclip"></a></p>
+<p>出力先を選択。</p>
+<p><a href="../../../../public/2025/04/06/4538/adhoc_7.png"><img src="../../../../public/2025/04/06/4538/adhoc_7.png" alt="appclip"></a></p>
+<p>エクスポートが完了し、出力先の <code>App Thinning Size Report.txt</code> を開き内容を確認。</p>
+<p><a href="../../../../public/2025/04/06/4538/adhoc_8.png"><img src="../../../../public/2025/04/06/4538/adhoc_8.png" alt="appclip"></a></p>
+<p><strong>All compatible device variants</strong> を選択してエクスポートしたため、複数のデバイス向けの非圧縮サイズ (インストールサイズ) が表示されているが、おおよそのサイズは掴める。<br>下記の場合は <strong>142 KB</strong> になる。</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Variant: DemoAppClip-AEDDFF66-BE28-4961-81AF-B52B72039985.ipa</span><br><span class="line">Supported variant descriptors: [device: iPhone14,6, os-version: 17.4], [device: iPhone14,6, os-version: 18.0], [device: iPhone12,8, os-version: 17.4], and [device: iPhone12,8, os-version: 18.0]</span><br><span class="line">App + On Demand Resources size: 35 KB compressed, 142 KB uncompressed</span><br><span class="line">App size: 35 KB compressed, 142 KB uncompressed</span><br><span class="line">On Demand Resources size: Zero KB compressed, Zero KB uncompressed</span><br></pre></td></tr></table></figure>
+
+<h3 id="App-Clip-コードから-App-Clip-が起動しない"><a href="#App-Clip-コードから-App-Clip-が起動しない" class="headerlink" title="App Clip コードから App Clip が起動しない"></a>App Clip コードから App Clip が起動しない</h3><p>標準のカメラアプリ、QR コードスキャンアプリの双方で、 <strong>使用可能なデータが見つかりません</strong> と言われる。</p>
+<p><a href="../../../../public/2025/04/06/4538/unavailable.png"><img src="../../../../public/2025/04/06/4538/unavailable.png" alt="appclip"></a></p>
+<p>デベロッパ -&gt; APP CLIPテスト の 診断 から</p>
+<blockquote>
+<p>No Advanced Experience is registered for this URL.</p>
+</blockquote>
+<p><a href="../../../../public/2025/04/06/4538/debug.png"><img src="../../../../public/2025/04/06/4538/debug.png" alt="appclip"></a></p>
+<p>と表示される。</p>
+<p>色々試していたが、冒頭で述べた <strong>App Clip の BundleID は必ず、末尾が <code>.Clip</code> で終わること (大文字小文字を区別する)</strong> が重要。<br>最初は末尾を <code>.clip</code> のように小文字から始めていたが、どうやっても App Clip コードから起動しなかったので、ダメもとで変えてみたら動いた次第。<br>とは言え、それでも動くようになるまで Apple Store Connect や Apple CDN までの反映に遅延があったのか、起動するまでにまた時間がかかった。</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2025-04-06</span><i class="fa fa-tag"></i><a class="tag" href="/categories/iOS/" title="iOS">iOS </a><a class="tag" href="/categories/iOS/Apple/" title="Apple">Apple </a><a class="tag" href="/categories/iOS/Apple/App-Clip/" title="App Clip">App Clip </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2025/04/06/4538/,A certain engineer &quot;COMPLEX&quot;,開発メモ その431 Flutter で App Clip を使ってみる,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="next pagbuttons"><a class="btn" role="navigation" href="/2025/04/05/4537/" title="開発メモ その430 CUDA でデバイス側の printf が表示されない">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
