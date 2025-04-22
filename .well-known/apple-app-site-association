@@ -1,11 +1,24 @@
 {
     "appclips": {
         "apps": [
-            "U27JXXX492.jp.taktak.demo.flutter.ios.Clip"
+            "U27JXXX492.jp.taktak.demo.flutter.ios.Clip",
+            "U27JXXX492.jp.taktak.demo.flutter.ios"
         ]
     },
    "applinks": {
       "details": [
+         {
+            "appIDs": [
+               "U27JXXX492.jp.taktak.demo.flutter.ios"
+            ],
+            "paths":["*"],
+            "components": [
+               {
+                    "/": "/*",
+                    "comment": "Matches any URL with a path that starts with /."
+               }
+            ]
+         },
          {
             "appIDs": [
                "U27JXXX492.takuyatakeuchi.demo.universallinktarget"
