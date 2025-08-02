@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>開発メモ その447 Windows のマシン間のネットワーク速度を計測する · A certain engineer "COMPLEX"</title><meta name="description" content="Introduction備忘録。クロスケーブルでつないだマシン同士の通信速度を計測したくなった。というのも、片方は NIC、もう片方は USB 3.0 Type-A の USB-LAN コネクタを使っており、想定した速度が出ていないような気がしたため。事実、軽量高速と謳われるリモートデスクトップアプ"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/apps">Apps</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その447 Windows のマシン間のネットワーク速度を計測する</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>備忘録。<br>クロスケーブルでつないだマシン同士の通信速度を計測したくなった。<br>というのも、片方は NIC、もう片方は USB 3.0 Type-A の USB-LAN コネクタを使っており、想定した速度が出ていないような気がしたため。<br>事実、軽量高速と謳われるリモートデスクトップアプリ <a target="_blank" rel="noopener" href="https://vritra.remotedesktop.jp/">Brynhildr Free</a>  でも FPS が出ておらずラグがひどい。</p>
+<p>そのため、問題の切り分けのための証拠集め。</p>
+<h1 id="How-to-do"><a href="#How-to-do" class="headerlink" title="How to do?"></a>How to do?</h1><p>Microsoft の公式記事 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/ja-jp/azure/virtual-network/virtual-network-bandwidth-testing?tabs=windows#test-throughput-with-windows-vms-or-linux-vms">Windows VM または Linux VM でスループットをテストする</a> にて、公式ツール <a target="_blank" rel="noopener" href="https://github.com/microsoft/ntttcp">NTTTCP</a> が紹介されているのでこれに従う。</p>
+<h3 id="1-送信側、受信側共通の作業"><a href="#1-送信側、受信側共通の作業" class="headerlink" title="1. 送信側、受信側共通の作業"></a>1. 送信側、受信側共通の作業</h3><p><a target="_blank" rel="noopener" href="https://github.com/microsoft/ntttcp">NTTTCP</a> の Release から v5.39 をダウンロードして受信側、送信側に配置。<br>v5.40 はバグがあるのか、後述の <code>Throughput</code> が常に 0 になってしまう問題があり、Issue が上がっている。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/microsoft/ntttcp/issues/24">per-thread throughput is always 0.00 with ntttcp version 5.40. #24</a></p>
+<p>今回はダウンロードフォルダにそのまま配置。</p>
+<h3 id="2-受信側の準備"><a href="#2-受信側の準備" class="headerlink" title="2. 受信側の準備"></a>2. 受信側の準備</h3><p>ファイアウォールを許可する。<br>管理者権限でコマンドプロンプトを起動し下記を実行。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netsh advfirewall firewall add rule program=&quot;<span class="variable">%HOMEPATH%</span>\Downloads\ntttcp.exe&quot; name=&quot;ntttcp&quot; protocol=any <span class="built_in">dir</span>=<span class="keyword">in</span> action=allow enable=yes profile=ANY</span><br></pre></td></tr></table></figure>
+
+<p>そして、受信側で NTTTCP を起動。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ntttcp -s -m &lt;number of threads&gt;,*,&lt;receiver IP address&gt; -t &lt;runtime <span class="keyword">in</span> seconds&gt;</span><br></pre></td></tr></table></figure>
+
+<p>今回は下記のようにした。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ntttcp -r -m <span class="number">4</span>,*,<span class="number">192</span>.<span class="number">168</span>.<span class="number">1</span>.<span class="number">173</span> -t <span class="number">300</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-計測開始"><a href="#3-計測開始" class="headerlink" title="3. 計測開始"></a>3. 計測開始</h3><p>送信側で NTTTCP を起動。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ntttcp -s -m &lt;number of threads&gt;,*,&lt;receiver IP address&gt; -t &lt;runtime <span class="keyword">in</span> seconds&gt;</span><br></pre></td></tr></table></figure>
+
+<p>今回は下記のようにした。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ntttcp -s -m <span class="number">4</span>,*,<span class="number">192</span>.<span class="number">168</span>.<span class="number">1</span>.<span class="number">173</span> -t <span class="number">300</span></span><br></pre></td></tr></table></figure>
+
+<p>実行ログはこんな感じ</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">$ ntttcp -s -m <span class="number">4</span>,*,<span class="number">192</span>.<span class="number">168</span>.<span class="number">1</span>.<span class="number">173</span> -t <span class="number">300</span></span><br><span class="line">Copyright Version <span class="number">5</span>.<span class="number">39</span></span><br><span class="line">Network activity progressing...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Thread  <span class="built_in">Time</span>(s) Throughput(KB/s) Avg B / Compl</span><br><span class="line">======  ======= ================ =============</span><br><span class="line">     <span class="number">0</span>   <span class="number">11</span>.<span class="number">800</span>         <span class="number">5873</span>.<span class="number">898</span>     <span class="number">65536</span>.<span class="number">000</span></span><br><span class="line">     <span class="number">1</span>   <span class="number">11</span>.<span class="number">800</span>        <span class="number">10321</span>.<span class="number">356</span>     <span class="number">65536</span>.<span class="number">000</span></span><br><span class="line">     <span class="number">2</span>   <span class="number">11</span>.<span class="number">799</span>         <span class="number">9899</span>.<span class="number">144</span>     <span class="number">65536</span>.<span class="number">000</span></span><br><span class="line">     <span class="number">3</span>   <span class="number">11</span>.<span class="number">800</span>         <span class="number">4534</span>.<span class="number">237</span>     <span class="number">65536</span>.<span class="number">000</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#####  Totals:  #####</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   Bytes(MEG)    realtime(s) Avg Frame Size Throughput(MB/s)</span><br><span class="line">================ =========== ============== ================</span><br><span class="line">      <span class="number">352</span>.<span class="number">937500</span>     <span class="number">300</span>.<span class="number">009</span>       <span class="number">1417</span>.<span class="number">655</span>            <span class="number">1</span>.<span class="number">176</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Throughput(Buffers/s) Cycles/Byte       Buffers</span><br><span class="line">===================== =========== =============</span><br><span class="line">               <span class="number">18</span>.<span class="number">823</span>    <span class="number">5243</span>.<span class="number">692</span>      <span class="number">5647</span>.<span class="number">000</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">DPCs(count/s) Pkts(num/DPC)   Intr(count/s) Pkts(num/intr)</span><br><span class="line">============= ============= =============== ==============</span><br><span class="line">     <span class="number">2802</span>.<span class="number">219</span>         <span class="number">0</span>.<span class="number">096</span>       <span class="number">14057</span>.<span class="number">058</span>          <span class="number">0</span>.<span class="number">019</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Packets Sent Packets Received Retransmits Errors Avg. CPU %</span><br><span class="line">============ ================ =========== ====== ==========</span><br><span class="line">      <span class="number">261052</span>            <span class="number">80490</span>          <span class="number">21</span>    <span class="number">222</span>     <span class="number">23</span>.<span class="number">837</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-後始末"><a href="#4-後始末" class="headerlink" title="4. 後始末"></a>4. 後始末</h3><p>ファイアウォールを削除。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ netsh advfirewall firewall delete name=&quot;mtttcp&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-計測結果の解析"><a href="#5-計測結果の解析" class="headerlink" title="5. 計測結果の解析"></a>5. 計測結果の解析</h3><p>ChatGPT 4o にお願いした。</p>
+<h5 id="スレッド別の統計"><a href="#スレッド別の統計" class="headerlink" title="スレッド別の統計"></a>スレッド別の統計</h5><ul>
+<li>4スレッド合計で約31.6MB/s (KB/s合計 = 約31,628KB/s) の送信</li>
+<li>各スレッドは 11.8秒程度だけ動作</li>
+<li>Avg B / Compl が 65536 → 各送信が64KB単位で行われていた（通常の設定）</li>
+</ul>
+<p>✅ 解釈：<br>一見すると各スレッドは正しく送信していますが、実行時間が11.8秒しかないのに、次のセクションで realtime(s) が 300秒となっているため、実行時間の割に動作していない時間が長いことが示唆されます。</p>
+<h5 id="合計統計（Totals）"><a href="#合計統計（Totals）" class="headerlink" title="合計統計（Totals）"></a>合計統計（Totals）</h5><ul>
+<li>総データ量：352.937MB（＝少ない）</li>
+<li>実行時間：300秒</li>
+<li>平均フレームサイズ：1417バイト</li>
+<li>平均スループット：1.176MB/s ≒ 約9.4Mbps</li>
+</ul>
+<p>❗問題点：</p>
+<ul>
+<li>スループットが非常に遅く、ネットワーク回線の性能（例えばギガビットイーサ）に比べて極端に低い</li>
+<li>おそらくネットワークまたは ntttcp の設定に問題</li>
+</ul>
+<h5 id="バッファ・CPU性能"><a href="#バッファ・CPU性能" class="headerlink" title="バッファ・CPU性能"></a>バッファ・CPU性能</h5><ul>
+<li>毎秒送信したバッファ数：18.8</li>
+<li>1バイトあたりにかかっているCPUサイクル：5243 → 非常に高い（通常は数百〜数千）</li>
+<li>バッファ数：5647 → 非常に少ない（たとえば毎秒1000個送れれば十分）</li>
+</ul>
+<p>❗注意：</p>
+<ul>
+<li>CPU効率が悪いか、割り込みなどの影響で処理に時間がかかっている</li>
+<li>バッファ送信数も少ない</li>
+</ul>
+<h5 id="DPC（遅延プロシージャ呼び出し）と割り込み"><a href="#DPC（遅延プロシージャ呼び出し）と割り込み" class="headerlink" title="DPC（遅延プロシージャ呼び出し）と割り込み"></a>DPC（遅延プロシージャ呼び出し）と割り込み</h5><ul>
+<li>DPCが多いのに、1 DPC あたりのパケット数が少なすぎ（0.096）</li>
+<li>割り込みも多く、1割り込みで平均0.019パケットしか処理できていない → 効率が非常に悪い</li>
+</ul>
+<p>❗解釈：</p>
+<ul>
+<li>割り込みが頻繁に発生しているが、毎回の処理が非効率</li>
+<li>NAPIや割り込みのcoalescingが無効になっている可能性がある</li>
+</ul>
+<h5 id="パケット統計とCPU使用率"><a href="#パケット統計とCPU使用率" class="headerlink" title="パケット統計とCPU使用率"></a>パケット統計とCPU使用率</h5><ul>
+<li>再送（Retransmits）：21 → 少なめ（通信品質はそれほど悪くない）</li>
+<li>Errors（通信エラー）：222 → 少し多いが致命的ではない</li>
+<li>CPU使用率：24% → ボトルネックにはなっていないように見える</li>
+</ul>
+<h4 id="🧭-総合評価と対処のヒント"><a href="#🧭-総合評価と対処のヒント" class="headerlink" title="🧭 総合評価と対処のヒント"></a>🧭 総合評価と対処のヒント</h4><p>✳ 現象：</p>
+<ul>
+<li>テスト実行時間は300秒だが、実際のデータ転送は開始後すぐに終わってしまい、残り時間はほぼアイドル状態</li>
+<li>トータルのスループットが非常に低い（1.1MB/s）</li>
+<li>DPC/割り込みが非効率で、バッファ処理数も少ない</li>
+</ul>
+<h3 id="6-改善"><a href="#6-改善" class="headerlink" title="6. 改善"></a>6. 改善</h3><ul>
+<li><code>-t</code> を <code>20</code> にすればスループットが、10.8MB/s（≒86.6Mbps）まで改善<ul>
+<li>USB 3.0 (理論値 5.0 Gbps)、1 Gbps の LAN なら、もっと速度が出ても良いような気もする。</li>
+</ul>
+</li>
+<li><code>-t</code> を省略し、スレッド数1 (<code>ntttcp -s -m 1,*,192.168.1.173</code>) にしたら、41.264 MB/s （≒ 330Mbps）まで改善<ul>
+<li>ジャンボフレームを有効にしたら 11.2MB/s まで下がった<ul>
+<li>受信側が 4014 bytes、送信側が 4 KB という違いが影響?</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2025-08-02</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Microsoft/" title="Microsoft">Microsoft </a><a class="tag" href="/categories/Microsoft/Windows/" title="Windows">Windows </a><a class="tag" href="/categories/Microsoft/Windows/Network/" title="Network">Network </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2025/08/02/4552/,A certain engineer &quot;COMPLEX&quot;,開発メモ その447 Windows のマシン間のネットワーク速度を計測する,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="next pagbuttons"><a class="btn" role="navigation" href="/2025/07/27/4551/" title="開発メモ その446 Newtonsoft.Json と System.Text.Json と System.Runtime.Serialization.Formatters.Binary.BinaryFormatter の逆シリアル化の違い">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
