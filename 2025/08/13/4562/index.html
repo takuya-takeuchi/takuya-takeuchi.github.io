@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>開発メモ その457 Cloudflare Access で Cloudflare Tunnel を保護する · A certain engineer "COMPLEX"</title><meta name="description" content="Introduction開発メモ その452 Debian に cloudflared をインストールして LAN 内のサーバーに外部からアクセスできるようにする の続き。
+数日放置していたら、外国からのアクセスが多くて肝が冷えたので。
+
+How to do?Cloudflare Access とい"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/apps">Apps</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その457 Cloudflare Access で Cloudflare Tunnel を保護する</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p><a target="_blank" rel="noopener" href="https://taktak.jp/2025/08/09/4557/">開発メモ その452 Debian に cloudflared をインストールして LAN 内のサーバーに外部からアクセスできるようにする</a> の続き。</p>
+<p>数日放置していたら、外国からのアクセスが多くて肝が冷えたので。</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare01.png"><img src="../../../../public/2025/08/13/4562/cloudflare01.png" alt="Cloudflare"></a></p>
+<h1 id="How-to-do"><a href="#How-to-do" class="headerlink" title="How to do?"></a>How to do?</h1><p><strong>Cloudflare Access</strong> という機能で Web サービス側に修正を加えることなく追加の認証機能を追加できる。<br>仕組みとして、外部から <strong>Cloudflare Tunnel</strong> にアクセスしようとすると、 <strong>Cloudflare Access</strong> が介入し、指定された認証をパスしないと <strong>Cloudflare Tunnel</strong> の先のサービス (今回は自宅サーバ) にアクセスできないようにしてくれるわけ。<br>認証機能として外部の <strong>IDプロバイダー（IdP）</strong> を統合することができ、今回は GitHUb を使ってみる。</p>
+<h3 id="1-IdP-として-GitHUb-を連携させる"><a href="#1-IdP-として-GitHUb-を連携させる" class="headerlink" title="1. IdP として GitHUb を連携させる"></a>1. IdP として GitHUb を連携させる</h3><p>Cloudflare ダッシュボードを開き、左側の <strong>Zero Trust</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare02.png"><img src="../../../../public/2025/08/13/4562/cloudflare02.png" alt="Cloudflare"></a></p>
+<p>左側の <strong>設定</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare03.png"><img src="../../../../public/2025/08/13/4562/cloudflare03.png" alt="Cloudflare"></a></p>
+<p>右側の <strong>認証</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare04.png"><img src="../../../../public/2025/08/13/4562/cloudflare04.png" alt="Cloudflare"></a></p>
+<p><strong>ログイン方法</strong> 内の <strong>新規追加</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare05.png"><img src="../../../../public/2025/08/13/4562/cloudflare05.png" alt="Cloudflare"></a></p>
+<p><strong>GitHub</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare06.png"><img src="../../../../public/2025/08/13/4562/cloudflare06.png" alt="Cloudflare"></a></p>
+<p><strong>セットアップ手順</strong> が表示されるので、一度 GitHub を開く</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare07.png"><img src="../../../../public/2025/08/13/4562/cloudflare07.png" alt="Cloudflare"></a></p>
+<p>右上のアカウントメニューから <strong>Settings</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/github01.png"><img src="../../../../public/2025/08/13/4562/github01.png" alt="GitHUb"></a></p>
+<p>左側のメニュー最下部にある <strong>Developer settings</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/github02.png"><img src="../../../../public/2025/08/13/4562/github02.png" alt="GitHUb"></a></p>
+<p>左側のメニューの <strong>OAuth Apps</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/github03.png"><img src="../../../../public/2025/08/13/4562/github03.png" alt="GitHUb"></a></p>
+<p><strong>New OAuth app</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/github04.png"><img src="../../../../public/2025/08/13/4562/github04.png" alt="GitHUb"></a></p>
+<p><strong>Application name</strong> を入力 (自由記述)<br><strong>Homepage URL</strong> に <code>https://&lt;your-team-name&gt;.cloudflareaccess.com</code> を入力<br><strong>Authorization callback URL</strong> に <code>https://&lt;your-team-name&gt;.cloudflareaccess.com/cdn-cgi/access/callback</code> を入力<br>上記の <code>&lt;your-team-name&gt;</code> は <strong>Zero Trust</strong> -&gt; <strong>設定</strong> -&gt; <strong>カスタム ページ</strong> にある <strong>チームドメイン</strong> を参照</p>
+<p>入力後、 <strong>Register application</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/github05.png"><img src="../../../../public/2025/08/13/4562/github05.png" alt="GitHUb"></a></p>
+<p>アプリケーションが作成される。<br><strong>Client ID</strong> を控えておく<br>右側の <strong>Generate a new client secret</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/github06.png"><img src="../../../../public/2025/08/13/4562/github06.png" alt="GitHUb"></a></p>
+<p>MFA 認証が行われる (設定次第) ので、認証コードを入力して <strong>Verify</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/github07.png"><img src="../../../../public/2025/08/13/4562/github07.png" alt="GitHUb"></a></p>
+<p><strong>Client secret</strong> が生成されるので控えておく</p>
+<p><a href="../../../../public/2025/08/13/4562/github08.png"><img src="../../../../public/2025/08/13/4562/github08.png" alt="GitHUb"></a></p>
+<p>Cloudflare のページに戻り、左側の <strong>名前</strong> を入力 (自由記述)<br><strong>アプリ ID</strong> に先程 GitHub のページで入手した <strong>Client ID</strong> を入力<br><strong>クライアント シークレット</strong> に先程 GitHub のページで入手した <strong>Client secret</strong> を入力<br><strong>保存</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare08.png"><img src="../../../../public/2025/08/13/4562/cloudflare08.png" alt="Cloudflare"></a></p>
+<p><strong>セットアップを完了</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare09.png"><img src="../../../../public/2025/08/13/4562/cloudflare09.png" alt="Cloudflare"></a></p>
+<p>セットアップが完了したことが表示されるのでページを閉じ、<strong>認証に戻る</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare13.png"><img src="../../../../public/2025/08/13/4562/cloudflare13.png" alt="Cloudflare"></a></p>
+<p><strong>ログイン方法</strong> に先程作成した <strong>GitHub</strong> が追加されているので、<strong>テスト</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare10.png"><img src="../../../../public/2025/08/13/4562/cloudflare10.png" alt="Cloudflare"></a></p>
+<p>GitHub 側で作成した OAuth アプリを承認するかどうか聞かれるので <strong>Authorize xxxxxx</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare11.png"><img src="../../../../public/2025/08/13/4562/cloudflare11.png" alt="Cloudflare"></a></p>
+<p>テストが成功したことが表示される</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare12.png"><img src="../../../../public/2025/08/13/4562/cloudflare12.png" alt="Cloudflare"></a></p>
+<h3 id="2-Cloudflare-Access-と-Tunnel-を連携させる"><a href="#2-Cloudflare-Access-と-Tunnel-を連携させる" class="headerlink" title="2. Cloudflare Access と Tunnel を連携させる"></a>2. Cloudflare Access と Tunnel を連携させる</h3><p>Cloudflare ダッシュボードを開き、左側の <strong>Zero Trust</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare02.png"><img src="../../../../public/2025/08/13/4562/cloudflare02.png" alt="Cloudflare"></a></p>
+<p>左側の <strong>Access</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare14.png"><img src="../../../../public/2025/08/13/4562/cloudflare14.png" alt="Cloudflare"></a></p>
+<p><strong>アプリケーションを作成する</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare15.png"><img src="../../../../public/2025/08/13/4562/cloudflare15.png" alt="Cloudflare"></a></p>
+<p><strong>セルフホスト</strong> 内の <strong>アプリケーションを追加する</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare16.png"><img src="../../../../public/2025/08/13/4562/cloudflare16.png" alt="Cloudflare"></a></p>
+<p><strong>アプリケーション名</strong> に <strong>Cloudflare Tunnel</strong> の先で公開するサービスの名称を入力<br><strong>パブリック ホスト名を追加</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare17.png"><img src="../../../../public/2025/08/13/4562/cloudflare17.png" alt="Cloudflare"></a></p>
+<p><strong>サブドメイン</strong> に <strong>Cloudflare Tunnel</strong> で指定した、公開するサービスに対応するサブドメインを指定<br><strong>ドメイン</strong> にも、公開するサービスと紐づけたドメインを指定</p>
+<p>次に <strong>Access ポリシー</strong> 内の <strong>新しいポリシーを作成する</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare18.png"><img src="../../../../public/2025/08/13/4562/cloudflare18.png" alt="Cloudflare"></a></p>
+<p><strong>ポリシー名</strong> を入力 (自由記述)<br><strong>ルールを追加する</strong> 内の <strong>包含</strong> にある <strong>セレクター</strong> から <strong>Emails</strong> を指定<br>値に GitHub の認証を許可するユーザのメールアドレスを入力<br>最後に <strong>保存</strong> を押下し、先のページに戻る</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare19.png"><img src="../../../../public/2025/08/13/4562/cloudflare19.png" alt="Cloudflare"></a></p>
+<p><strong>Access ポリシー</strong> の <strong>既存のポリシー選択</strong> から先程作成したポリシーをチェックし、<strong>確認</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare20.png"><img src="../../../../public/2025/08/13/4562/cloudflare20.png" alt="Cloudflare"></a></p>
+<p><strong>ログイン方法</strong> の <strong>利用可能なすべての ID プロバイダーを受け入れる</strong> のトグルを OFF に変更<br><strong>One time PIN</strong> のチェックを外す<br><strong>次へ</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare21.png"><img src="../../../../public/2025/08/13/4562/cloudflare21.png" alt="Cloudflare"></a></p>
+<p><strong>次へ</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare22.png"><img src="../../../../public/2025/08/13/4562/cloudflare22.png" alt="Cloudflare"></a></p>
+<p><strong>保存</strong> を押下</p>
+<p><a href="../../../../public/2025/08/13/4562/cloudflare23.png"><img src="../../../../public/2025/08/13/4562/cloudflare23.png" alt="Cloudflare"></a></p>
+<p>以上で設定が完了した</p>
+<h3 id="3-認証してみる"><a href="#3-認証してみる" class="headerlink" title="3. 認証してみる"></a>3. 認証してみる</h3><p><strong>Cloudflare Tunnel</strong> で設定した URL にアクセスすると、 <strong>Cloudflare Access</strong> の認証ページが表示される<br>GitHub が一覧にあるので選択</p>
+<p><a href="../../../../public/2025/08/13/4562/login01.png"><img src="../../../../public/2025/08/13/4562/login01.png" alt="Authentication"></a></p>
+<p>GitHub の認証情報を入力</p>
+<p><a href="../../../../public/2025/08/13/4562/login02.png"><img src="../../../../public/2025/08/13/4562/login02.png" alt="Authentication"></a></p>
+<p>MFA 認証を処理</p>
+<p><a href="../../../../public/2025/08/13/4562/login03.png"><img src="../../../../public/2025/08/13/4562/login03.png" alt="Authentication"></a></p>
+<p>無事に自分のサービスのページに遷移できた</p>
+<p><a href="../../../../public/2025/08/13/4562/login04.png"><img src="../../../../public/2025/08/13/4562/login04.png" alt="Authentication"></a></p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2025-08-13</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Cloudflare/" title="Cloudflare">Cloudflare </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2025/08/13/4562/,A certain engineer &quot;COMPLEX&quot;,開発メモ その457 Cloudflare Access で Cloudflare Tunnel を保護する,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2025/08/13/4561/" title="開発メモ その456 iOS/Android アプリでクレジットカード番号を自動入力できない">前へ</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2025/08/11/4560/" title="開発メモ その455 Microsoft Entra ID (旧称 Azure Active Directory) に authd を使って Ubuntu マシンにログインを参加させる">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
