@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>開発メモ その464 DELL Optiplex 9020MT の電源を交換する · A certain engineer "COMPLEX"</title><meta name="description" content="IntroductionPC 用電源を初めて購入して純正品と交換したのでメモ。DELL の古い PC Optiplex 9020MT に GPU をつけようと思ったら補助電源がなかったので。
+下記を参考にして実施。
+grewhanの日記DELL optiplex 9020MTの電源ユニット載せ換えメ"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/apps">Apps</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その464 DELL Optiplex 9020MT の電源を交換する</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>PC 用電源を初めて購入して純正品と交換したのでメモ。<br>DELL の古い PC Optiplex 9020MT に GPU をつけようと思ったら補助電源がなかったので。</p>
+<p>下記を参考にして実施。</p>
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://grewhan.hatenablog.com/entry/2018/03/09/210637" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=grewhan.hatenablog.com"></img><div class="hbc-site-name">grewhanの日記</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://cdn.image.st-hatena.com/image/scale/1e08f1e143e942decfea7431f1a83fec361f3ac5/backend=imagemagick;version=1;width=1300/https%3A%2F%2Fcdn-ak.f.st-hatena.com%2Fimages%2Ffotolife%2Fg%2Fgrewhan%2F20180309%2F20180309202038.jpg"></img></div><div class="hbc-text"><div class="hbc-title">DELL optiplex 9020MTの電源ユニット載せ換えメモ - grewhanの日記</div><div class="hbc-url">https://grewhan.hatenablog.com/entry/2018/03/09/210637</div><div class="hbc-description">写真編集用に安く入手したので、 ビデオカードも増設しようと考えましたが、 この9020MTさんは電源ユニットが貧弱なのと、 マザーボードのコネクタがDELLの変態仕様と言う 少し困ったちゃんのかわいいヤツなんです。 (電源ユニットからマザーボードへの電源コネクタが24ピンではなく…</div></div></div></div></a></div></div>
+
+<h1 id="How-to-do"><a href="#How-to-do" class="headerlink" title="How to do?"></a>How to do?</h1><p>部品は下記</p>
+<ul>
+<li>電源ユニット<ul>
+<li><a target="_blank" rel="noopener" href="https://www.amazon.co.jp/dp/B0CLL7352V">CORSAIR CX650 CP-9020278-JP</a></li>
+</ul>
+</li>
+<li>24 ピンから8Pin電源変換ケーブル<ul>
+<li><a target="_blank" rel="noopener" href="https://www.amazon.co.jp/dp/B096TRW8KB">Xiatiaosann 24 ピンから8Pin電源変換ケーブルDELL用、Optiplex マザーボード 3020 7020 9020 Q75 Q65用、ATX PSU 電源アダプター ケーブル、30cm 18AWG</a></li>
+</ul>
+</li>
+<li>GPU<ul>
+<li>NVIDIA GeForce GTX 960 2GB</li>
+</ul>
+</li>
+<li>交換対象電源ユニット<ul>
+<li><a target="_blank" rel="noopener" href="https://www.amazon.co.jp/L290AM-00-L290EM-00-L290EM-01-HU290EM-01-AC290AM-00/dp/B0CN6NL5TT">AC290AM-00</a></li>
+</ul>
+</li>
+</ul>
+<p>交換手順は基本上記のブログ通り。<br>マザーボードの配置は下記。</p>
+<p><a href="../../../../public/2025/10/12/4569/motherboard.png"><img src="../../../../public/2025/10/12/4569/motherboard.png" alt="motherboard"></a></p>
+<ol>
+<li>電源ケーブルを抜く</li>
+<li>マザーボードの <strong>7. 4-pin CPU power connector</strong> と <strong>13. 8-pin power connector</strong> を外す (<strong>15. HDD and optical driver power conenctor</strong> は電源ユニットとは繋がっていないためそのままにしておきます)</li>
+<li>背面のネジを 4 本外し、電源ユニットを外す</li>
+<li>新しい電源ユニットを設置し、ネジ止め</li>
+<li><strong>24 ピンから8Pin電源変換ケーブル</strong> を電源ユニットから伸びている <strong>ATX (24 pin) ケーブル</strong> につなぎ、その先を <strong>13. 8-pin power connector</strong> に接続</li>
+<li>電源ユニットから伸びている <strong>ATX 12V/EPS 12V (4+4 pin) ケーブル</strong> を <strong>7. 4-pin CPU power connector</strong> に接続</li>
+<li>電源ユニットから伸びている <strong>PCIe (6+2 pin) ケーブル</strong> を GPU の補助電源部分に接続</li>
+</ol>
+<p>手順 5. においてケーブル側の 8pin (オス) を マザーボード側の 4pin (メス) に接続してよいのか迷うが、下記のように接続部が合うようになっているので、安心して接続すればよい。<br>※ 8pin 側の半分が余ってどこにも接続されない状況になる</p>
+<p><a href="../../../../public/2025/10/12/4569/atx.png"><img src="../../../../public/2025/10/12/4569/atx.png" alt="eps-atx"></a></p>
+<p>上記で完了。<br>正直、初めて電源ユニットを購入したことから、ミスをなくすためブログで採用した機種と同等品を採用したが、使用した GPU の性能を考えるとかなり過剰だった感は否めないが、良い経験になった。</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2025-10-12</span><i class="fa fa-tag"></i><a class="tag" href="/categories/DELL/" title="DELL">DELL </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2025/10/12/4569/,A certain engineer &quot;COMPLEX&quot;,開発メモ その464 DELL Optiplex 9020MT の電源を交換する,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="next pagbuttons"><a class="btn" role="navigation" href="/2025/10/05/4568/" title="開発メモ その463 DSO support routines:WIN32_LOAD:could not load the shared library:.\crypto\dso\dso_win32.c:179:filename(providers.dll)">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
