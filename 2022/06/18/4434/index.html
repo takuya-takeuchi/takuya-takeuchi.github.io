@@ -15,7 +15,7 @@ boost log
 <p>しかし、一つだけ欠点があります。<br><br>それが、「設定ファイルによる制御ができない」です。</p>
 <p>例えば、<strong>log4cxx</strong> は log4j.xml といった設定ファイルでソースコードの変更なしにログレベルや出力先を制御できますが、 spdlog にはそのような機能はありません。<br><br>厳密には、コマンドラインの引数などを駆使すれば、制御できなくもないのですが、それはそれで面倒。</p>
 <p>という欠点を解決したのが、</p>
-
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/guangie88/spdlog_setup" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://opengraph.githubassets.com/16719ca7cdaa42fd7280bd5a2850a79d64cd79e33c79f2ac3b4f908dd88fab04/guangie88/spdlog_setup"></img></div><div class="hbc-text"><div class="hbc-title">GitHub - guangie88/spdlog_setup: spdlog setup initialization via file configuration for convenience.</div><div class="hbc-url">https://github.com/guangie88/spdlog_setup</div><div class="hbc-description">spdlog setup initialization via file configuration for convenience. - guangie88/spdlog_setup</div></div></div></div></a></div></div>
 
 <p>です。</p>
 <p>toml ファイルによって、ログを制御できます。</p>

@@ -10,7 +10,7 @@
 
 <p>マイグレーションもバッチを組んでいるので、そこまで苦ではないのですが、はまるところには本当にはまります。</p>
 <h1 id="git-cloneが動かない"><a href="#git-cloneが動かない" class="headerlink" title="git cloneが動かない"></a>git cloneが動かない</h1><p>会社のPCには知識DBとしてredmine_knowledgebaseを使っています。</p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/alexbevi/redmine_knowledgebase" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://opengraph.githubassets.com/0501d5095096036a30dfd39b8cbc2adc4406c34a41e0cd9ba7a67cce26a31a7b/alexbevi/redmine_knowledgebase"></img></div><div class="hbc-text"><div class="hbc-title">GitHub - alexbevi/redmine_knowledgebase: A knowledgebase plugin for Redmine</div><div class="hbc-url">https://github.com/alexbevi/redmine_knowledgebase</div><div class="hbc-description">A knowledgebase plugin for Redmine. Contribute to alexbevi/redmine_knowledgebase development by creating an account on GitHub.</div></div></div></div></a></div></div>
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/alexbevi/redmine_knowledgebase" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://opengraph.githubassets.com/f89f00fc26858e1e7e1d91661abc82dc9d4e7e9569a6a54c97b556f1e77f438e/alexbevi/redmine_knowledgebase"></img></div><div class="hbc-text"><div class="hbc-title">GitHub - alexbevi/redmine_knowledgebase: A knowledgebase plugin for Redmine</div><div class="hbc-url">https://github.com/alexbevi/redmine_knowledgebase</div><div class="hbc-description">A knowledgebase plugin for Redmine. Contribute to alexbevi/redmine_knowledgebase development by creating an account on GitHub.</div></div></div></div></a></div></div>
 
 <p>ですが、このソフトもそれなりに導入に際してトラブルが多いです。<br>もちろん、トラブルを乗り越える価値は絶対にあります。</p>
 <p>久しぶりにPCを初期化して0から環境を構築したので、すんなりマイグレーションできなかったわけです。</p>
@@ -27,7 +27,7 @@
 <h1 id="dllが古い"><a href="#dllが古い" class="headerlink" title="dllが古い"></a>dllが古い</h1><p>さて、悩むこと2時間。<br>何が原因だったのか、というと思い出しました。</p>
 <p>原因は、OpenSSLまわりのdllが古いことでした。libeay32が古いせいか、git-remot-https.exeがコールしようとしているAPIが存在しないため、cloneに失敗していたようです。<br><strong>プロシージャ エントリ ポイント XXXXXXX がダイナミック リンク ライブラリ LIBEAY32.dll から見つかりませんでした。</strong>ってやつです。</p>
 <p>どうしてこうなるのかわかりませんが、なるものは仕方ないですので、対応策です。<br>ただ、これは応急処置というか、システムの依存関係を壊すかもしれないので注意です。</p>
-<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="http://indy.fulgan.com/SSL/" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=indy.fulgan.com"></img><div class="hbc-site-name">indy.fulgan.com</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img></img></div><div class="hbc-text"><div class="hbc-title">Index of /SSL</div><div class="hbc-url">http://indy.fulgan.com/SSL/</div></div></div></div></a></div></div>
+
 
 <p>上記ページから、環境に合わせたzipをダウンロードしてきてください。最新版です。</p>
 <p>Windowsの32bitなら、<strong>openssl-1.0.2h-i386-win32.zip</strong>、64bitなら<strong>openssl-1.0.2h-x64_86-win64.zip</strong>です。</p>

@@ -17,7 +17,17 @@
 </ul>
 <p>他多数。</p>
 <p>根本の原因は、ビルドプロセスが SSH のセッション上でキーチェーンにアクセスできないことが原因らしい。</p>
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://superuser.com/questions/270095/when-i-ssh-into-os-x-i-dont-have-my-keychain-when-i-use-terminal-i-do/363840" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=superuser.com"></img><div class="hbc-site-name">Super User</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://superuser.com/Content/Sites/superuser/Img/apple-touch-icon@2.png?v=e869e4459439"></img></div><div class="hbc-text"><div class="hbc-title">When I SSH into OS X, I don&#39;t have my keychain. When I use Terminal, I do</div><div class="hbc-url">https://superuser.com/questions/270095/when-i-ssh-into-os-x-i-dont-have-my-keychain-when-i-use-terminal-i-do/363840</div><div class="hbc-description">Steps
+Open PuTTY on my Windows desktop.
+SSH into my MacBook Pro.
+cd to a github clone
+$ git push
+Expected
 
+Everything up-to-date
+Actual
+
+Ent…</div></div></div></div></a></div></div>
 
 <p>キーチェーンにアクセスできないから署名鍵にアクセスできずアプリの署名に失敗というわけ。</p>
 <p>対策は SSH コンソールや VSCode のターミナルで下記を入力。</p>
