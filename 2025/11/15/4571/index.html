@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>開発メモ その466 古い Linux (CentOS 7) に対して Visual Studio Code で接続できない · A certain engineer "COMPLEX"</title><meta name="description" content="IntroductionCentOS 7 というサポート切れして久しい OS に対して最新の Visual Studio Code から接続した際、
+123456789The following issues were detected in your most recent Remote - SS"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/apps">Apps</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その466 古い Linux (CentOS 7) に対して Visual Studio Code で接続できない</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>CentOS 7 というサポート切れして久しい OS に対して最新の Visual Studio Code から接続した際、</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">The following issues were detected in your most recent Remote - SSH session </span><br><span class="line">Ctrl+click on an issue to continue in Copilot Chat. </span><br><span class="line">╔══════════════╤════════════════════════════════════════════════════════════════════════════════════════════════╤════════════════════════════════════════════════════════════════════════════════════════════════╤════════════════════════════════════════════════════════════════════════════════════════════════╗</span><br><span class="line">║    Status    │ Message                                                                                        │ Mitigations                                                                                    │ Resources                                                                                      ║</span><br><span class="line">╟──────────────┼────────────────────────────────────────────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────────────╢</span><br><span class="line">║ LinuxPrereqs │ The remote host may not meet VS Code Server&#39;s prerequisites for glibc and libstdc++ (The       │ • https:&#x2F;&#x2F;aka.ms&#x2F;vscode-remote&#x2F;faq&#x2F;old-linux                                                   │ • https:&#x2F;&#x2F;aka.ms&#x2F;vscode-remote&#x2F;linux-prerequisites                                             ║</span><br><span class="line">║              │ remote host does not meet the prerequisites for running VS Code Server)                        │                                                                                                │                                                                                                ║</span><br><span class="line">╚══════════════╧════════════════════════════════════════════════════════════════════════════════════════════════╧════════════════════════════════════════════════════════════════════════════════════════════════╧════════════════════════════════════════════════════════════════════════════════════════════════╝</span><br><span class="line">See verbose information in the Output Log...</span><br></pre></td></tr></table></figure>
+
+<p>のようなエラーが表示され接続できなっていたことに今更気づく。</p>
+<p><code>Remote - SSH</code> のコンソールを除くと下記のようなメッセージも出力されている。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[11:40:30.511]  ---------- [Session Summary] ----------- </span><br><span class="line">[11:40:30.511] [LinuxPrereqs]: The remote host may not meet VS Code Server&#39;s prerequisites for glibc and libstdc++ (The remote host does not meet the prerequisites for running VS Code Server)</span><br><span class="line">[11:40:30.511]  ---------------------------------------- </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; [2025-11-09 14:06:28] error This machine does not meet Visual Studio Code Server</span><br><span class="line">&gt; &#39;s prerequisites, expected either...</span><br><span class="line">&gt;   - find GLIBC &gt;&#x3D; v2.28.0 (but found v2.27.0 instead) for GNU environments      </span><br><span class="line">&gt;   - find &#x2F;lib&#x2F;ld-musl-x86_64.so.1, which is required to run the Visual Studio Co</span><br><span class="line">&gt; de Server in musl environments</span><br></pre></td></tr></table></figure>
+
+<p>その対策。</p>
+<h1 id="How-to-resolve"><a href="#How-to-resolve" class="headerlink" title="How to resolve?"></a>How to resolve?</h1><p>調べてみると、Visual Studio Code の <code>v1.99</code> 以降でこうした事象が発生すると。</p>
+<p><a target="_blank" rel="noopener" href="https://code.visualstudio.com/docs/remote/linux#_remote-host-container-wsl-linux-prerequisites">Remote host / container / WSL Linux prerequisites</a></p>
+<table>
+<thead>
+<tr>
+<th>Distribution</th>
+<th>Base Requirements</th>
+<th>Remote - SSH Requirements</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>General</td>
+<td>kernel &gt;= 4.18, glibc &gt;=2.28, libstdc++ &gt;= 3.4.25, tar</td>
+<td>OpenSSH server, bash, and curl or wget</td>
+<td>Run ldd –version to check the glibc version. Run strings /usr/lib64/libstdc++.so.6</td>
+</tr>
+<tr>
+<td>General for Arm32</td>
+<td>libatomic1</td>
+<td>No additional requirements.</td>
+<td></td>
+</tr>
+<tr>
+<td>Ubuntu 20.04+, Debian 10+, Raspberry Pi OS Buster/10+ and downstream distributions</td>
+<td>libc6 libstdc++6 ca-certificates tar</td>
+<td>openssh-server bash and curl or wget</td>
+<td>Requires kernel &gt;= 4.18, glibc &gt;= 2.28, libstdc++ &gt;= 3.4.25.</td>
+</tr>
+<tr>
+<td>RHEL / CentOS 8+</td>
+<td>glibc libgcc libstdc++ ca-certificates tar</td>
+<td>openssh-server bash and curl or wget</td>
+<td>Requires kernel &gt;= 4.18, glibc &gt;= 2.28, libstdc++ &gt;= 3.4.25.</td>
+</tr>
+<tr>
+<td>Alpine Linux 3.16+</td>
+<td>musl libgcc libstdc++. musl &gt;= 1.2.3, glibc not required.</td>
+<td>Not yet supported.</td>
+<td>Supported in Dev Containers and WSL. Extensions installed in the container may not work due to glibc dependencies in extension native code.</td>
+</tr>
+<tr>
+<td>openSUSE Leap / SUSE Linux Enterprise 15+</td>
+<td>glibc libgcc_s1 libstdc++6 ca-certificates gzip tar</td>
+<td>curl or wget</td>
+<td>Requires kernel &gt;= 4.18, glibc, libstdc++6</td>
+</tr>
+</tbody></table>
+<p>要するに <code>glibc</code> か <code>libstdc++</code> または <code>kernel</code> が古い、ということ。<br>これらを全て解決できればいいが、どれもアップデートは難しいし、特に、システム全体が依存している <code>glibc</code> のアップデートはお勧めできない。</p>
+<p>ということで、公式 <a target="_blank" rel="noopener" href="https://code.visualstudio.com/docs/remote/faq#_can-i-run-vs-code-server-on-older-linux-distributions">Can I run VS Code Server on older Linux distributions?</a> にあるように、</p>
+<ul>
+<li>sysroot を docker コンテナ内で生成</li>
+<li>接続先の所定のディレクトリに配置</li>
+</ul>
+<p>という対策が紹介されている。</p>
+<p>しかし、やることが多いのと、手順があまりにも省略してあり、成功するまでに時間を浪費したのでメモ。</p>
+<h3 id="1-kernel-の更新"><a href="#1-kernel-の更新" class="headerlink" title="1. kernel の更新"></a>1. kernel の更新</h3><p>CentOS 7 のインストール直後のカーネルは、下記のように古い。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ uname -r</span><br><span class="line">3.10.0-957.el7.x86_64</span><br></pre></td></tr></table></figure>
+
+<p>先述のカーネルの必須要件は <code>4.18</code> なので、更新する必要がある。<br>更新手順は <a target="_blank" rel="noopener" href="https://taktak.jp/2025/11/15/4570/">開発メモ その465 古い Linux (CentOS 7) のカーネルを更新する</a> を参照。</p>
+<h3 id="2-sysroot-の作成"><a href="#2-sysroot-の作成" class="headerlink" title="2. sysroot の作成"></a>2. sysroot の作成</h3><p><a target="_blank" rel="noopener" href="https://github.com/ursetto/vscode-sysroot/blob/main/Dockerfile">Dockerfile</a> を公開している有志がいるのでそれを参考にする。</p>
+<p><code>docker build</code> の際、先の Microsoft の公式説明のページもあった、設定ファイルが必要なので、接続先 Linux の CPU アーキテクチャに合わせてそちらも準備する。</p>
+<p>例えば、カレントディレクトリから見て、 <code>vscode-server-sysroot\ubuntu\Dockerfile</code>、<code>vscode-server-sysroot\ubuntu\x86_64-gcc-8.5.0-glibc-2.28</code> が存在するならビルドは下記のように行う。</p>
+<h5 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h5><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">mkdir</span> output</span><br><span class="line">$ docker build -t vscode-sysroot --target sysroot vscode-server-sysroot\ubuntu</span><br><span class="line">$ docker run -it --rm -v <span class="variable">%CD%</span>\output:/out vscode-sysroot cp vscode-sysroot-x86_64-linux-gnu.tgz /out/</span><br></pre></td></tr></table></figure>
+
+<h5 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir -p output</span><br><span class="line">$ docker build -t vscode-sysroot --target sysroot vscode-server-sysroot/ubuntu</span><br><span class="line">$ docker run -it --rm -v <span class="variable">$PWD</span>/output:/out vscode-sysroot cp vscode-sysroot-x86_64-linux-gnu.tgz /out/</span><br></pre></td></tr></table></figure>
+
+<p>かなり時間がかかるので注意。<br>ビルドに成功すると <code>output</code> に <code>vscode-sysroot-x86_64-linux-gnu.tgz</code> が生成される。</p>
+<h3 id="2-リモート先に転送"><a href="#2-リモート先に転送" class="headerlink" title="2. リモート先に転送"></a>2. リモート先に転送</h3><p><code>vscode-sysroot-x86_64-linux-gnu.tgz</code> を接続先の Linux に転送する。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ scp output\vscode-sysroot-x86_64-linux-gnu.tgz user@<span class="number">192</span>.<span class="number">168</span>.<span class="number">11</span>.<span class="number">117</span>:~</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-リモート先での設定"><a href="#3-リモート先での設定" class="headerlink" title="3. リモート先での設定"></a>3. リモート先での設定</h3><p>転送した <code>vscode-sysroot-x86_64-linux-gnu.tgz</code> を所定のディレクトリに展開</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir -p ~/.vscode-server/sysroot</span><br><span class="line">$ tar zxvf ~/vscode-sysroot-x86_64-linux-gnu.tgz -C ~/.vscode-server/sysroot --strip-components=1 &amp;&amp; rm vscode-sysroot-x86_64-linux-gnu.tgz</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-環境変数の設定"><a href="#4-環境変数の設定" class="headerlink" title="4. 環境変数の設定"></a>4. 環境変数の設定</h3><p>Visual Studio Code Server が起動時に読み込む環境変数を設定。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ touch ~&#x2F;.vscode-server&#x2F;sysroot.sh</span><br><span class="line">cat &lt;&lt; &quot;EOF&quot; &gt; ~&#x2F;.vscode-server&#x2F;sysroot.sh</span><br><span class="line">export VSCODE_SERVER_CUSTOM_GLIBC_LINKER&#x3D;$HOME&#x2F;.vscode-server&#x2F;sysroot&#x2F;lib&#x2F;ld-linux-x86-64.so.2</span><br><span class="line">export VSCODE_SERVER_CUSTOM_GLIBC_PATH&#x3D;$HOME&#x2F;.vscode-server&#x2F;sysroot&#x2F;usr&#x2F;lib:$HOME&#x2F;.vscode-server&#x2F;sysroot&#x2F;lib</span><br><span class="line">export VSCODE_SERVER_PATCHELF_PATH&#x3D;$HOME&#x2F;.vscode-server&#x2F;sysroot&#x2F;usr&#x2F;bin&#x2F;patchelf</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">$ echo &#39;source ~&#x2F;.vscode-server&#x2F;sysroot.sh&#39; &gt;&gt; ~&#x2F;.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>特に再起動は不要。</p>
+<h3 id="5-Visual-Studio-Code-から再接続"><a href="#5-Visual-Studio-Code-から再接続" class="headerlink" title="5. Visual Studio Code から再接続"></a>5. Visual Studio Code から再接続</h3><p>接続元のマシンから再度 Remote-SSH で接続を行うと <strong>Visual Studio Code Server</strong> のダウンロードが実施され、下記のダイアログが表示される。</p>
+<p><a href="../../../../public/2025/11/15/4571/vscode.png"><img src="../../../../public/2025/11/15/4571/vscode.png" alt="recovery"></a></p>
+<p>許可すれば、従来通り開発が可能になる。</p>
+<p>ちなみに Ubuntu 18.04 も同様の事象に陥るが、上の手順を実施してもダメだった。</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2025-11-15</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Microsoft/" title="Microsoft">Microsoft </a><a class="tag" href="/categories/Microsoft/Visual-Studio-Code/" title="Visual Studio Code">Visual Studio Code </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2025/11/15/4571/,A certain engineer &quot;COMPLEX&quot;,開発メモ その466 古い Linux (CentOS 7) に対して Visual Studio Code で接続できない,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="next pagbuttons"><a class="btn" role="navigation" href="/2025/11/15/4570/" title="開発メモ その465 古い Linux (CentOS 7) のカーネルを更新する">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
