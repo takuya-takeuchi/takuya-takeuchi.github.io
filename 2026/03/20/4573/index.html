@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="ja-JP"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Core"><link rel="icon" href="/images/favicon.ico" type="image/x-icon"><title>開発メモ その468 Onnxruntime を minimal build すると? · A certain engineer "COMPLEX"</title><meta name="description" content="Introductiononnxruntime のビルドオプションに --minimal_build が存在する。これ単独で使うことはまずなく、特定の演算子 (OP) 以外を除外する --include_ops_by_config と組み合わせることで生成されるバイナリのサイズを小さくできる。モバイ"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/blogcard.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 5.1.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.webp" style="width:127px;"><h3 title=""><a href="/">A certain engineer &quot;COMPLEX&quot;</a></h3><div class="description"><p>とある技術者の劣等感</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/takuya-takeuchi"><i class="fa fa-github"></i></a></li><li><a target="_blank" rel="noopener" href="https://twitter.com/takuya_takeuchi"><i class="fa fa-twitter-square"></i></a></li><li><a target="_blank" rel="noopener" href="https://www.facebook.com/takuya.takeuchi.sns"><i class="fa fa-facebook-square"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 </span><i class="fa fa-star"></i><span> Core</span></div><div class="by_farbox"><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo </a><span> & </span><a href="https://github.com/mrcore/hexo-theme-Anatole-Core" target="_blank">Anatole-Core  </a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="search"><div class="text"><input placeholder="検索ワードを入力してください" id="search-text" onkeypress="javascript:search(event)"></div><div class="btn"><a><i class="fa fa-search"></i></a></div></div><div class="nav"><li><a href="/">ホーム</a></li><li><a href="/archives">アーカイブ</a></li><li><a href="/apps">Apps</a></li><li><a href="/about">自己紹介</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>開発メモ その468 Onnxruntime を minimal build すると?</a></h3></div><div class="post-content"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p><a target="_blank" rel="noopener" href="https://github.com/microsoft/onnxruntime">onnxruntime</a> のビルドオプションに <code>--minimal_build</code> が存在する。<br>これ単独で使うことはまずなく、特定の演算子 (OP) 以外を除外する <code>--include_ops_by_config</code> と組み合わせることで生成されるバイナリのサイズを小さくできる。<br>モバイル向けのビルドでは特に効果が大きい。<br>制限もあり、一部の EP がビルドできない (CoreML 等)、従来の onnx ファイルは使えなくなり、 ORT フォーマットに変換が必要になる等がある。<br>(ORT フォーマットに変換しても、既存の読み込みコードや推論コード自体は一切変更不要)</p>
+<p>では、このオプションを有効にすると、どの程度バイナリに違いが生じるか?</p>
+<h1 id="Try"><a href="#Try" class="headerlink" title="Try!!"></a>Try!!</h1><p>実験環境は下記</p>
+<ul>
+<li>OS<ul>
+<li>Windows 10 22H2</li>
+<li>Ubuntu 22.04</li>
+<li>macos 15.7</li>
+</ul>
+</li>
+<li>Onnxruntime<ul>
+<li>1.24.3 (ただし、linux のみ 1.23.2)</li>
+</ul>
+</li>
+<li>モデルファイル<ul>
+<li>MNIST</li>
+</ul>
+</li>
+</ul>
+<p>余談だが、少し古い onnxruntime では <code>--minimal_build</code> を付与するとビルドに失敗するという問題 <a target="_blank" rel="noopener" href="https://github.com/microsoft/onnxruntime/issues/25796">[Build] onnx_minimal.cmake removed from v1.22.1 and v1.22.1 causing minimal build errors #25796</a> があったので注意。<br>(会社で時間を無駄にした)</p>
+<h3 id="必要な演算子の特定"><a href="#必要な演算子の特定" class="headerlink" title="必要な演算子の特定"></a>必要な演算子の特定</h3><p>推論対象の onnx ファイルを含むディレクトリを用意し、下記のスクリプトを実行する。<br>(実行には onnxruntime の python パッケージを事前にインストール)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ python3 onnxruntime/tools/python/convert_onnx_models_to_ort.py testdata --output_dir output</span><br><span class="line"></span><br><span class="line">Converting models with optimization style <span class="string">&#x27;Fixed&#x27;</span> and level <span class="string">&#x27;all&#x27;</span></span><br><span class="line">Converting optimized ONNX model C:\Work\testdata\mnist.onnx to ORT format model C:\Work\output\mnist.ort</span><br><span class="line">Converted 1/1 models successfully.</span><br><span class="line">Generating config file from ORT format models with optimization style <span class="string">&#x27;Fixed&#x27;</span> and level <span class="string">&#x27;all&#x27;</span></span><br><span class="line">2026-03-20 09:56:17,595 ort_format_model.utils [INFO] - Created config <span class="keyword">in</span> C:\Work\output\required_operators.config</span><br><span class="line">Converting models with optimization style <span class="string">&#x27;Runtime&#x27;</span> and level <span class="string">&#x27;all&#x27;</span></span><br><span class="line">Converting optimized ONNX model C:\Work\testdata\mnist.onnx to ORT format model C:\Work\output\mnist.with_runtime_opt.ort</span><br><span class="line">Converted 1/1 models successfully.</span><br><span class="line">Converting models again without runtime optimizations to generate a complete config file. These converted models are temporary and will be deleted.</span><br><span class="line">Converting optimized ONNX model C:\Work\testdata\mnist.onnx to ORT format model C:\Work\testdata\tmp6nt8njfj.without_runtime_opt\mnist.ort</span><br><span class="line">Converted 1/1 models successfully.</span><br><span class="line">Generating config file from ORT format models with optimization style <span class="string">&#x27;Runtime&#x27;</span> and level <span class="string">&#x27;all&#x27;</span></span><br><span class="line">2026-03-20 09:56:17,625 ort_format_model.utils [INFO] - Created config <span class="keyword">in</span> C:\Work\output\required_operators.with_runtime_opt.config</span><br></pre></td></tr></table></figure>
+
+<p>出力先のディレクトリに下記が生成される。</p>
+<ul>
+<li>xxxx.ort</li>
+<li>xxxx.with_runtime_opt.ort</li>
+<li>required_operators.config</li>
+<li>required_operators.with_runtime_opt.config</li>
+</ul>
+<p>複数の onnx ファイルがあっても、全ての onnx ファイルに必要な演算子一覧が抽出される。</p>
+<p><strong>required_operators.config</strong> の中身は下記のようになっており、必要な演算子が列挙されていることがわかる。</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Generated from model/s:</span><br><span class="line"># - C:\Work\output\mnist.ort</span><br><span class="line">ai.onnx;5;Reshape</span><br><span class="line">ai.onnx;7;Gemm</span><br><span class="line">ai.onnx;8;MaxPool</span><br><span class="line">com.microsoft;1;FusedConv</span><br></pre></td></tr></table></figure>
+
+<p><strong>with_runtime_opt</strong> の有無の違いは</p>
+<ul>
+<li>with_runtime_opt あり<ul>
+<li>実行時に追加の最適化が必要になる演算子を含めた設定。 CoreML や NNAPI など向け</li>
+</ul>
+</li>
+<li>with_runtime_opt なし<ul>
+<li>最適化済みの演算子の一覧。</li>
+</ul>
+</li>
+</ul>
+<p>最適化に関しては <a target="_blank" rel="noopener" href="https://onnxruntime.ai/docs/performance/model-optimizations/ort-format-models.html?utm_source=chatgpt.com#convert-onnx-models-to-ort-format-script-usage">Convert ONNX models to ORT format script usage</a> で説明があるのでそちらを参照。</p>
+<h3 id="バイナリの比較"><a href="#バイナリの比較" class="headerlink" title="バイナリの比較"></a>バイナリの比較</h3><p>ビルドのコマンドは下記 (Windows/Liux/Mac でそこまで差はない)。</p>
+<h5 id="full-build"><a href="#full-build" class="headerlink" title="full build"></a>full build</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ python tools/ci_build/build.py --config Release `</span><br><span class="line">                                 --cmake_generator <span class="string">&quot;Visual Studio 17 2022&quot;</span> `</span><br><span class="line">                                 --enable_msvc_static_runtime `</span><br><span class="line">                                 --parallel `</span><br><span class="line">                                 --build_dir build `</span><br><span class="line">                                 --skip_tests `</span><br><span class="line">                                 --skip_onnx_tests `</span><br><span class="line">                                 --use_full_protobuf `</span><br><span class="line">                                 --cmake_extra_defines CMAKE_INSTALL_PREFIX=install `</span><br><span class="line">                                                       CMAKE_MSVC_RUNTIME_LIBRARY=<span class="string">&quot;MultiThreaded&quot;</span> `</span><br><span class="line">                                                       onnxruntime_BUILD_UNIT_TESTS=ON</span><br></pre></td></tr></table></figure>
+
+<h5 id="minimal-build"><a href="#minimal-build" class="headerlink" title="minimal build"></a>minimal build</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ python tools/ci_build/build.py --config Release `</span><br><span class="line">                                 --cmake_generator <span class="string">&quot;Visual Studio 17 2022&quot;</span> `</span><br><span class="line">                                 --enable_msvc_static_runtime `</span><br><span class="line">                                 --parallel `</span><br><span class="line">                                 --build_dir build `</span><br><span class="line">                                 --skip_tests `</span><br><span class="line">                                 --skip_onnx_tests `</span><br><span class="line">                                 --use_full_protobuf `</span><br><span class="line">                                 --minimal_build extended `</span><br><span class="line">                                 --disable_ml_ops `</span><br><span class="line">                                 --include_ops_by_config required_operators.config `</span><br><span class="line">                                 --cmake_extra_defines CMAKE_INSTALL_PREFIX=install `</span><br><span class="line">                                                       CMAKE_MSVC_RUNTIME_LIBRARY=<span class="string">&quot;MultiThreaded&quot;</span> `</span><br><span class="line">                                                       onnxruntime_BUILD_UNIT_TESTS=ON</span><br></pre></td></tr></table></figure>
+
+<p><code>--disable_ml_ops</code> は古典的な機械学習の演算子を無効化するオプション。</p>
+<p>ここで生成されるバイナリ (CMAKE_INSTALL_PREFIX で指定した出力先の全ファイル) のサイズは下記のようになった。</p>
+<table>
+<thead>
+<tr>
+<th>os</th>
+<th>full build</th>
+<th>minimal build</th>
+<th>reduce ratio</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>windows</td>
+<td>954MB</td>
+<td>585 MB</td>
+<td>38.6 %</td>
+</tr>
+<tr>
+<td>linux</td>
+<td>145 MB</td>
+<td>82 MB</td>
+<td>43.4 %</td>
+</tr>
+<tr>
+<td>macos</td>
+<td>106 MB</td>
+<td>52 MB</td>
+<td>50.9 %</td>
+</tr>
+</tbody></table>
+<h3 id="最終的なバイナリの比較"><a href="#最終的なバイナリの比較" class="headerlink" title="最終的なバイナリの比較"></a>最終的なバイナリの比較</h3><p> mnist による単純なダミーデータの推論を行う C/C++ コードに対して、full build と minimal build の onnxruntime を結合した際の最終バイナリのサイズを比較してみた。</p>
+<table>
+<thead>
+<tr>
+<th>os</th>
+<th>full build</th>
+<th>minimal build</th>
+<th>reduce ratio</th>
+<th>memo</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>windows</td>
+<td>16.1 MB</td>
+<td>4.39 MB</td>
+<td>72 %</td>
+<td>full build は onnxruntime_providers_shared.dll (103 KB) も必要</td>
+</tr>
+<tr>
+<td>linux</td>
+<td>37 MB</td>
+<td>26 MB</td>
+<td>29 %</td>
+<td></td>
+</tr>
+<tr>
+<td>macos</td>
+<td>25 MB</td>
+<td>15 MB</td>
+<td>40 %</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>OS 毎に削減率に違いが出たが、モバイル向けを考えると、例え 10 MB の削減でも大きな差になる。<br>特にストア配信において、バイナリサイズの削減はインストール時のユーザ体験に直結するし、実行時のフットプリントの低減は決して無視できない。</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2026-03-20</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Microsoft/" title="Microsoft">Microsoft </a><a class="tag" href="/categories/Microsoft/onnxruntime/" title="onnxruntime">onnxruntime </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://takuya-takeuchi.github.io/2026/03/20/4573/,A certain engineer &quot;COMPLEX&quot;,開発メモ その468 Onnxruntime を minimal build すると?,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="next pagbuttons"><a class="btn" role="navigation" href="/2025/12/28/4572/" title="開発メモ その467 古い GPU (NVIDIA GeForce GTX 750 Ti) を認識しない">次へ</a></li></ul></div></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/search.js"></script></body></html>
