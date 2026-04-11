@@ -28,7 +28,7 @@
 <p>を使っている。</p>
 <p>で、この二つは dart で実装された非ネイティブなコードになっており、これが原因。<br>というのも、ATS にしても usesCleartextTraffic にしても、これらが作動するのはネイティブ API を使った場合。<br>上の ATS の説明にもあるように 「<code>NSURLSession</code> を使った」、とあるようにネイティブ実装ではない、上記の 2 パッケージはこの制約を受けない。</p>
 <p>試しに、ATS と usesCleartextTraffic を設定 (つまり非 HTTPS の強制遮断) し、非ネイティブ実装、ネイティブ実装 (といっても inter-op が考慮されており dart で扱える) で挙動を比べてみた。</p>
-
+<div class="blog-card"><div class="hbc-link-wrap"><a class="hbc-link" href="https://github.com/takuya-takeuchi/Demo/tree/master/Flutter/Vanilla/13_InsecureHTTP" target="_blank" rel="nofollow"><div class="hbc-card"><div class="hbc-info"><img class="hbc-favicon" src="http://www.google.com/s2/favicons?domain=github.com"></img><div class="hbc-site-name">GitHub</div></div><div class="hbc-contents"><div class="hbc-thumbnail"><img src="https://opengraph.githubassets.com/977591bd23d3d762809f7de30e508edff8e381f86c7990e764b6327ec65e88aa/takuya-takeuchi/Demo"></img></div><div class="hbc-text"><div class="hbc-title">Demo/Flutter/Vanilla/13_InsecureHTTP at master · takuya-takeuchi/Demo</div><div class="hbc-url">https://github.com/takuya-takeuchi/Demo/tree/master/Flutter/Vanilla/13_InsecureHTTP</div><div class="hbc-description">Sample source code for Demonstration, Experiment and Test - takuya-takeuchi/Demo</div></div></div></div></a></div></div>
 
 <p>下記のパッケージを比較している。</p>
 <ul>
