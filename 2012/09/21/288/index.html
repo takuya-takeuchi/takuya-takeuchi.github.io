@@ -41,7 +41,7 @@
 </tr>
 </tbody></table>
 <p>これで終了です。<br>従来は、<strong>C:\Program Files\BitNami Redmine Stack\apps\redmine\config\environments\production.rb</strong> に</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ログの出力を制限</span></span><br><span class="line">config.logger = Logger.new(config.log_path)</span><br><span class="line">config.logger.level = Logger::WARN</span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ログの出力を制限</span></span><br><span class="line">config.logger = <span class="title class_">Logger</span>.new(config.log_path)</span><br><span class="line">config.logger.level = <span class="title class_">Logger</span><span class="symbol">:</span><span class="symbol">:WARN</span></span><br></pre></td></tr></table></figure>
 
 <p>と記述しましたが、これをすると <strong>Thin_redmine</strong>、<strong>Thin_redmine2</strong> が停止してしまっていました。</p>
 <p>ようやくログの制限ができるようになりました。<br>これで寝ることができます。</p>

@@ -12,29 +12,29 @@
 </ul>
 <p>今回も同様。</p>
 <h1 id="How-to-use"><a href="#How-to-use" class="headerlink" title="How to use?"></a>How to use?</h1><p>インストール自体は最近は <code>apt</code> で一発。<br>だが、少々設定に手を加える必要がある。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt install xrdp</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> apt install xrdp</span><br></pre></td></tr></table></figure>
 
 <p>このままだと画面が真っ暗で何も映らないため</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo vi /etc/gdm3/custom.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vi /etc/gdm3/custom.conf</span><br></pre></td></tr></table></figure>
 
 <p>下記のように修正。</p>
 <figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">  # GDM configuration storage</span><br><span class="line">  #</span><br><span class="line">  # See /usr/share/gdm/gdm.schemas for a list of available options.</span><br><span class="line">  </span><br><span class="line">  [daemon]</span><br><span class="line">  # Uncomment the line below to force the login screen to use Xorg</span><br><span class="line"><span class="deletion">- # WaylandEnable=false</span></span><br><span class="line"><span class="addition">+ WaylandEnable=false</span></span><br><span class="line">  </span><br><span class="line">  # Enabling automatic login</span><br><span class="line">  #  AutomaticLoginEnable = true</span><br><span class="line">  #  AutomaticLogin = user1</span><br></pre></td></tr></table></figure>
 
 <p>そして、 <code>xrdp</code> を自動起動設定して再起動。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo systemctl <span class="built_in">enable</span> xrdp</span><br><span class="line">$ sudo systemctl start xrdp</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> xrdp</span><br><span class="line">$ <span class="built_in">sudo</span> systemctl start xrdp</span><br></pre></td></tr></table></figure>
 
 <p>そして Windows から RDP 接続すると、無事に</p>
 <p><a href="../../../../public/2025/02/22/4524/xrdp-before.png"><img src="../../../../public/2025/02/22/4524/xrdp-before.png" alt="firewall"></a></p>
 <p>…誰？</p>
 <h2 id="GUI-が全然違う"><a href="#GUI-が全然違う" class="headerlink" title="GUI が全然違う"></a>GUI が全然違う</h2><p>Ubuntu 24.04 のコードネームは <strong>Noble Numbat (高貴なナンバット [アリクイ])</strong> というように、壁紙は王冠がデフォルトのはず。<br>なのに何だこの青の無機質な RHEL みたいなデスクトップは。</p>
 <p>原因は GNOME が起動していないから、とのこと。<br>なので下記で GNOME を有効にする。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo vi /etc/xrdp/startwm.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> vi /etc/xrdp/startwm.sh</span><br></pre></td></tr></table></figure>
 
 <p>下記を編集。</p>
 <figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="addition">+ export GNOME_SHELL_SESSION_MODE=ubuntu</span></span><br><span class="line"><span class="addition">+ export XDG_CURRENT_DESKTOP=ubuntu:GNOME</span></span><br><span class="line">  #!/bin/sh</span><br><span class="line">  # xrdp X session start script (c) 2015, 2017, 2021 mirabilos</span><br><span class="line">  # published under The MirOS Licence</span><br></pre></td></tr></table></figure>
 
 <p>そして、 <code>XRDP</code> を再起動。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo systemctl restart xrdp</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> systemctl restart xrdp</span><br></pre></td></tr></table></figure>
 
 <p>ただ、私の場合は上手くいかなかったので、OS ごと再起動したら治りました。</p>
 <p><a href="../../../../public/2025/02/22/4524/xrdp-after.png"><img src="../../../../public/2025/02/22/4524/xrdp-after.png" alt="firewall"></a></p>

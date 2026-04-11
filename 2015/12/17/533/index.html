@@ -4,7 +4,7 @@
 <span id="more"></span>
 <p>通常は、プロジェクトファイルの下の <strong>Properties</strong> ノードに追加していきますが (直接は追加できないので、一度別ノードに追加してから移動)、その際、下の画像のようにリソースファイル名の名前を間違えると、 </p>
 <p><img src="../../../../public/2015/12/Resource-300x288.png" alt="Resource.ja-JP.resxは間違い"></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ChangeCulture</span>(<span class="params"><span class="built_in">string</span> name</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Resources.Culture = CultureInfo.GetCultureInfo(name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ChangeCulture</span>(<span class="params"><span class="built_in">string</span> name</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Resources.Culture = CultureInfo.GetCultureInfo(name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>上のソースが無意味になります。</p>
 <p>名前はきちんと Resource<font color="red"><b>s</b></font>.ja-JP.resx のようにしましょう。<br>これに気づかず1時間くらい時間を無駄にしました。</p>

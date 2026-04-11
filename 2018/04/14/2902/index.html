@@ -5,10 +5,10 @@ How to do?VirtualBox内の仮想マシンに外部からアクセスする場合
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Permission denied, please try again.</span><br></pre></td></tr></table></figure>
 
 <p>というエラーが返ってくる。<br>そこで、下記のコマンドで、sshの接続に失敗したログを見てみる。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cat /var/<span class="built_in">log</span>/auth.log | grep <span class="string">&#x27;sshd.\*Invalid&#x27;</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cat</span> /var/log/auth.log | grep <span class="string">&#x27;sshd.\*Invalid&#x27;</span></span></span><br></pre></td></tr></table></figure>
 
 <p>しかし、ログそのものが出力されていない。<br>こうなると、そもそもssh接続が仮想マシン側に到達していない、と考えるとが筋である。<br>なので、ポートフォワーディングを<br><a href="../../../../public/2018/04/3a495773eb924093597eb101367c034a.png"><img src="../../../../public/2018/04/3a495773eb924093597eb101367c034a.png"></a><br> のようにし、22ポート以外に変更する。<br>ssh接続も</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ssh &lt;user&gt;@&lt;address&gt; -p 222</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">ssh &lt;user&gt;@&lt;address&gt; -p 222</span></span><br></pre></td></tr></table></figure>
 
 <p>に変更する。</p>
 <p>こうすると上手くいった。</p>

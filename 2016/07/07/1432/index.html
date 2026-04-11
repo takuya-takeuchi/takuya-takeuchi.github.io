@@ -6,7 +6,7 @@ ProblemGithubでOSSを開発しており、AppVeyorでCIしていますが、自
 <span id="more"></span>
 <h1 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h1><p>GithubでOSSを開発しており、AppVeyorでCIしていますが、自宅PCでビルドは通るのに、AppVeyorでビルドが失敗する事例が発生。<br>単純にソースの記述ではないようで、少し時間をロスしたのでメモ。</p>
 <p>問題は、</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\projects\nextbootosselector\source\.nuget\NuGet.targets(83,9): error : Unable to locate &#39;C:\projects\nextbootosselector\source\.nuget\NuGet.exe&#39; [C:\projects\nextbootosselector\source\NextBootOSSelector\NextBootOSSelector.csproj]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\projects\nextbootosselector\source\.nuget\NuGet.targets(83,9): error : Unable to locate &#x27;C:\projects\nextbootosselector\source\.nuget\NuGet.exe&#x27; [C:\projects\nextbootosselector\source\NextBootOSSelector\NextBootOSSelector.csproj]</span><br></pre></td></tr></table></figure>
 
 <p>というエラーログ。<br>Nuget.extを見つけることができませんでした、というエラー。<br>AppVeyorの設定でNugetの更新を実施するようスクリプトを組むだけではダメなようです。</p>
 <h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><p><strong>.nuget/NuGet.targets</strong> をテキストファイルで開き、</p>

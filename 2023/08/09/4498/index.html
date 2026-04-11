@@ -51,7 +51,7 @@ A"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, m
 </li>
 </ul>
 <p>そのため、ARC 無効の環境において下記のようなコードで</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">NSString *objcString &#x3D; [NSString stringWithUTF8String:number];</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; something to do</span><br><span class="line"></span><br><span class="line">[objcString release];</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">NSString *objcString = [NSString stringWithUTF8String:number];</span><br><span class="line"></span><br><span class="line">// something to do</span><br><span class="line"></span><br><span class="line">[objcString release];</span><br></pre></td></tr></table></figure>
 
 <p>のように <code>release</code> するとクラッシュする可能性がある (事実クラッシュする)。</p>
 <p>ARC 有効ならそもそもビルド時に下記のようなエラーが出るので心配はない。</p>

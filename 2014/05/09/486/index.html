@@ -10,13 +10,13 @@ BackgroundWindows"><meta name="keywords"><meta content="width=device-width, init
 <li>インストール済みデスクトップ エクスペリエンス機能</li>
 </ul>
 <p>それぞれの違いは<a target="_blank" rel="noopener" href="http://technet.microsoft.com/ja-jp/library/hh831786.aspx">Windows Server インストール オプションのリファレンス表</a>を参照してください。<br>それで、自分はインストール時、<strong>フル インストール オプション</strong>でインストールを実行し、<strong>Server Core インストール オプション</strong> がどのようなものか分かりませんでした。<br>だから、インストール後変更できると知り、コマンドプロンプトから</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Uninstall-WindowsFeature</span> Server<span class="literal">-Gui</span><span class="literal">-Shell</span> <span class="literal">-remove</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Uninstall-WindowsFeature</span> Server<span class="literal">-Gui-Shell</span> <span class="literal">-remove</span></span><br></pre></td></tr></table></figure>
 
 <p>と叩いて、GUIが消えました。<br>で、一通り触った飽きた後、「さぁ戻すか」と思って、</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Install-WindowsFeature</span> Server<span class="literal">-Gui</span><span class="literal">-Shell</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Install-WindowsFeature</span> Server<span class="literal">-Gui-Shell</span></span><br></pre></td></tr></table></figure>
 <p>とやったが戻らない＼(^o^)／<br>黒背景のコマンドプロンプトに赤文字でエラーの旨が表示され恐怖心MAX。<br>片っ端から調べてみたところ、どうもインストールメディアが必要とのこと。<br>インストールメディアが無くても出来てる人がネットに居るのは何故？</p>
 <h1 id="Resolution"><a href="#Resolution" class="headerlink" title="Resolution"></a>Resolution</h1><p>結論から言えば、インストールメディアを挿入した状態で</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Install-WindowsFeature</span> Server<span class="literal">-Gui</span><span class="literal">-Shell</span> –Restart –Source wim:D:\source\install.wim:<span class="number">4</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Install-WindowsFeature</span> Server<span class="literal">-Gui-Shell</span> –Restart –Source wim:D:\source\install.wim:<span class="number">4</span></span><br></pre></td></tr></table></figure>
 
 <p>と入力すれば戻ります。<br><strong>※D:\source\の部分はインストールメディアのドライブに応じて変更</strong></p>
 <p>初心者にServerOSは厳しい道のりなのか…</p>

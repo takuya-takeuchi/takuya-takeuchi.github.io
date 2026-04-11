@@ -12,13 +12,13 @@
 </ol>
 <p>という手順まで終えてください。<br>つまりクリーンな環境にインストールすることを前提とします。<br>インストール先は、<a target="_blank" rel="noopener" href="https://taktak.jp/2012/10/13/302">前回</a>と同じくファイルパスに空白が含まれない場所にします。<br>では早速。</p>
 <p>(1) システムにパスを通します。<strong>システムのプロパティ-&gt;詳細設定-&gt;環境変数</strong>と進み、<strong>ユーザー環境変数</strong>に下記を追加します。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RAILS_ENV&#x3D;production</span><br><span class="line">PATH&#x3D;C:\BitNami\Redmine\ruby\bin;C:\BitNami\Redmine\imagemagic</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RAILS_ENV=production</span><br><span class="line">PATH=C:\BitNami\Redmine\ruby\bin;C:\BitNami\Redmine\imagemagic</span><br></pre></td></tr></table></figure>
 
 <p><strong>PATH</strong>の<strong>C:\BitNami\Redmine</strong>の部分は<strong>BitNami Redmine Stack</strong>のインストール先になりますので、適宜置き換えてください。<br><strong>PATH</strong>は既存の値の後ろに追加することになります。従って、PATHの既存の値が </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Program Files (x86)\Visual Studio 2005 SDK\2007.02\VisualStudioIntegration\Tools\Sandcastle\ProductionTools\;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Program Files (x86)\Visual Studio 2005 SDK\2007.02\VisualStudioIntegration\Tools\Sandcastle\ProductionTools\;</span><br></pre></td></tr></table></figure>
 
 <p>なら、 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Program Files (x86)\Visual Studio 2005 SDK\2007.02\VisualStudioIntegration\Tools\Sandcastle\ProductionTools\;C:\BitNami\Redmine\ruby\bin;C:\BitNami\Redmine\imagemagick</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Program Files (x86)\Visual Studio 2005 SDK\2007.02\VisualStudioIntegration\Tools\Sandcastle\ProductionTools\;C:\BitNami\Redmine\ruby\bin;C:\BitNami\Redmine\imagemagick</span><br></pre></td></tr></table></figure>
 
 <p>になります。既存の値の末尾に <strong>;</strong> をつけてから、前述の値を追加することになります。終わったら<strong>OK-&gt;OK</strong>でプロパティを終了します。</p>
 <p>(2) <strong>Ruby Development Kit</strong>をダウンロードします。<a target="_blank" rel="noopener" href="http://rubyinstaller.org/downloads/">このページ</a>からダウンロードします。最新版は<strong>DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe</strong>になります。</p>
@@ -41,7 +41,7 @@
 <figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby dk.rb install </span><br></pre></td></tr></table></figure>
 
 <p>すると、 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[INFO] Updating convenience notice gem override for &#39;C:&#x2F;BitNami&#x2F;Redmine&#x2F;ruby&#39;</span><br><span class="line">[INFO] Installing &#39;C:&#x2F;BitNami&#x2F;Redmine&#x2F;ruby&#x2F;lib&#x2F;ruby&#x2F;site_ruby&#x2F;devkit.rb&#39;.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[INFO] Updating convenience notice gem override for &#x27;C:/BitNami/Redmine/ruby&#x27;</span><br><span class="line">[INFO] Installing &#x27;C:/BitNami/Redmine/ruby/lib/ruby/site_ruby/devkit.rb&#x27;.</span><br></pre></td></tr></table></figure>
 
 <p>と出ます。<br>コマンドプロンプトはそのまま開いたままで。<br>これで<strong>Ruby Development Kit</strong>のインストールは完了です。<br>次に<strong>Redmine Backlogs</strong>をインストールします。</p>
 <p>(7) 以下のコマンドを順次実行。</p>

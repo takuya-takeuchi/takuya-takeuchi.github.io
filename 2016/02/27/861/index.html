@@ -10,7 +10,7 @@
 <blockquote>
 <p>This example trains a simple network and can be directed to use either CPU or GPU, which helps quickly ensure that CNTK is functioning properly.</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">訳：このサンプルは単純なネットワークの学習、並びにCPUとGPUのどちらを使うかを指示しCNTKが正しく動作することを簡単にチェックします。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">訳：このサンプルは単純なネットワークの学習、並びにCPUとGPUのどちらを使うかを指示しCNTKが正しく動作することを簡単にチェックします。</span><br></pre></td></tr></table></figure>
 
 <p>とあります。検証用ですね、まさに。<br>次にCNTKのフォルダに移動します。<strong>CNTK.sln</strong> が存在するディレクトリです。<br>その後、次のコマンドをたたくと、テストが実行されます。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">set PATH=&quot;%CD%\Release&quot;;%PATH%</span><br><span class="line">cd Examples\Other\Simple2d\Data</span><br><span class="line">cntk configFile=../Config/Simple.cntk</span><br></pre></td></tr></table></figure>
@@ -24,7 +24,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cntk configFile=../Config/Simple.cntk deviceId=auto 1&gt; out.txt 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
 
 <p>するとOut.txtに出力結果がリダイレクトされるので中を確認します。<br>テキスト中に</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SimpleNetworkBuilder Using GPU 0</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SimpleNetworkBuilder Using GPU 0</span><br></pre></td></tr></table></figure>
 
 <p>というのがあるはずです。ただし、0の部分は環境依存です。<br>通常この部分は</p>
 <ul>
