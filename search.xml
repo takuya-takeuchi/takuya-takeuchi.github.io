@@ -4,6 +4,29 @@
   
     
     <entry>
+      <title>開発メモ その489 ネストされた .devcontainer.json は認識できない</title>
+      <link href="/2026/06/13/4595/"/>
+      <url>/2026/06/13/4595/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>掲題の通り。<br>ワークスペース内の複数の .devcontainer.json はサポートされているが、その階層には上限があるということ。</p><h1 id="What-does-it-mean"><a href="#What-does-it-mean" class="headerlink" title="What does it mean?"></a>What does it mean?</h1><p>Visual Studio Code 1.124.2 (2026&#x2F;06&#x2F;12) での話。</p><p>下記のような構造があるとする。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;/path/to/workspace&gt;</span><br><span class="line">├─.devcontainer</span><br><span class="line">│  ├─docker-compose</span><br><span class="line">│  │  │  .<span class="built_in">env</span></span><br><span class="line">│  │  │  compose.yml</span><br><span class="line">│  │  │  devcontainer.json</span><br><span class="line">│  │  │</span><br><span class="line">│  │  └─app</span><br><span class="line">│  │          Dockerfile</span><br><span class="line">│  │          main.py</span><br><span class="line">│  │          requirements.txt</span><br><span class="line">│  │</span><br><span class="line">│  ├─nested</span><br><span class="line">│  │  ├─docker-build</span><br><span class="line">│  │  │      devcontainer.json</span><br><span class="line">│  │  │      Dockerfile</span><br><span class="line">│  │  │</span><br><span class="line">│  │  └─docker-outside-of-docker</span><br><span class="line">│  │          devcontainer.json</span><br><span class="line">│  │          Dockerfile</span><br><span class="line">│  │</span><br><span class="line">│  └─original</span><br><span class="line">│          devcontainer-lock.json</span><br><span class="line">│          devcontainer.json</span><br><span class="line">│</span><br><span class="line">└─.git</span><br></pre></td></tr></table></figure><p>この時、Visual Studio Code のコマンドパレット (Ctrl + Shift + P) の <code>Dev Containers: Rebuild and Reopen in Container</code> や <code>Dev Containers: Reopen in Container</code> から認識されるのは、</p><ul><li>.devcontainer&#x2F;docker-compose&#x2F;devcontainer.json</li><li>.devcontainer&#x2F;original&#x2F;devcontainer.json</li></ul><p>のみだという話。</p><p><a href="../../../../public/2026/06/13/4595/nested.png"><img src="/../../../../public/2026/06/13/4595/nested.png" alt="DevContainer"></a></p><p>ネストされた構造をフラットにするだけで、下記のように認識される。</p><p><a href="../../../../public/2026/06/13/4595/not-nested.png"><img src="/../../../../public/2026/06/13/4595/not-nested.png" alt="DevContainer"></a></p><p><code>.devcontainer</code> 直下にある <code>.devcontainer.json</code> も対象になる。</p><h1 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h1><p>結論は下記の構造のみが許容されるということ。</p><ul><li><code>.devcontainer/devcontainer.json</code></li><li><code>.devcontainer/*/devcontainer.json</code></li></ul><p>ネストされた構造をサポートしてもらいたい。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Visual Studo Code </category>
+          
+          <category> Dev Container </category>
+          
+          <category> Docker </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>開発メモ その488 Dev Container から docker を操作する</title>
       <link href="/2026/06/13/4594/"/>
       <url>/2026/06/13/4594/</url>
